@@ -1,0 +1,3238 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    />
+    <meta name="theme-color" content="#070b14" />
+    <title>OUR STORY — Season 01</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Space+Mono&family=La+Belle+Aurore&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      /* ════════════════════════════════════════════════
+   OUR STORY — SEASON 01
+   Reka bentuk: dark navy, cream, soft blue, subtle pink
+   ════════════════════════════════════════════════ */
+      :root {
+        --bg: #070b14;
+        --bg2: #0b1120;
+        --ink: #f0e9dc;
+        --ink-dim: rgba(240, 233, 220, 0.62);
+        --ink-faint: rgba(240, 233, 220, 0.34);
+        --line: rgba(240, 233, 220, 0.14);
+        --blue: #a9c7e8;
+        --pink: #e5b3c0;
+        --serif: "Cormorant Garamond", Georgia, serif;
+        --mono: "Space Mono", monospace;
+        --hand: "La Belle Aurore", cursive;
+      }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      html {
+        scroll-behavior: smooth;
+      }
+      body {
+        background: var(--bg);
+        color: var(--ink);
+        font-family: var(--serif);
+        font-weight: 400;
+        overflow-x: hidden;
+        -webkit-font-smoothing: antialiased;
+      }
+      body.locked {
+        overflow: hidden;
+      }
+      img {
+        display: block;
+        max-width: 100%;
+      }
+      button {
+        font-family: inherit;
+        color: inherit;
+      }
+      ::selection {
+        background: rgba(229, 179, 192, 0.28);
+      }
+      ::-webkit-scrollbar {
+        width: 9px;
+      }
+      ::-webkit-scrollbar-track {
+        background: var(--bg);
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #1c2740;
+        border-radius: 9px;
+      }
+
+      /* ---------- lapisan filem: grain, vignette, letterbox, ambient light ---------- */
+      #grain {
+        position: fixed;
+        inset: -120px;
+        z-index: 950;
+        pointer-events: none;
+        opacity: 0.07;
+        background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='300'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+        animation: grainShift 0.9s steps(2) infinite;
+      }
+      @keyframes grainShift {
+        0% {
+          transform: translate(0, 0);
+        }
+        25% {
+          transform: translate(-2%, 1.6%);
+        }
+        50% {
+          transform: translate(1.6%, -2%);
+        }
+        75% {
+          transform: translate(-1%, -1.4%);
+        }
+        100% {
+          transform: translate(2%, 2%);
+        }
+      }
+      #vignette {
+        position: fixed;
+        inset: 0;
+        z-index: 940;
+        pointer-events: none;
+        background: radial-gradient(
+          ellipse at center,
+          transparent 52%,
+          rgba(3, 5, 10, 0.55) 100%
+        );
+      }
+      .lb {
+        position: fixed;
+        left: 0;
+        right: 0;
+        height: 0;
+        background: #000;
+        z-index: 150;
+        pointer-events: none;
+        transition: height 1.15s cubic-bezier(0.77, 0, 0.18, 1);
+      }
+      .lb-top {
+        top: 0;
+      }
+      .lb-bot {
+        bottom: 0;
+      }
+      body.film-open .lb {
+        height: 10vh;
+      }
+      .blob {
+        position: fixed;
+        width: 56vmax;
+        height: 56vmax;
+        border-radius: 50%;
+        z-index: 0;
+        pointer-events: none;
+      }
+      .blob-a {
+        background: radial-gradient(
+          circle,
+          rgba(120, 160, 210, 0.075),
+          transparent 62%
+        );
+        top: -22vmax;
+        left: -16vmax;
+        animation: drift 46s ease-in-out infinite alternate;
+      }
+      .blob-b {
+        background: radial-gradient(
+          circle,
+          rgba(222, 150, 172, 0.055),
+          transparent 62%
+        );
+        bottom: -26vmax;
+        right: -18vmax;
+        animation: drift 58s ease-in-out infinite alternate-reverse;
+      }
+      @keyframes drift {
+        to {
+          transform: translate(9vmax, 7vmax);
+        }
+      }
+
+      main#film {
+        position: relative;
+        z-index: 1;
+      }
+      .wrap {
+        width: min(1080px, 100%);
+        margin: 0 auto;
+      }
+      .chapter {
+        padding: 18vh 6vw;
+        position: relative;
+      }
+
+      /* ---------- reveal sinematik (fade + blur → tajam) ---------- */
+      .reveal {
+        opacity: 0;
+        transform: translateY(26px);
+        filter: blur(10px);
+        transition:
+          opacity 1.05s ease var(--d, 0s),
+          transform 1.05s cubic-bezier(0.22, 0.61, 0.36, 1) var(--d, 0s),
+          filter 1.05s ease var(--d, 0s);
+      }
+      .reveal.in {
+        opacity: 1;
+        transform: none;
+        filter: blur(0);
+      }
+      .p-reveal {
+        opacity: 0;
+        filter: blur(8px);
+        transition:
+          opacity 1.2s ease var(--d, 0s),
+          filter 1.2s ease var(--d, 0s);
+      }
+      .p-reveal.in {
+        opacity: 1;
+        filter: blur(0);
+      }
+
+      /* ---------- ikon ---------- */
+      .ico {
+        width: 18px;
+        height: 18px;
+        display: inline-block;
+        vertical-align: middle;
+        flex: none;
+      }
+      .ico-heart {
+        fill: var(--pink);
+      }
+      .ico-play {
+        width: 11px;
+        height: 11px;
+      }
+
+      /* ---------- OPENING SCENE ---------- */
+      #opening {
+        position: fixed;
+        inset: 0;
+        z-index: 500;
+        background: var(--bg);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        padding: 0 8vw;
+      }
+      #opening.exit {
+        opacity: 0;
+        transform: scale(1.05);
+        filter: blur(14px);
+        pointer-events: none;
+        transition:
+          opacity 1.3s ease 0.1s,
+          transform 1.5s ease 0.1s,
+          filter 1.3s ease 0.1s;
+      }
+      .op-line {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: clamp(1.5rem, 4.6vw, 2.6rem);
+        font-weight: 300;
+        font-style: italic;
+        color: var(--ink-dim);
+        opacity: 0;
+        filter: blur(12px);
+        transform: translateY(10px);
+        transition:
+          opacity 1.7s ease,
+          filter 1.7s ease,
+          transform 1.7s ease;
+      }
+      .op-line.show {
+        opacity: 1;
+        filter: blur(0);
+        transform: none;
+      }
+      .op-line.hide {
+        opacity: 0;
+        filter: blur(6px);
+        transform: translateY(-14px);
+      }
+      #op3 {
+        opacity: 0;
+        transform: translateY(22px);
+        filter: blur(12px);
+        transition: all 1.6s ease;
+      }
+      #op3.show {
+        opacity: 1;
+        transform: none;
+        filter: blur(0);
+      }
+      .op-season {
+        display: block;
+        font-family: var(--mono);
+        font-size: clamp(1.3rem, 4.8vw, 2.2rem);
+        letter-spacing: 0.58em;
+        margin-left: 0.58em;
+        color: var(--blue);
+      }
+      .op-sub {
+        display: block;
+        margin-top: 1.3rem;
+        font-style: italic;
+        font-weight: 300;
+        font-size: clamp(1.05rem, 3vw, 1.5rem);
+        color: var(--ink-dim);
+      }
+      .btn-play {
+        margin-top: 3.4rem;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.9em;
+        cursor: pointer;
+        background: transparent;
+        border: 1px solid rgba(240, 233, 220, 0.35);
+        color: var(--ink);
+        font-family: var(--mono);
+        font-size: 0.78rem;
+        letter-spacing: 0.34em;
+        padding: 1.15em 2.5em 1.15em 2.1em;
+        transition:
+          background 0.5s,
+          color 0.5s,
+          border-color 0.5s;
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      .btn-play.show {
+        opacity: 1;
+        transform: none;
+        transition:
+          opacity 1.2s ease,
+          transform 1.2s ease,
+          background 0.5s,
+          color 0.5s,
+          border-color 0.5s;
+      }
+      .btn-play:hover {
+        background: var(--ink);
+        color: var(--bg);
+        border-color: var(--ink);
+      }
+      .btn-play .ico {
+        fill: currentColor;
+      }
+      .btn-skip {
+        position: absolute;
+        bottom: 7vh;
+        right: 5vw;
+        z-index: 5;
+        cursor: pointer;
+        background: rgba(7, 11, 20, 0.45);
+        backdrop-filter: blur(6px);
+        border: 1px solid var(--line);
+        color: var(--ink-dim);
+        font-family: var(--mono);
+        font-size: 0.62rem;
+        letter-spacing: 0.3em;
+        padding: 0.75em 1.5em;
+        opacity: 0;
+        pointer-events: none;
+        transition:
+          opacity 0.8s,
+          color 0.4s,
+          border-color 0.4s;
+      }
+      .btn-skip.show {
+        opacity: 1;
+        pointer-events: auto;
+      }
+      .btn-skip:hover {
+        color: var(--ink);
+        border-color: rgba(240, 233, 220, 0.4);
+      }
+
+      /* ---------- TITLE CARD ---------- */
+      #titlecard {
+        min-height: 100vh;
+        min-height: 100dvh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        position: relative;
+        padding: 14vh 6vw 10vh;
+      }
+      .tc-kicker {
+        font-family: var(--mono);
+        font-size: 0.62rem;
+        letter-spacing: 0.52em;
+        margin-left: 0.52em;
+        color: var(--ink-faint);
+      }
+      .tc-title {
+        font-size: clamp(3rem, 11vw, 7.6rem);
+        font-weight: 300;
+        letter-spacing: 0.15em;
+        margin-left: 0.15em;
+        margin-top: 2.2rem;
+        line-height: 1.04;
+      }
+      .tc-season {
+        margin-top: 2rem;
+        font-family: var(--mono);
+        font-size: 0.72rem;
+        letter-spacing: 0.34em;
+        color: var(--blue);
+        display: flex;
+        align-items: center;
+        gap: 1em;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+      .tc-season .ico {
+        width: 10px;
+        height: 10px;
+      }
+      .tc-cast {
+        margin-top: 3.2rem;
+        font-style: italic;
+        font-size: clamp(1.05rem, 3vw, 1.4rem);
+        color: var(--ink-dim);
+      }
+      .tc-cast b {
+        font-style: normal;
+        font-weight: 500;
+        color: var(--ink);
+        letter-spacing: 0.12em;
+      }
+      .tc-dates {
+        margin-top: 1.1rem;
+        font-family: var(--mono);
+        font-size: 0.6rem;
+        letter-spacing: 0.26em;
+        color: var(--ink-faint);
+      }
+      .scroll-hint {
+        position: absolute;
+        bottom: 4.5vh;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.7rem;
+        font-family: var(--mono);
+        font-size: 0.56rem;
+        letter-spacing: 0.42em;
+        margin-left: 0.42em;
+        color: var(--ink-faint);
+      }
+      .scroll-hint i {
+        width: 1px;
+        height: 46px;
+        background: linear-gradient(var(--ink-faint), transparent);
+        transform-origin: top;
+        animation: hintPulse 2.4s ease-in-out infinite;
+      }
+      @keyframes hintPulse {
+        0%,
+        100% {
+          opacity: 0.15;
+          transform: scaleY(0.5);
+        }
+        50% {
+          opacity: 1;
+          transform: none;
+        }
+      }
+
+      /* ---------- kepala chapter ---------- */
+      .ch-head {
+        margin-bottom: 6vh;
+      }
+      .ch-label {
+        display: block;
+        font-family: var(--mono);
+        font-size: 0.68rem;
+        letter-spacing: 0.5em;
+        color: var(--blue);
+        margin-bottom: 1.7rem;
+      }
+      .ch-title {
+        font-size: clamp(2.2rem, 6vw, 4.2rem);
+        font-weight: 300;
+        line-height: 1.12;
+        max-width: 17ch;
+      }
+      .ch-note {
+        font-family: var(--mono);
+        font-size: 0.6rem;
+        letter-spacing: 0.3em;
+        color: var(--ink-faint);
+        margin-bottom: 4vh;
+      }
+
+      /* ---------- CHAPTER 01 ---------- */
+      .ch-meta {
+        display: flex;
+        align-items: center;
+        gap: 1.2rem;
+        flex-wrap: wrap;
+        font-family: var(--mono);
+        font-size: 0.66rem;
+        letter-spacing: 0.26em;
+        color: var(--blue);
+        text-transform: uppercase;
+      }
+      .ch-meta i {
+        width: 34px;
+        height: 1px;
+        background: var(--line);
+      }
+      .hero {
+        margin: 7vh 0 6vh;
+      }
+      .hero-media {
+        aspect-ratio: 16/9;
+        overflow: hidden;
+        position: relative;
+      }
+      .hero-media img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transform: translateY(var(--py, 0)) scale(1.13);
+        will-change: transform;
+      }
+      .hero figcaption {
+        font-family: var(--mono);
+        font-size: 0.58rem;
+        letter-spacing: 0.3em;
+        color: var(--ink-faint);
+        margin-top: 1rem;
+      }
+      .story {
+        max-width: 62ch;
+        display: flex;
+        flex-direction: column;
+        gap: 1.7rem;
+      }
+      .story p {
+        color: var(--ink-dim);
+        font-size: 1.13rem;
+        line-height: 1.95;
+      }
+      .story p:first-child::first-letter {
+        font-size: 3.2em;
+        float: left;
+        line-height: 0.82;
+        padding: 0.06em 0.13em 0 0;
+        color: var(--pink);
+        font-weight: 300;
+      }
+      .bigquote {
+        font-size: clamp(1.75rem, 4.4vw, 3.1rem);
+        font-weight: 300;
+        font-style: italic;
+        line-height: 1.4;
+        max-width: 26ch;
+        margin: 12vh 0 0;
+      }
+      .bigquote em {
+        color: var(--pink);
+        font-style: inherit;
+      }
+      .pol-row {
+        display: flex;
+        gap: 2.8rem;
+        flex-wrap: wrap;
+        justify-content: center;
+        margin-top: 11vh;
+      }
+
+      /* ---------- polaroid ---------- */
+      .polaroid {
+        display: block;
+        width: 100%;
+        margin: 0 auto 2.6rem;
+        background: #ece4d2;
+        padding: 0.68rem 0.68rem 0;
+        border: 0;
+        position: relative;
+        color: #2a2620;
+        box-shadow: 0 20px 44px -18px rgba(0, 0, 0, 0.75);
+        transform: rotate(var(--r, 0deg)) translate3d(0, var(--py, 0px), 0);
+      }
+      .polaroid.clickable {
+        cursor: pointer;
+      }
+      .pol-in {
+        display: block;
+        animation: floaty 7s ease-in-out infinite;
+        animation-delay: var(--fd, 0s);
+      }
+      @keyframes floaty {
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-7px);
+        }
+      }
+      .polaroid .ph {
+        display: block;
+        overflow: hidden;
+      }
+      .polaroid .ph img {
+        width: 100%;
+        filter: saturate(0.8) contrast(1.03);
+        transition: filter 0.7s ease;
+      }
+      .polaroid.clickable:hover .ph img {
+        filter: saturate(1.05) contrast(1.02);
+      }
+      .pcap {
+        display: block;
+        font-family: var(--hand);
+        font-size: 1.15rem;
+        line-height: 1.25;
+        padding: 0.6rem 0.2rem 0.35rem;
+        color: #3a3125;
+      }
+      .pdate {
+        display: block;
+        font-family: var(--mono);
+        font-size: 0.53rem;
+        letter-spacing: 0.22em;
+        color: #8a7f6a;
+        padding: 0 0.2rem 0.85rem;
+      }
+      .tape {
+        position: absolute;
+        top: -11px;
+        left: 50%;
+        width: 76px;
+        height: 20px;
+        transform: translateX(-50%) rotate(-3deg);
+        background: rgba(240, 233, 220, 0.3);
+        border-left: 1px dashed rgba(255, 255, 255, 0.25);
+        border-right: 1px dashed rgba(255, 255, 255, 0.25);
+      }
+      .pol-row .polaroid {
+        width: min(215px, 42vw);
+        margin: 0;
+      }
+
+      /* ---------- CHAPTER 02: montage ---------- */
+      .scene {
+        display: flex;
+        align-items: center;
+        gap: clamp(2rem, 6vw, 5rem);
+        margin: 15vh 0;
+      }
+      .scene:nth-child(even) {
+        flex-direction: row-reverse;
+      }
+      .scene-media {
+        flex: 1.15;
+        min-width: 0;
+      }
+      .scene-media figure {
+        aspect-ratio: 4/3;
+        overflow: hidden;
+      }
+      .scene-media img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transform: scale(1.04);
+        transition: transform 1.6s cubic-bezier(0.22, 0.61, 0.36, 1);
+      }
+      .scene:hover .scene-media img {
+        transform: scale(1.12);
+      }
+      .scene-tag {
+        display: block;
+        font-family: var(--mono);
+        font-size: 0.6rem;
+        letter-spacing: 0.32em;
+        color: var(--blue);
+        margin-bottom: 1rem;
+      }
+      .scene-body {
+        flex: 1;
+        min-width: 0;
+      }
+      .scene-date {
+        font-family: var(--mono);
+        font-size: 0.6rem;
+        letter-spacing: 0.3em;
+        color: var(--ink-faint);
+      }
+      .scene-body h3 {
+        font-size: clamp(1.55rem, 3.4vw, 2.05rem);
+        font-weight: 400;
+        margin: 0.55rem 0 1rem;
+      }
+      .scene-body p {
+        color: var(--ink-dim);
+        font-size: 1.05rem;
+        line-height: 1.85;
+      }
+      .scene-cap {
+        margin-top: 1.4rem;
+        font-style: italic;
+        color: var(--pink);
+        opacity: 0.9;
+        font-size: 1.08rem;
+      }
+
+      /* ---------- CHAPTER 03: timeline ---------- */
+      .timeline {
+        position: relative;
+        margin-top: 8vh;
+        padding: 1.5rem 0;
+      }
+      .timeline::before {
+        content: "";
+        position: absolute;
+        left: 50%;
+        top: 0;
+        bottom: 0;
+        width: 1px;
+        background: linear-gradient(
+          to bottom,
+          transparent,
+          var(--line) 6%,
+          var(--line) 94%,
+          transparent
+        );
+      }
+      .tl-item {
+        position: relative;
+        width: 50%;
+        padding: 0 3.4rem 4.2rem 0;
+        cursor: pointer;
+        outline: none;
+      }
+      .tl-item:nth-child(even) {
+        margin-left: 50%;
+        padding: 0 0 4.2rem 3.4rem;
+      }
+      .tl-dot {
+        position: absolute;
+        top: 2rem;
+        right: -4.5px;
+        width: 9px;
+        height: 9px;
+        border-radius: 50%;
+        background: var(--bg);
+        border: 1px solid var(--blue);
+        transition:
+          background 0.4s,
+          transform 0.4s;
+      }
+      .tl-item:nth-child(even) .tl-dot {
+        right: auto;
+        left: -4.5px;
+      }
+      .tl-item:hover .tl-dot,
+      .tl-item:focus-visible .tl-dot {
+        background: var(--blue);
+        transform: scale(1.25);
+      }
+      .tl-card {
+        display: flex;
+        gap: 1.15rem;
+        align-items: center;
+        padding: 1rem 1.2rem;
+        height: 100%;
+        border: 1px solid var(--line);
+        background: rgba(11, 17, 32, 0.5);
+        transition:
+          border-color 0.45s,
+          transform 0.45s,
+          background 0.45s;
+      }
+      .tl-item:hover .tl-card,
+      .tl-item:focus-visible .tl-card {
+        border-color: rgba(169, 199, 232, 0.5);
+        transform: translateY(-4px);
+        background: rgba(11, 17, 32, 0.9);
+      }
+      .tl-card img {
+        width: 88px;
+        height: 64px;
+        object-fit: cover;
+        flex: none;
+        filter: saturate(0.85);
+      }
+      .tl-txt {
+        min-width: 0;
+      }
+      .tl-txt h3 {
+        font-size: 1.28rem;
+        font-weight: 400;
+        margin: 0.2rem 0 0.35rem;
+      }
+      .tl-txt p {
+        font-size: 0.93rem;
+        color: var(--ink-dim);
+        line-height: 1.55;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+      }
+      .tl-card .chev {
+        margin-left: auto;
+        stroke: var(--ink-faint);
+        width: 15px;
+        height: 15px;
+      }
+
+      /* ---------- CHAPTER 04: stats + scrapbook ---------- */
+      .stats {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        text-align: center;
+        gap: 3rem clamp(2.6rem, 7vw, 5.4rem);
+        margin: 8vh 0 4vh;
+      }
+      .stat-n {
+        display: block;
+        font-size: clamp(3.1rem, 9vw, 5.8rem);
+        font-weight: 300;
+        line-height: 1;
+      }
+      .stat-word {
+        font-size: clamp(1.9rem, 5.5vw, 3.2rem);
+        font-style: italic;
+        color: var(--pink);
+      }
+      .stat-l {
+        display: block;
+        font-family: var(--mono);
+        font-size: 0.6rem;
+        letter-spacing: 0.34em;
+        color: var(--ink-dim);
+        margin-top: 0.9rem;
+      }
+      .scrap {
+        columns: 17rem;
+        column-gap: 2rem;
+        margin-top: 6vh;
+      }
+
+      /* ---------- sticky sequences (ch05 & final) ---------- */
+      .seq {
+        position: relative;
+      }
+      .seq-sticky {
+        position: sticky;
+        top: 0;
+        height: 100vh;
+        height: 100dvh;
+        overflow: hidden;
+      }
+      .seq-item {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        padding: 0 9vw;
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+        font-size: clamp(1.65rem, 4.8vw, 3rem);
+        font-weight: 300;
+        font-style: italic;
+        line-height: 1.45;
+        max-width: 60ch;
+        margin: 0 auto;
+      }
+      .seq-fin {
+        flex-direction: column;
+        gap: 2.2rem;
+        font-style: normal;
+      }
+      .seq-fin {
+        pointer-events: auto;
+      }
+      .seq-tag {
+        position: absolute;
+        top: 11vh;
+        left: 0;
+        right: 0;
+        text-align: center;
+        font-family: var(--mono);
+        font-size: 0.6rem;
+        letter-spacing: 0.5em;
+        color: var(--blue);
+      }
+      .seq-count {
+        position: absolute;
+        bottom: 10vh;
+        left: 0;
+        right: 0;
+        text-align: center;
+        font-family: var(--mono);
+        font-size: 0.62rem;
+        letter-spacing: 0.34em;
+        color: var(--ink-faint);
+      }
+      .btn-heart {
+        display: inline-flex;
+        align-items: center;
+        gap: 1em;
+        cursor: pointer;
+        background: transparent;
+        border: 1px solid rgba(229, 179, 192, 0.55);
+        color: var(--pink);
+        font-family: var(--mono);
+        font-size: 0.72rem;
+        letter-spacing: 0.3em;
+        padding: 1.25em 2.6em;
+        transition:
+          background 0.5s,
+          color 0.5s,
+          transform 0.5s;
+      }
+      .btn-heart:hover {
+        background: var(--pink);
+        color: #0b0e16;
+        transform: translateY(-2px);
+      }
+      .btn-heart .ico {
+        width: 13px;
+        height: 13px;
+        fill: currentColor;
+      }
+      .fin-hint {
+        font-family: var(--mono);
+        font-size: 0.56rem;
+        letter-spacing: 0.34em;
+        color: var(--ink-faint);
+      }
+
+      /* ---------- CHAPTER 06: keluarga ---------- */
+      .fam-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: clamp(2.5rem, 6vw, 5.5rem);
+        margin-top: 11vh;
+      }
+      .fam-block figure {
+        aspect-ratio: 4/3;
+        overflow: hidden;
+      }
+      .fam-block figure img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transform: scale(1.06);
+        filter: saturate(0.85);
+        transition:
+          transform 2.2s cubic-bezier(0.22, 0.61, 0.36, 1),
+          filter 0.8s;
+      }
+      .fam-block:hover figure img {
+        transform: scale(1.13);
+        filter: saturate(1);
+      }
+      .fam-block figcaption {
+        font-family: var(--mono);
+        font-size: 0.58rem;
+        letter-spacing: 0.28em;
+        color: var(--ink-faint);
+        margin-top: 1rem;
+      }
+      .fam-block h3 {
+        font-size: 1.6rem;
+        font-weight: 400;
+        margin: 1.6rem 0 0.9rem;
+      }
+      .fam-block p {
+        color: var(--ink-dim);
+        line-height: 1.9;
+        font-size: 1.06rem;
+      }
+      .fam-block.offset {
+        margin-top: 17vh;
+      }
+
+      /* ---------- CHAPTER 07: surat ---------- */
+      .letter-scene {
+        min-height: 100vh;
+        min-height: 100dvh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 12vh 6vw;
+        cursor: pointer;
+      }
+      .letter-kicker {
+        font-family: var(--mono);
+        font-size: 0.66rem;
+        letter-spacing: 0.5em;
+        color: var(--pink);
+        margin-bottom: 3rem;
+      }
+      .letter-frame {
+        width: min(640px, 100%);
+        border-top: 1px solid var(--line);
+        border-bottom: 1px solid var(--line);
+        padding: 3.4rem 2rem 3rem;
+      }
+      .letter-body p {
+        color: var(--ink-dim);
+        font-size: 1.14rem;
+        line-height: 2;
+        margin-bottom: 1.5rem;
+      }
+      .cursor {
+        display: inline-block;
+        width: 2px;
+        height: 1.05em;
+        background: var(--pink);
+        vertical-align: -0.16em;
+        margin-left: 2px;
+        animation: blink 1.1s steps(2) infinite;
+      }
+      @keyframes blink {
+        50% {
+          opacity: 0;
+        }
+      }
+      .letter-sign {
+        font-style: italic;
+        font-size: 1.35rem;
+        color: var(--ink);
+        text-align: right;
+        margin-top: 2.2rem;
+        opacity: 0;
+        filter: blur(6px);
+        transition:
+          opacity 1.4s ease,
+          filter 1.4s ease;
+      }
+      .letter-thanks {
+        margin-top: 3.2rem;
+        font-family: var(--mono);
+        font-size: 0.66rem;
+        letter-spacing: 0.34em;
+        color: var(--blue);
+        opacity: 0;
+        filter: blur(6px);
+        transition:
+          opacity 1.4s ease 0.3s,
+          filter 1.4s ease 0.3s;
+      }
+      .letter-sign.show,
+      .letter-thanks.show {
+        opacity: 1;
+        filter: blur(0);
+      }
+
+      /* ---------- HUD progress ---------- */
+      #hud {
+        position: fixed;
+        left: 26px;
+        bottom: 22px;
+        z-index: 90;
+        opacity: 0;
+        transform: translateY(10px);
+        pointer-events: none;
+        transition:
+          opacity 0.9s ease,
+          transform 0.9s ease;
+      }
+      #hud.live {
+        opacity: 1;
+        transform: none;
+        pointer-events: auto;
+      }
+      #hudBtn {
+        background: none;
+        border: 0;
+        cursor: pointer;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        text-align: left;
+      }
+      .hud-top {
+        display: flex;
+        gap: 1em;
+        align-items: baseline;
+        font-family: var(--mono);
+        font-size: 0.6rem;
+        letter-spacing: 0.26em;
+      }
+      #hudNum {
+        color: var(--blue);
+      }
+      #hudName {
+        color: var(--ink-dim);
+        text-transform: uppercase;
+        transition: color 0.3s;
+      }
+      #hudBtn:hover #hudName {
+        color: var(--ink);
+      }
+      .hud-bar {
+        width: 150px;
+        height: 1px;
+        background: var(--line);
+        position: relative;
+        overflow: hidden;
+      }
+      #hudFill {
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 0%;
+        background: var(--blue);
+        transition: width 0.7s ease;
+      }
+
+      /* ---------- butang muzik ---------- */
+      #btnAudio {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 260;
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        border: 1px solid var(--line);
+        background: rgba(10, 15, 28, 0.55);
+        backdrop-filter: blur(10px);
+        cursor: pointer;
+        display: grid;
+        place-items: center;
+        color: var(--ink-dim);
+        opacity: 0;
+        pointer-events: none;
+        transition:
+          opacity 0.8s,
+          color 0.3s,
+          border-color 0.3s;
+      }
+      #btnAudio.live {
+        opacity: 1;
+        pointer-events: auto;
+      }
+      #btnAudio:hover {
+        color: var(--ink);
+        border-color: rgba(240, 233, 220, 0.4);
+      }
+      #btnAudio svg {
+        width: 19px;
+        height: 19px;
+      }
+      #btnAudio .i-off {
+        display: none;
+      }
+      #btnAudio.muted .i-on {
+        display: none;
+      }
+      #btnAudio.muted .i-off {
+        display: block;
+      }
+      #btnAudio .dot {
+        position: absolute;
+        bottom: 5px;
+        right: 5px;
+        width: 5px;
+        height: 5px;
+        border-radius: 50%;
+        background: var(--pink);
+        opacity: 0;
+        transition: opacity 0.4s;
+      }
+      #btnAudio.playing .dot {
+        opacity: 1;
+      }
+
+      /* ---------- overlays: episodes / modal / lightbox ---------- */
+      .icon-btn {
+        width: 42px;
+        height: 42px;
+        border-radius: 50%;
+        border: 1px solid var(--line);
+        cursor: pointer;
+        background: rgba(10, 15, 28, 0.6);
+        backdrop-filter: blur(8px);
+        display: grid;
+        place-items: center;
+        color: var(--ink-dim);
+        transition:
+          color 0.3s,
+          border-color 0.3s,
+          transform 0.3s;
+      }
+      .icon-btn:hover {
+        color: var(--ink);
+        border-color: rgba(240, 233, 220, 0.4);
+        transform: translateY(-2px);
+      }
+      .icon-btn svg {
+        width: 17px;
+        height: 17px;
+      }
+
+      #episodes {
+        position: fixed;
+        inset: 0;
+        z-index: 350;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.45s ease;
+      }
+      #episodes.open {
+        opacity: 1;
+        pointer-events: auto;
+      }
+      .ep-back {
+        position: absolute;
+        inset: 0;
+        background: rgba(5, 8, 15, 0.7);
+        backdrop-filter: blur(16px);
+      }
+      .ep-panel {
+        position: relative;
+        width: min(560px, 92vw);
+        max-height: 82vh;
+        max-height: 82dvh;
+        overflow: auto;
+        background: rgba(10, 16, 30, 0.9);
+        border: 1px solid var(--line);
+        padding: 1.9rem 0 0.8rem;
+        transform: translateY(16px);
+        transition: transform 0.5s cubic-bezier(0.22, 0.61, 0.36, 1);
+      }
+      #episodes.open .ep-panel {
+        transform: none;
+      }
+      .ep-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 2rem 1.4rem;
+        border-bottom: 1px solid var(--line);
+        margin-bottom: 0.5rem;
+      }
+      .ep-head span {
+        font-family: var(--mono);
+        font-size: 0.62rem;
+        letter-spacing: 0.4em;
+        color: var(--blue);
+      }
+      .ep-row {
+        display: flex;
+        gap: 1.4rem;
+        align-items: center;
+        width: 100%;
+        padding: 1.05rem 2rem;
+        background: none;
+        border: 0;
+        border-left: 2px solid transparent;
+        cursor: pointer;
+        text-align: left;
+        transition:
+          background 0.3s,
+          border-color 0.3s;
+      }
+      .ep-row:hover {
+        background: rgba(240, 233, 220, 0.05);
+        border-left-color: var(--blue);
+      }
+      .ep-row.active {
+        border-left-color: var(--pink);
+      }
+      .ep-num {
+        font-family: var(--mono);
+        font-size: 0.68rem;
+        letter-spacing: 0.16em;
+        color: var(--blue);
+        min-width: 2.3em;
+      }
+      .ep-row.final .ep-num {
+        color: var(--pink);
+      }
+      .ep-name {
+        font-size: 1.22rem;
+        font-style: italic;
+        font-weight: 400;
+      }
+
+      #modal {
+        position: fixed;
+        inset: 0;
+        z-index: 300;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.5s ease;
+      }
+      #modal.open {
+        opacity: 1;
+        pointer-events: auto;
+      }
+      .m-back {
+        position: absolute;
+        inset: 0;
+        background: rgba(4, 7, 13, 0.78);
+        backdrop-filter: blur(14px);
+      }
+      .m-panel {
+        position: relative;
+        width: min(900px, 94vw);
+        max-height: 88vh;
+        max-height: 88dvh;
+        overflow: auto;
+        background: rgba(10, 15, 28, 0.92);
+        border: 1px solid var(--line);
+        transform: translateY(28px);
+        transition: transform 0.6s cubic-bezier(0.22, 0.61, 0.36, 1);
+      }
+      #modal.open .m-panel {
+        transform: none;
+      }
+      .m-close {
+        position: absolute;
+        top: 14px;
+        right: 14px;
+        z-index: 3;
+      }
+      .m-media {
+        aspect-ratio: 16/9;
+        overflow: hidden;
+        position: relative;
+      }
+      .m-media img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        animation: kenburns 16s ease-in-out infinite alternate;
+      }
+      @keyframes kenburns {
+        from {
+          transform: scale(1);
+        }
+        to {
+          transform: scale(1.09) translateY(-2%);
+        }
+      }
+      .m-body {
+        padding: 1.9rem 2.5rem 2.4rem;
+      }
+      .m-top {
+        display: flex;
+        justify-content: space-between;
+        gap: 1rem;
+        font-family: var(--mono);
+        font-size: 0.6rem;
+        letter-spacing: 0.3em;
+      }
+      .m-tag {
+        color: var(--blue);
+      }
+      .m-count {
+        color: var(--ink-faint);
+      }
+      .m-title {
+        font-size: clamp(1.5rem, 3.6vw, 2.1rem);
+        font-weight: 400;
+        margin: 0.6rem 0 1rem;
+      }
+      .m-story {
+        color: var(--ink-dim);
+        font-size: 1.05rem;
+        line-height: 1.9;
+      }
+      .m-cap {
+        margin-top: 1.5rem;
+        font-style: italic;
+        color: var(--pink);
+        opacity: 0.9;
+      }
+      .m-nav {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 2.1rem;
+        padding-top: 1.5rem;
+        border-top: 1px solid var(--line);
+      }
+
+      #lightbox {
+        position: fixed;
+        inset: 0;
+        z-index: 280;
+        background: rgba(4, 6, 12, 0.96);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.5s ease;
+        padding: 0 14vw;
+      }
+      #lightbox.open {
+        opacity: 1;
+        pointer-events: auto;
+      }
+      .lbx-close {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+      }
+      .lbx-count {
+        position: absolute;
+        top: 32px;
+        left: 32px;
+        font-family: var(--mono);
+        font-size: 0.62rem;
+        letter-spacing: 0.3em;
+        color: var(--ink-faint);
+      }
+      #lbxImg {
+        max-width: min(88vw, 880px);
+        max-height: 74vh;
+        max-height: 74dvh;
+        object-fit: contain;
+        box-shadow: 0 30px 70px -20px rgba(0, 0, 0, 0.9);
+      }
+      .lbx-cap {
+        margin-top: 1.6rem;
+        font-family: var(--hand);
+        font-size: 1.35rem;
+        color: var(--ink-dim);
+        text-align: center;
+      }
+      .lbx-prev {
+        position: absolute;
+        left: 22px;
+        top: 50%;
+        transform: translateY(-50%);
+      }
+      .lbx-next {
+        position: absolute;
+        right: 22px;
+        top: 50%;
+        transform: translateY(-50%);
+      }
+
+      /* ---------- FINALE & end credits ---------- */
+      #finale {
+        position: fixed;
+        inset: 0;
+        z-index: 400;
+        background: #04070d;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        transition: opacity 1.1s ease;
+      }
+      #finale.open {
+        opacity: 1;
+      }
+      .fin-stage {
+        text-align: center;
+        padding: 0 9vw;
+        transition:
+          opacity 1.3s ease,
+          filter 1.3s ease;
+      }
+      .fin-stage.dim {
+        opacity: 0.12;
+        filter: blur(6px);
+      }
+      .fin-text {
+        font-size: clamp(1.6rem, 4.8vw, 3rem);
+        font-weight: 300;
+        font-style: italic;
+        line-height: 1.45;
+        opacity: 0;
+        filter: blur(10px);
+        transform: translateY(12px);
+        transition:
+          opacity 1.2s ease,
+          filter 1.2s ease,
+          transform 1.2s ease;
+      }
+      .fin-text.show {
+        opacity: 1;
+        filter: blur(0);
+        transform: none;
+      }
+      .fin-heart {
+        display: block;
+        margin-top: 2rem;
+        width: 26px;
+        height: 26px;
+        margin-left: auto;
+        margin-right: auto;
+        fill: var(--pink);
+        opacity: 0;
+        transform: scale(0.6);
+        transition:
+          opacity 1.2s ease 0.5s,
+          transform 1.2s ease 0.5s;
+      }
+      .fin-heart.show {
+        opacity: 1;
+        transform: scale(1);
+      }
+      .credits {
+        position: absolute;
+        inset: 0;
+        overflow: hidden;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 1.2s ease;
+      }
+      .credits.on {
+        opacity: 1;
+        pointer-events: auto;
+      }
+      .credits-roll {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        text-align: center;
+        padding: 0 8vw;
+        animation: roll 36s linear 0.9s forwards;
+      }
+      @keyframes roll {
+        from {
+          transform: translateY(85vh);
+        }
+        to {
+          transform: translateY(-118%);
+        }
+      }
+      .cr-title {
+        font-size: clamp(2.2rem, 7vw, 4rem);
+        font-weight: 300;
+        letter-spacing: 0.18em;
+        margin-left: 0.18em;
+      }
+      .cr-sub {
+        font-family: var(--mono);
+        font-size: 0.64rem;
+        letter-spacing: 0.5em;
+        margin: 0.9rem 0 4.5rem;
+        color: var(--blue);
+      }
+      .cr {
+        margin-bottom: 2.6rem;
+      }
+      .cr span {
+        display: block;
+        font-family: var(--mono);
+        font-size: 0.58rem;
+        letter-spacing: 0.36em;
+        color: var(--ink-faint);
+        margin-bottom: 0.55rem;
+      }
+      .cr b {
+        display: block;
+        font-weight: 400;
+        font-size: 1.35rem;
+        font-style: italic;
+      }
+      .cr.end {
+        margin-top: 4.5rem;
+        color: var(--pink);
+        font-style: italic;
+      }
+      .credits-skip {
+        position: absolute;
+        bottom: 4.5vh;
+        left: 0;
+        right: 0;
+        text-align: center;
+        font-family: var(--mono);
+        font-size: 0.56rem;
+        letter-spacing: 0.3em;
+        color: var(--ink-faint);
+      }
+      .btn-replay {
+        position: absolute;
+        bottom: 9vh;
+        left: 50%;
+        transform: translateX(-50%) translateY(14px);
+        display: inline-flex;
+        align-items: center;
+        gap: 1em;
+        cursor: pointer;
+        background: transparent;
+        border: 1px solid rgba(240, 233, 220, 0.4);
+        color: var(--ink);
+        font-family: var(--mono);
+        font-size: 0.66rem;
+        letter-spacing: 0.32em;
+        padding: 1.15em 2.4em;
+        opacity: 0;
+        pointer-events: none;
+        transition:
+          opacity 1s ease,
+          transform 1s ease,
+          background 0.4s,
+          color 0.4s;
+      }
+      .btn-replay.show {
+        opacity: 1;
+        pointer-events: auto;
+        transform: translateX(-50%);
+      }
+      .btn-replay:hover {
+        background: var(--ink);
+        color: var(--bg);
+      }
+      .btn-replay svg {
+        width: 14px;
+        height: 14px;
+      }
+
+      /* ---------- responsive ---------- */
+      @media (max-width: 900px) {
+        .scene {
+          flex-direction: column !important;
+          align-items: flex-start;
+          gap: 2.4rem;
+          margin: 13vh 0;
+        }
+        .scene-media {
+          width: 100%;
+        }
+        .fam-row {
+          grid-template-columns: 1fr;
+        }
+        .fam-block.offset {
+          margin-top: 0;
+        }
+      }
+      @media (max-width: 760px) {
+        .chapter {
+          padding: 15vh 7vw;
+        }
+        .timeline::before {
+          left: 14px;
+        }
+        .tl-item,
+        .tl-item:nth-child(even) {
+          width: 100%;
+          margin: 0;
+          padding: 0 0 3.1rem 2.7rem;
+        }
+        .tl-dot,
+        .tl-item:nth-child(even) .tl-dot {
+          left: 9.5px;
+          right: auto;
+          top: 1.7rem;
+        }
+        .tl-card img {
+          width: 70px;
+          height: 54px;
+        }
+      }
+      @media (max-width: 640px) {
+        #hud {
+          left: 50%;
+          transform: translate(-50%, 10px);
+          bottom: 14px;
+        }
+        #hud.live {
+          transform: translate(-50%, 0);
+        }
+        .hud-bar {
+          width: 120px;
+        }
+        #btnAudio {
+          top: 14px;
+          right: 14px;
+          width: 40px;
+          height: 40px;
+        }
+        .m-body {
+          padding: 1.4rem 1.35rem 2rem;
+        }
+        .m-media {
+          aspect-ratio: 16/10;
+        }
+        .m-close {
+          top: 10px;
+          right: 10px;
+        }
+        .lbx-prev {
+          left: 8px;
+        }
+        .lbx-next {
+          right: 8px;
+        }
+        .lbx-count {
+          left: 16px;
+          top: 22px;
+        }
+        #lightbox {
+          padding: 0 9vw;
+        }
+        .letter-frame {
+          padding: 2.6rem 1.4rem 2.2rem;
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        html {
+          scroll-behavior: auto;
+        }
+        #grain,
+        .pol-in,
+        .m-media img,
+        .blob,
+        .scroll-hint i {
+          animation: none !important;
+        }
+        .credits-roll {
+          animation-duration: 14s;
+        }
+      }
+    </style>
+  </head>
+  <body class="locked film-open">
+    <!-- lapisan sinematik -->
+    <div class="blob blob-a"></div>
+    <div class="blob blob-b"></div>
+    <div class="lb lb-top"></div>
+    <div class="lb lb-bot"></div>
+    <div id="vignette"></div>
+    <div id="grain"></div>
+
+    <!-- ══════════ OPENING SCENE ══════════ -->
+    <div id="opening">
+      <p class="op-line" id="op1">Every story has a beginning...</p>
+      <p class="op-line" id="op2">Ours started here.</p>
+      <div id="op3">
+        <span class="op-season">SEASON 01</span>
+        <span class="op-sub">The Year We Became Us</span>
+        <button class="btn-play" id="btnPlay">
+          <svg
+            class="ico ico-play"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+            aria-hidden="true"
+          >
+            <path d="M8 5.5v13l11-6.5z" />
+          </svg>
+          <span>PLAY OUR STORY</span>
+        </button>
+      </div>
+      <button class="btn-skip" id="btnSkip">SKIP INTRO</button>
+    </div>
+
+    <!-- HUD progress + muzik -->
+    <div id="hud">
+      <button id="hudBtn" aria-label="Buka senarai episod">
+        <span class="hud-top"
+          ><span id="hudNum">01 / 07</span
+          ><span id="hudName">The Day We Met</span></span
+        >
+        <span class="hud-bar"><i id="hudFill"></i></span>
+      </button>
+    </div>
+    <button id="btnAudio" aria-label="Muzik" title="Play score">
+      <svg
+        class="i-on"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.6"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path d="M11 5 6 9H3v6h3l5 4z" />
+        <path d="M15.5 8.5a5 5 0 0 1 0 7" />
+        <path d="M18.5 5.5a9 9 0 0 1 0 13" />
+      </svg>
+      <svg
+        class="i-off"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.6"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path d="M11 5 6 9H3v6h3l5 4z" />
+        <path d="M22 9l-6 6M16 9l6 6" />
+      </svg>
+      <span class="dot"></span>
+    </button>
+
+    <main id="film">
+      <!-- ══════════ TITLE CARD ══════════ -->
+      <section id="titlecard">
+        <span class="tc-kicker reveal">AN ORIGINAL SERIES</span>
+        <h1 class="tc-title reveal" style="--d: 0.15s">OUR STORY</h1>
+        <p class="tc-season reveal" style="--d: 0.3s">
+          SEASON 01&nbsp;·&nbsp;365 DAYS OF US
+          <svg
+            class="ico ico-heart"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+            aria-hidden="true"
+          >
+            <path
+              d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
+            />
+          </svg>
+        </p>
+        <p class="tc-cast reveal" style="--d: 0.45s" id="tcNames"></p>
+        <p class="tc-dates reveal" style="--d: 0.6s" id="tcDates"></p>
+        <div class="scroll-hint"><span>SCROLL</span><i></i></div>
+      </section>
+
+      <!-- ══════════ CHAPTER 01 ══════════ -->
+      <section id="ch1" class="chapter" data-ch="1" data-label="The Day We Met">
+        <div class="wrap">
+          <div class="ch-head"></div>
+          <div id="ch1body"></div>
+        </div>
+      </section>
+
+      <!-- ══════════ CHAPTER 02 ══════════ -->
+      <section
+        id="ch2"
+        class="chapter"
+        data-ch="2"
+        data-label="Our First Memories"
+      >
+        <div class="wrap">
+          <div class="ch-head"></div>
+          <p class="ch-note reveal">SEVEN SCENES FROM THE EARLY DAYS</p>
+          <div id="memList"></div>
+        </div>
+      </section>
+
+      <!-- ══════════ CHAPTER 03 ══════════ -->
+      <section
+        id="ch3"
+        class="chapter"
+        data-ch="3"
+        data-label="Our Little Adventures"
+      >
+        <div class="wrap">
+          <div class="ch-head"></div>
+          <p class="ch-note reveal">
+            AN INTERACTIVE TIMELINE — TAP ANY MOMENT TO OPEN IT
+          </p>
+          <div class="timeline" id="tlList"></div>
+        </div>
+      </section>
+
+      <!-- ══════════ CHAPTER 04 ══════════ -->
+      <section id="ch4" class="chapter" data-ch="4" data-label="365 Days of Us">
+        <div class="wrap">
+          <div class="ch-head"></div>
+          <div class="stats" id="statsRow">
+            <div class="stat reveal">
+              <span class="stat-n" data-n="365">0</span
+              ><span class="stat-l">DAYS</span>
+            </div>
+            <div class="stat reveal" style="--d: 0.15s">
+              <span class="stat-n" data-n="52">0</span
+              ><span class="stat-l">WEEKS</span>
+            </div>
+            <div class="stat reveal" style="--d: 0.3s">
+              <span class="stat-n" data-n="12">0</span
+              ><span class="stat-l">MONTHS</span>
+            </div>
+            <div class="stat reveal" style="--d: 0.45s">
+              <span class="stat-n stat-word">countless</span
+              ><span class="stat-l">MEMORIES</span>
+            </div>
+          </div>
+          <p class="ch-note reveal" style="text-align: center; margin: 4vh 0 0">
+            TAP A PHOTO TO VIEW IT FULLSCREEN
+          </p>
+          <div class="scrap" id="scrap"></div>
+        </div>
+      </section>
+
+      <!-- ══════════ CHAPTER 05 ══════════ -->
+      <section
+        id="ch5"
+        class="chapter"
+        data-ch="5"
+        data-label="Things I Love About You"
+      >
+        <div class="wrap"><div class="ch-head"></div></div>
+        <div class="seq" id="loveSeq"><div class="seq-sticky"></div></div>
+      </section>
+
+      <!-- ══════════ CHAPTER 06 ══════════ -->
+      <section id="ch6" class="chapter" data-ch="6" data-label="Our People">
+        <div class="wrap">
+          <div class="ch-head"></div>
+          <div id="famBody"></div>
+        </div>
+      </section>
+
+      <!-- ══════════ CHAPTER 07: THE LETTER ══════════ -->
+      <section id="ch7" class="chapter" data-ch="7" data-label="The Letter">
+        <div class="wrap"><div class="ch-head"></div></div>
+        <div class="letter-scene" id="letterScene">
+          <span class="letter-kicker reveal">A LETTER TO YOU</span>
+          <div class="letter-frame reveal" style="--d: 0.2s">
+            <div class="letter-body" id="letterText"></div>
+            <p class="letter-sign" id="letterSign"></p>
+          </div>
+          <p class="letter-thanks" id="letterThanks">
+            THANK YOU FOR THE FIRST 365 DAYS.
+          </p>
+        </div>
+      </section>
+
+      <!-- ══════════ FINAL CHAPTER ══════════ -->
+      <section
+        id="final"
+        class="chapter"
+        data-ch="FIN"
+        data-label="The Final Chapter"
+        style="padding-bottom: 6vh"
+      >
+        <div class="wrap"><div class="ch-head"></div></div>
+        <div class="seq" id="finSeq"><div class="seq-sticky"></div></div>
+      </section>
+    </main>
+
+    <!-- ══════════ SENARAI EPISOD (klik HUD) ══════════ -->
+    <div id="episodes">
+      <div class="ep-back" id="epBack"></div>
+      <div class="ep-panel">
+        <div class="ep-head">
+          <span>EPISODES · SEASON 01</span>
+          <button class="icon-btn" id="epClose" aria-label="Tutup">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.6"
+              stroke-linecap="round"
+            >
+              <path d="M6 6l12 12M18 6L6 18" />
+            </svg>
+          </button>
+        </div>
+        <div id="epList"></div>
+      </div>
+    </div>
+
+    <!-- ══════════ MODAL MEMORY (chapter 03) ══════════ -->
+    <div id="modal" aria-hidden="true">
+      <div class="m-back" id="mBack"></div>
+      <div class="m-panel">
+        <button class="icon-btn m-close" id="mClose" aria-label="Tutup">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.6"
+            stroke-linecap="round"
+          >
+            <path d="M6 6l12 12M18 6L6 18" />
+          </svg>
+        </button>
+        <div class="m-media"><img id="mImg" alt="" /></div>
+        <div class="m-body">
+          <div class="m-top">
+            <span class="m-tag" id="mTag"></span
+            ><span class="m-count" id="mCount"></span>
+          </div>
+          <h3 class="m-title" id="mTitle"></h3>
+          <p class="m-story" id="mStory"></p>
+          <p class="m-cap" id="mCap"></p>
+          <div class="m-nav">
+            <button class="icon-btn" id="mPrev" aria-label="Sebelum">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.6"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M15 6l-6 6 6 6" />
+              </svg>
+            </button>
+            <button class="icon-btn" id="mNext" aria-label="Seterusnya">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.6"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M9 6l6 6-6 6" />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════ LIGHTBOX (chapter 04) ══════════ -->
+    <div id="lightbox" aria-hidden="true">
+      <button class="icon-btn lbx-close" id="lbxClose" aria-label="Tutup">
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.6"
+          stroke-linecap="round"
+        >
+          <path d="M6 6l12 12M18 6L6 18" />
+        </svg>
+      </button>
+      <span class="lbx-count" id="lbxCount"></span>
+      <button class="icon-btn lbx-prev" id="lbxPrev" aria-label="Sebelum">
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.6"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="M15 6l-6 6 6 6" />
+        </svg>
+      </button>
+      <img id="lbxImg" alt="" />
+      <p class="lbx-cap" id="lbxCap"></p>
+      <button class="icon-btn lbx-next" id="lbxNext" aria-label="Seterusnya">
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.6"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="M9 6l6 6-6 6" />
+        </svg>
+      </button>
+    </div>
+
+    <!-- ══════════ FINALE + END CREDITS ══════════ -->
+    <div id="finale" class="hidden">
+      <div class="fin-stage" id="finStage">
+        <p class="fin-text" id="finText"></p>
+        <span class="fin-heart" id="finHeart">
+          <svg viewBox="0 0 24 24" fill="currentColor" width="26" height="26">
+            <path
+              d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
+            />
+          </svg>
+        </span>
+      </div>
+      <div class="credits" id="credits">
+        <div class="credits-roll" id="creditsRoll"></div>
+        <span class="credits-skip">TAP ANYWHERE TO SKIP CREDITS</span>
+        <button class="btn-replay" id="btnReplay">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.6"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M3 12a9 9 0 1 0 2.7-6.4L3 8" />
+            <path d="M3 3v5h5" />
+          </svg>
+          <span>REWATCH SEASON 01</span>
+        </button>
+      </div>
+    </div>
+
+    <script>
+      /* ════════════════════════════════════════════════════════════════
+   ✏️  TUKAR SEMUA CONTENT ANDA DI SINI — tak perlu sentuh kod lain
+   Gantikan URL gambar picsum dengan gambar anda, cth: "photos/kami.jpg"
+   Untuk tambah memory baharu, cuma copy satu { ... } dan tukar isinya.
+   ════════════════════════════════════════════════════════════════ */
+      const CONFIG = {
+        names: { you: "Arieff", her: "Liyana" }, // ✏️ nama anda & nama dia
+        season: {
+          start: "29.09.2025",
+          end: "Endless",
+          place: "IOI Putrajaya, Malaysia", // ✏️ tarikh & tempat anda mula bercinta
+        },
+
+        // ---------- CHAPTER 01: hari pertama berjumpa ----------
+        meeting: {
+          date: "22 March 2024",
+          place: "A little café, Kuala Lumpur", // ✏️ tarikh & tempat anda berjumpa
+          hero: "https://picsum.photos/seed/ourstory-cafe/1600/900.jpg",
+          figCaption: "THE PLACE WHERE IT ALL BEGAN",
+          story: [
+            "It was just another ordinary Friday. I remember the rain, the noise of the city, and then — you. We talked about nothing and everything until the café turned the lights down and politely asked us to leave.",
+            "I walked home that night through the rain without caring about the rain at all. Something had quietly shifted, and I couldn't stop smiling about it.",
+          ],
+          quote:
+            "At that moment, I didn't know that meeting you would become one of the most important moments of my life.",
+          photos: [
+            // ✏️ gambar-gambar lama
+            {
+              image: "https://picsum.photos/seed/firstday-1/560/640.jpg",
+              caption: "the beginning",
+              date: "22.03.24",
+            },
+            {
+              image: "https://picsum.photos/seed/firstday-2/560/640.jpg",
+              caption: "that rainy friday",
+              date: "22.03.24",
+            },
+            {
+              image: "https://picsum.photos/seed/firstday-3/560/640.jpg",
+              caption: "us, before 'us'",
+              date: "22.03.24",
+            },
+          ],
+        },
+
+        // ---------- CHAPTER 02: kenangan pertama (montage) ----------
+        // ✏️ tambah / buang scene — setiap { } = satu babak
+        memories: [
+          {
+            date: "23 MARCH 2024",
+            title: "The First Conversation",
+            story:
+              "It started with a message. Then another. Then somehow, three hours had passed and we were still talking — about everything and nothing at all. That night, I fell asleep smiling at my phone.",
+            caption: "Some conversations never really end.",
+            image: "https://picsum.photos/seed/mem-conv/1200/900.jpg",
+          },
+          {
+            date: "05 APRIL 2024",
+            title: "Our First Outing",
+            story:
+              "Awkward silences, nervous laughter, and that moment we both reached for the same menu at the same time. Neither of us wanted to say goodbye first.",
+            caption: "Nervous hands, happy hearts.",
+            image: "https://picsum.photos/seed/mem-outing/1200/900.jpg",
+          },
+          {
+            date: "20 APRIL 2024",
+            title: "Our First Date",
+            story:
+              "I rehearsed what to say in the mirror. Twice. You noticed, and laughed, and somehow that made everything perfect instead of embarrassing.",
+            caption: "The first of many.",
+            image: "https://picsum.photos/seed/mem-date/1200/900.jpg",
+          },
+          {
+            date: "04 MAY 2024",
+            title: "Badminton",
+            story:
+              "You swore you were 'pretty good' at badminton. You were not. I let you win one game — and you still don't know that.",
+            caption: "Game, set, ours.",
+            image: "https://picsum.photos/seed/mem-badminton/1200/900.jpg",
+          },
+          {
+            date: "11 MAY 2024",
+            title: "Sukiya",
+            story:
+              "Our post-game ritual. Same table, same order, same argument about who gets the last of the egg. It became our little tradition without either of us planning it.",
+            caption: "Comfort food tastes better with you.",
+            image: "https://picsum.photos/seed/mem-sukiya/1200/900.jpg",
+          },
+          {
+            date: "01 JUNE 2024",
+            title: "The Cinema",
+            story:
+              "I can't tell you much about the movie. I can tell you exactly how your laugh sounded in the dark, and how I hoped the film would never end.",
+            caption: "I'd watch anything, as long as it's with you.",
+            image: "https://picsum.photos/seed/mem-cinema/1200/900.jpg",
+          },
+          {
+            date: "15 JUNE 2024",
+            title: "Karaoke",
+            story:
+              "You sang every song like the microphone owed you something. I joined in for exactly one chorus and immediately regretted it. Best night of the month.",
+            caption: "Off-key, on love.",
+            image: "https://picsum.photos/seed/mem-karaoke/1200/900.jpg",
+          },
+        ],
+
+        // ---------- CHAPTER 03: timeline interaktif (klik untuk buka popup) ----------
+        // ✏️ tambah adventure baharu dengan copy satu { } di bawah
+        adventures: [
+          {
+            date: "JULY 2024",
+            title: "Bowling",
+            teaser: "You bowled a strike and celebrated for a full minute.",
+            story:
+              "You bowled one strike the entire evening and celebrated like you'd won a tournament. I guttered twice in a row and pretended my wrist hurt. Fair trade.",
+            caption: "Strike once, celebrate forever.",
+            image: "https://picsum.photos/seed/adv-bowling/1600/1000.jpg",
+            thumb: "https://picsum.photos/seed/adv-bowling/400/300.jpg",
+          },
+          {
+            date: "AUGUST 2024",
+            title: "Darts",
+            teaser: "Neither of us was good. Both of us was loud.",
+            story:
+              "Two people, zero talent, one dartboard. You nearly hit the wall. I nearly hit the waiter. We named our team 'The Champions' anyway.",
+            caption: "Aim was optional. Fun was not.",
+            image: "https://picsum.photos/seed/adv-darts/1600/1000.jpg",
+            thumb: "https://picsum.photos/seed/adv-darts/400/300.jpg",
+          },
+          {
+            date: "SEPTEMBER 2024",
+            title: "Jogging",
+            teaser: "We jogged for nine minutes. Walked for ninety.",
+            story:
+              "We promised each other a serious workout. We jogged for nine minutes, then walked and talked for the rest of the evening. Honestly, I preferred it that way.",
+            caption: "We jogged. Mostly we talked.",
+            image: "https://picsum.photos/seed/adv-jogging/1600/1000.jpg",
+            thumb: "https://picsum.photos/seed/adv-jogging/400/300.jpg",
+          },
+          {
+            date: "OCTOBER 2024",
+            title: "Café Dates",
+            teaser: "One café became our second home.",
+            story:
+              "One café slowly became our place. The staff learned our order. We learned which table got the best evening light. Somewhere between those cups, a year quietly passed.",
+            caption: "Our table, our light, our hour.",
+            image: "https://picsum.photos/seed/adv-cafe/1600/1000.jpg",
+            thumb: "https://picsum.photos/seed/adv-cafe/400/300.jpg",
+          },
+          {
+            date: "NOVEMBER 2024",
+            title: "Jalan-jalan",
+            teaser: "No plans, no destination, just us.",
+            story:
+              "The best days had no plan at all. We walked until our feet complained, talked until the streetlights came on, and got lost on purpose more than once.",
+            caption: "Everywhere is somewhere with you.",
+            image: "https://picsum.photos/seed/adv-walk/1600/1000.jpg",
+            thumb: "https://picsum.photos/seed/adv-walk/400/300.jpg",
+          },
+          {
+            date: "DECEMBER 2024",
+            title: "Your Birthday",
+            teaser: "Cake, candles, and one wish I already knew.",
+            story:
+              "I tried to make it perfect and mostly succeeded. You closed your eyes to make a wish, and I closed mine — because mine had already come true.",
+            caption: "Happiest of birthdays, my love.",
+            image: "https://picsum.photos/seed/adv-birthday/1600/1000.jpg",
+            thumb: "https://picsum.photos/seed/adv-birthday/400/300.jpg",
+          },
+          {
+            date: "JANUARY 2025",
+            title: "Graduation",
+            teaser: "The robe, the scroll, the proudest smile.",
+            story:
+              "Watching you walk across that stage, I think I clapped louder than your entire family combined. I was so proud of you I nearly forgot to take the photo.",
+            caption: "You did it. I was there. I always will be.",
+            image: "https://picsum.photos/seed/adv-graduation/1600/1000.jpg",
+            thumb: "https://picsum.photos/seed/adv-graduation/400/300.jpg",
+          },
+          {
+            date: "FEBRUARY 2025",
+            title: "Family Moments",
+            teaser: "Two families, slowly becoming one.",
+            story:
+              "Somewhere between your mother's cooking and my grandmother's questions, our two worlds started stitching themselves together.",
+            caption: "You became part of the picture.",
+            image: "https://picsum.photos/seed/adv-family/1600/1000.jpg",
+            thumb: "https://picsum.photos/seed/adv-family/400/300.jpg",
+          },
+          {
+            date: "EVERYDAY",
+            title: "Random Moments",
+            teaser: "The ones no camera caught.",
+            story:
+              "Falling asleep on the phone. Sharing one umbrella. The joke only we understand. The five-minute goodbyes that last an hour. These were my favourite scenes of all.",
+            caption: "My favourite scenes had no photos.",
+            image: "https://picsum.photos/seed/adv-random/1600/1000.jpg",
+            thumb: "https://picsum.photos/seed/adv-random/400/300.jpg",
+          },
+        ],
+
+        // ---------- CHAPTER 04: galeri scrapbook (polaroid) ----------
+        // ✏️ tambah gambar dengan copy satu { } — caption gaya tulisan tangan
+        gallery: [
+          {
+            image: "https://picsum.photos/seed/gal-01/620/760.jpg",
+            caption: "golden hour",
+            date: "APR '24",
+          },
+          {
+            image: "https://picsum.photos/seed/gal-02/620/760.jpg",
+            caption: "mid-laugh",
+            date: "MAY '24",
+          },
+          {
+            image: "https://picsum.photos/seed/gal-03/620/760.jpg",
+            caption: "your favourite seat",
+            date: "JUN '24",
+          },
+          {
+            image: "https://picsum.photos/seed/gal-04/620/760.jpg",
+            caption: "random tuesday",
+            date: "JUL '24",
+          },
+          {
+            image: "https://picsum.photos/seed/gal-05/620/760.jpg",
+            caption: "us, being us",
+            date: "AUG '24",
+          },
+          {
+            image: "https://picsum.photos/seed/gal-06/620/760.jpg",
+            caption: "the little things",
+            date: "SEP '24",
+          },
+          {
+            image: "https://picsum.photos/seed/gal-07/620/760.jpg",
+            caption: "after the rain",
+            date: "OCT '24",
+          },
+          {
+            image: "https://picsum.photos/seed/gal-08/620/760.jpg",
+            caption: "date night",
+            date: "NOV '24",
+          },
+          {
+            image: "https://picsum.photos/seed/gal-09/620/760.jpg",
+            caption: "secret joke",
+            date: "DEC '24",
+          },
+          {
+            image: "https://picsum.photos/seed/gal-10/620/760.jpg",
+            caption: "weekend light",
+            date: "JAN '25",
+          },
+          {
+            image: "https://picsum.photos/seed/gal-11/620/760.jpg",
+            caption: "your smile",
+            date: "FEB '25",
+          },
+          {
+            image: "https://picsum.photos/seed/gal-12/620/760.jpg",
+            caption: "always",
+            date: "MAR '25",
+          },
+        ],
+
+        // ---------- CHAPTER 05: sebab-sebab saya sayangkan dia ----------
+        // ✏️ tambah sebab anda sendiri di sini, sebanyak mana pun
+        loveReasons: [
+          "Your smile — the one you try to hide, and fail.",
+          "The way you care about me, even on the days you're tired.",
+          "The little things you do that you think nobody notices. I notice.",
+          "The way you make ordinary days feel special.",
+          "How you hold my hand a little tighter when we cross the road.",
+          "Your playlists. Somehow, they always know my mood.",
+        ],
+
+        // ---------- CHAPTER 06: keluarga ----------
+        family: {
+          hers: {
+            title: "Meeting Your Family",
+            caption: "DINNER WITH YOUR FAMILY · DEC 2024",
+            story:
+              "I was nervous for a week. Your mum asked me a hundred questions; your dad asked twice as many with his eyes alone. By dessert, I had stopped feeling like a guest — and started feeling like family.",
+            image: "https://picsum.photos/seed/fam-hers/1200/900.jpg",
+          },
+          mine: {
+            title: "Bringing You Home To Mine",
+            caption: "RAYA AT MY GRANDMA'S · FEB 2025",
+            story:
+              "You fit into my family so easily it almost annoyed me — my grandmother now calls you before she calls me. You brought dessert. You stayed to help wash up. They never stood a chance.",
+            image: "https://picsum.photos/seed/fam-mine/1200/900.jpg",
+          },
+        },
+
+        // ---------- CHAPTER 07: surat anda ----------
+        // ✏️ tulis surat sebenar anda di sini. Setiap " " = satu perenggan.
+        letter: {
+          paragraphs: [
+            "My dearest Mira,",
+            "365 days. 8,760 hours. Half a million minutes — and somehow, not one of them felt like enough.",
+            "I still think about the version of me before I met you. He was fine, I suppose. He got through his days. But he didn't know what it felt like to have someone save him the last bite, save him the worst of her jokes, and save him the best of her heart.",
+            "Thank you for every ordinary Tuesday you turned into something worth remembering. For every quiet car ride. For every time you chose us.",
+            "Whatever Season 02 brings, I want to face it with you. And Season 3. And every season after that.",
+            "Happy first anniversary, my love.",
+          ],
+          sign: "— yours, always. Adam",
+        },
+
+        // ---------- warna (ubah ikut citarasa anda) ----------
+        colors: {
+          bg: "#070b14", // latar utama (dark navy)
+          bg2: "#0b1120",
+          ink: "#f0e9dc", // cream
+          blue: "#a9c7e8", // soft blue
+          pink: "#e5b3c0", // subtle pink
+        },
+
+        // ---------- muzik latar ----------
+        // ✏️ letak URL fail lagu anda, cth "music/our-song.mp3".
+        // Jika dibiarkan kosong, website akan mainkan ambient score
+        // yang dijana secara langsung (Web Audio) — tiada fail diperlukan.
+        music: {
+          url: "https://youtu.be/pO3SgjYo90s?si=ddfdDNl3OdxYXqHF",
+          title: "an ambient score, made for us",
+          autoplay: true,
+        },
+      };
+
+      /* ══════════════ KOD APLIKASI — tak perlu diubah ══════════════ */
+      const $ = (s) => document.querySelector(s);
+      const $$ = (s) => [...document.querySelectorAll(s)];
+
+      const I = {
+        heart:
+          '<svg class="ico ico-heart" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>',
+        next: '<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>',
+      };
+
+      const CHAPTERS = [
+        {
+          id: "ch1",
+          num: "01",
+          label: "CHAPTER 01",
+          title: "The day everything changed.",
+          name: "The Day We Met",
+        },
+        {
+          id: "ch2",
+          num: "02",
+          label: "CHAPTER 02",
+          title: "Our first memories.",
+          name: "Our First Memories",
+        },
+        {
+          id: "ch3",
+          num: "03",
+          label: "CHAPTER 03",
+          title: "Our little adventures.",
+          name: "Our Little Adventures",
+        },
+        {
+          id: "ch4",
+          num: "04",
+          label: "CHAPTER 04",
+          title: "365 days of us.",
+          name: "365 Days of Us",
+        },
+        {
+          id: "ch5",
+          num: "05",
+          label: "CHAPTER 05",
+          title: "Things I love about you.",
+          name: "Things I Love About You",
+        },
+        {
+          id: "ch6",
+          num: "06",
+          label: "CHAPTER 06",
+          title: "Our people.",
+          name: "Our People",
+        },
+        {
+          id: "ch7",
+          num: "07",
+          label: "CHAPTER 07",
+          title: "The letter.",
+          name: "The Letter",
+        },
+        {
+          id: "final",
+          num: "FIN",
+          label: "FINAL CHAPTER",
+          title: "The story continues.",
+          name: "The Final Chapter",
+        },
+      ];
+
+      /* ---------- warna dari CONFIG ---------- */
+      (() => {
+        const C = CONFIG.colors || {};
+        [
+          ["--bg", "bg"],
+          ["--bg2", "bg2"],
+          ["--ink", "ink"],
+          ["--blue", "blue"],
+          ["--pink", "pink"],
+        ].forEach(([v, k]) => {
+          if (C[k]) document.documentElement.style.setProperty(v, C[k]);
+        });
+      })();
+
+      /* ---------- render semua content dari CONFIG ---------- */
+      function polaroid(g, clickable, extra) {
+        return `<${clickable ? "button" : "div"} class="polaroid ${clickable ? "clickable p-reveal" : ""}" ${extra || ""}>
+    <span class="pol-in" style="--fd:${(Math.random() * -7).toFixed(1)}s">
+      <span class="ph"><img src="${g.image}" alt="" loading="lazy"></span>
+      <span class="pcap">${g.caption}</span>
+      <span class="pdate">${g.date}</span>
+      <i class="tape"></i>
+    </span>
+  </${clickable ? "button" : "div"}>`;
+      }
+
+      function renderAll() {
+        // title card
+        $("#tcNames").innerHTML =
+          `Starring <b>${CONFIG.names.you.toUpperCase()}</b>&ensp;&amp;&ensp;<b>${CONFIG.names.her.toUpperCase()}</b>`;
+        $("#tcDates").textContent =
+          `${CONFIG.season.start} — ${CONFIG.season.end} · ${CONFIG.season.place.toUpperCase()}`;
+
+        // kepala chapter
+        CHAPTERS.forEach((c) => {
+          $(`#${c.id} .ch-head`).innerHTML =
+            `<span class="ch-label reveal">${c.label}</span>
+       <h2 class="ch-title reveal" style="--d:.12s">${c.title}</h2>`;
+        });
+
+        // CH1
+        const m = CONFIG.meeting;
+        $("#ch1body").innerHTML = `
+    <div class="ch-meta reveal"><span>${m.date}</span><i></i><span>${m.place}</span></div>
+    <figure class="hero reveal" style="--d:.15s">
+      <div class="hero-media"><img src="${m.hero}" alt=""></div>
+      <figcaption>FIG. 01 — ${m.figCaption}</figcaption>
+    </figure>
+    <div class="story">
+      <div class="reveal" style="--d:.1s">${m.story.map((p) => `<p>${p}</p>`).join("")}</div>
+    </div>
+    <blockquote class="bigquote reveal">"${m.quote}"</blockquote>
+    <div class="pol-row">${m.photos.map((p) => polaroid(p, false)).join("")}</div>`;
+
+        // CH2 — montage
+        $("#memList").innerHTML = CONFIG.memories
+          .map(
+            (mm, i) => `
+    <article class="scene reveal">
+      <div class="scene-media">
+        <span class="scene-tag">SCENE 02.${i + 1}</span>
+        <figure><img src="${mm.image}" alt="" loading="lazy"></figure>
+      </div>
+      <div class="scene-body">
+        <span class="scene-date">${mm.date}</span>
+        <h3>${mm.title}</h3>
+        <p>${mm.story}</p>
+        <p class="scene-cap">"${mm.caption}"</p>
+      </div>
+    </article>`,
+          )
+          .join("");
+
+        // CH3 — timeline
+        $("#tlList").innerHTML = CONFIG.adventures
+          .map(
+            (a, i) => `
+    <div class="tl-item reveal" data-i="${i}" tabindex="0" role="button" aria-label="${a.title}">
+      <span class="tl-dot"></span>
+      <div class="tl-card">
+        <img src="${a.thumb || a.image}" alt="" loading="lazy">
+        <div class="tl-txt">
+          <span class="scene-date">${a.date}</span>
+          <h3>${a.title}</h3>
+          <p>${a.teaser || a.story}</p>
+        </div>
+        <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
+      </div>
+    </div>`,
+          )
+          .join("");
+
+        // CH4 — scrapbook
+        $("#scrap").innerHTML = CONFIG.gallery
+          .map((g, i) => {
+            const r = (Math.random() * 6 - 3).toFixed(1);
+            return polaroid(
+              g,
+              true,
+              `data-i="${i}" data-dep="${(Math.random() * 0.8 + 0.4).toFixed(2)}" style="--r:${r}deg"`,
+            );
+          })
+          .join("");
+
+        // CH5 — sticky sequence
+        const loveSticky = $("#loveSeq .seq-sticky");
+        loveSticky.innerHTML =
+          CONFIG.loveReasons
+            .map((t) => `<p class="seq-item">${t}</p>`)
+            .join("") +
+          `<span class="seq-tag">CHAPTER 05</span><span class="seq-count" id="loveCount"></span>`;
+
+        // CH6 — keluarga
+        const f = CONFIG.family;
+        $("#famBody").innerHTML = `
+    <p class="bigquote reveal">Somewhere along the way, you became more than someone I love.</p>
+    <p class="bigquote reveal" style="--d:.25s">You became <em>part of my life.</em></p>
+    <div class="fam-row">
+      <div class="fam-block reveal">
+        <figure><img src="${f.hers.image}" alt="" loading="lazy"><figcaption>${f.hers.caption}</figcaption></figure>
+        <h3>${f.hers.title}</h3><p>${f.hers.story}</p>
+      </div>
+      <div class="fam-block offset reveal" style="--d:.2s">
+        <figure><img src="${f.mine.image}" alt="" loading="lazy"><figcaption>${f.mine.caption}</figcaption></figure>
+        <h3>${f.mine.title}</h3><p>${f.mine.story}</p>
+      </div>
+    </div>`;
+
+        // FINAL — sticky sequence
+        const finSteps = [
+          "One year ago…",
+          "We met.",
+          "One year later…",
+          "We\u2019re still writing this story.",
+          "And I don\u2019t want this to be the end of Season 01.",
+        ];
+        $("#finSeq .seq-sticky").innerHTML =
+          finSteps
+            .map(
+              (t, i) =>
+                `<p class="seq-item" data-weight="${t.length > 32 ? 1.4 : 1}">${t}</p>`,
+            )
+            .join("") +
+          `<div class="seq-item seq-fin" data-weight="2.2">
+         <button class="btn-heart" id="btnNext">${I.heart}<span>OPEN THE NEXT CHAPTER</span></button>
+         <span class="fin-hint">TAP TO CONTINUE</span>
+       </div>
+       <span class="seq-tag">FINAL CHAPTER</span>`;
+
+        // episod
+        const eps = CHAPTERS.map((c) => ({
+          ...c,
+          target: c.id,
+          final: c.id === "final",
+        }));
+        $("#epList").innerHTML = eps
+          .map(
+            (e) => `
+    <button class="ep-row ${e.final ? "final" : ""}" data-target="${e.target}">
+      <span class="ep-num">${e.num}</span><span class="ep-name">${e.name}</span>
+    </button>`,
+          )
+          .join("");
+
+        // end credits
+        $("#creditsRoll").innerHTML = `
+    <div class="cr-title">OUR STORY</div>
+    <div class="cr-sub">SEASON ONE</div>
+    <div class="cr"><span>DIRECTED BY</span><b>${CONFIG.names.you}</b></div>
+    <div class="cr"><span>STARRING</span><b>${CONFIG.names.her} &amp; ${CONFIG.names.you}</b></div>
+    <div class="cr"><span>STORY BY</span><b>The two of us</b></div>
+    <div class="cr"><span>CINEMATOGRAPHY</span><b>Every stranger we asked to take our photo</b></div>
+    <div class="cr"><span>MUSIC</span><b>${CONFIG.music.title}</b></div>
+    <div class="cr"><span>ON LOCATION IN</span><b>${CONFIG.season.place} &amp; everywhere we went</b></div>
+    <div class="cr"><span>RUNNING TIME</span><b>365 days</b></div>
+    <div class="cr"><span>SPECIAL THANKS</span><b>Both our families</b></div>
+    <div class="cr"><span>BASED ON</span><b>A true story</b></div>
+    <div class="cr end"><span>TO BE CONTINUED</span><b>Season 02 — with you.</b></div>`;
+      }
+
+      /* ---------- engine untuk scroll-sequence (ch5 & final) ---------- */
+      function makeSeq(sel, opts = {}) {
+        const wrap = $(sel);
+        const items = [...wrap.querySelectorAll(".seq-item")];
+        const weights = items.map((el) => parseFloat(el.dataset.weight || "1"));
+        const total = weights.reduce((a, b) => a + b, 0);
+        wrap.style.height = `calc(${Math.round(total * (opts.unit || 85) + 70)}vh)`;
+        return function update() {
+          const vh = innerHeight,
+            r = wrap.getBoundingClientRect();
+          const span = r.height - vh;
+          if (span <= 0) return;
+          let p = Math.max(0, Math.min(1, -r.top / span));
+          const f = p * total;
+          let acc = 0,
+            best = 0,
+            bestO = 0;
+          items.forEach((el, i) => {
+            const w = weights[i],
+              start = acc;
+            acc += w;
+            const local = (f - start) / w;
+            let o;
+            if (opts.persistLast && i === items.length - 1) {
+              o = local <= 0 ? 0 : Math.min(1, (local - 0.05) / 0.25);
+            } else {
+              if (local <= 0 || local >= 1.12) o = 0;
+              else if (local < 0.22) o = local / 0.22;
+              else if (local < 0.82) o = 1;
+              else o = 1 - (local - 0.82) / 0.2;
+            }
+            const cl = Math.max(0, Math.min(1, local));
+            el.style.opacity = o;
+            el.style.visibility = o > 0.01 ? "visible" : "hidden";
+            if (!(opts.persistLast && i === items.length - 1))
+              el.style.transform = `translateY(${((0.5 - cl) * -42).toFixed(1)}px)`;
+            el.style.filter =
+              o < 0.55 ? `blur(${((1 - o) * 7).toFixed(1)}px)` : "none";
+            if (o > bestO) {
+              bestO = o;
+              best = i;
+            }
+          });
+          if (opts.onActive) opts.onActive(best, bestO);
+        };
+      }
+
+      let seqLove, seqFinal;
+      function updateParallax() {
+        const vh = innerHeight;
+        $$(".hero-media").forEach((el) => {
+          const r = el.getBoundingClientRect();
+          if (r.bottom < 0 || r.top > vh) return;
+          const pr = (vh - r.top) / (vh + r.height);
+          el.style.setProperty("--py", ((pr - 0.5) * 9).toFixed(2) + "%");
+        });
+        $$("#scrap .polaroid").forEach((el) => {
+          if (!el.classList.contains("in")) return;
+          const r = el.getBoundingClientRect();
+          if (r.bottom < -100 || r.top > vh + 100) return;
+          const pr = (vh - r.top) / (vh + r.height);
+          const py = (
+            (pr - 0.5) *
+            55 *
+            parseFloat(el.dataset.dep || 0.6)
+          ).toFixed(1);
+          el.style.setProperty("--py", py + "px");
+        });
+      }
+      let ticking = false;
+      function frame() {
+        ticking = false;
+        if (seqLove) seqLove();
+        if (seqFinal) seqFinal();
+        updateParallax();
+      }
+      addEventListener(
+        "scroll",
+        () => {
+          if (!ticking) {
+            ticking = true;
+            requestAnimationFrame(frame);
+          }
+        },
+        { passive: true },
+      );
+      addEventListener("resize", frame);
+
+      /* ---------- counter ---------- */
+      function runStats() {
+        $$(".stat-n[data-n]").forEach((el) => {
+          const target = +el.dataset.n,
+            t0 = performance.now(),
+            dur = 1900;
+          (function step(now) {
+            const t = Math.min(1, (now - t0) / dur),
+              e = 1 - Math.pow(1 - t, 3);
+            el.textContent = Math.round(target * e);
+            if (t < 1) requestAnimationFrame(step);
+          })(t0);
+        });
+      }
+
+      /* ---------- surat: efek taip perlahan ---------- */
+      let letterStarted = false,
+        letterDone = false,
+        letterTimer = null;
+      function startLetter() {
+        if (letterStarted) return;
+        letterStarted = true;
+        const paras = CONFIG.letter.paragraphs,
+          wrap = $("#letterText");
+        const cursor = document.createElement("span");
+        cursor.className = "cursor";
+        let pi = 0;
+        (function nextPara() {
+          if (pi >= paras.length) {
+            finishLetter();
+            return;
+          }
+          const p = document.createElement("p");
+          const tn = document.createTextNode("");
+          wrap.appendChild(p);
+          p.appendChild(tn);
+          p.appendChild(cursor);
+          const txt = paras[pi];
+          let ci = 0;
+          (function typeChar() {
+            if (letterDone) return;
+            ci++;
+            tn.data = txt.slice(0, ci);
+            if (ci < txt.length) letterTimer = setTimeout(typeChar, 24);
+            else {
+              pi++;
+              letterTimer = setTimeout(nextPara, 750);
+            }
+          })();
+        })();
+      }
+      function finishLetter() {
+        if (letterDone) return;
+        letterDone = true;
+        clearTimeout(letterTimer);
+        $("#letterText").innerHTML = CONFIG.letter.paragraphs
+          .map((p) => `<p>${p}</p>`)
+          .join("");
+        $("#letterSign").innerHTML = CONFIG.letter.sign;
+        $("#letterSign").classList.add("show");
+        $("#letterThanks").classList.add("show");
+      }
+
+      /* ---------- observers (dihidupkan selepas PLAY) ---------- */
+      let observersInit = false;
+      function setChapter(sec) {
+        const n = sec.dataset.ch,
+          label = sec.dataset.label;
+        if (n === "FIN") {
+          $("#hudNum").textContent = "FINALE";
+          $("#hudFill").style.width = "100%";
+        } else {
+          $("#hudNum").textContent = `0${n} / 07`;
+          $("#hudFill").style.width = (n / 7) * 100 + "%";
+        }
+        $("#hudName").textContent = label;
+        $$(".ep-row").forEach((r) =>
+          r.classList.toggle("active", r.dataset.target === sec.id),
+        );
+      }
+      function initObservers() {
+        if (observersInit) return;
+        observersInit = true;
+        const io = new IntersectionObserver(
+          (es) =>
+            es.forEach((e) => {
+              if (e.isIntersecting) {
+                e.target.classList.add("in");
+                io.unobserve(e.target);
+              }
+            }),
+          { threshold: 0.12, rootMargin: "0px 0px -6% 0px" },
+        );
+        $$(".reveal,.p-reveal").forEach((el) => io.observe(el));
+
+        const hudIO = new IntersectionObserver(
+          (es) =>
+            es.forEach((e) => {
+              if (e.isIntersecting) setChapter(e.target);
+            }),
+          { rootMargin: "-42% 0px -42% 0px", threshold: 0 },
+        );
+        $$("section[data-ch]").forEach((s) => hudIO.observe(s));
+
+        new IntersectionObserver(
+          (es, ob) =>
+            es.forEach((e) => {
+              if (e.isIntersecting) {
+                runStats();
+                ob.disconnect();
+              }
+            }),
+          { threshold: 0.3 },
+        ).observe($("#statsRow"));
+
+        new IntersectionObserver(
+          (es, ob) =>
+            es.forEach((e) => {
+              if (e.isIntersecting) {
+                startLetter();
+                ob.disconnect();
+              }
+            }),
+          { threshold: 0.3 },
+        ).observe($("#letterScene"));
+      }
+
+      /* ---------- opening scene ---------- */
+      const opTimers = [];
+      [
+        [500, "#op1", "add"],
+        [3600, "#op1", "remove"],
+        [4000, "#op2", "add"],
+        [7100, "#op2", "remove"],
+        [7500, "#op3", "add"],
+        [9000, "#btnPlay", "add"],
+        [9000, "#btnSkip", "remove"],
+      ].forEach(([t, sel, act]) =>
+        opTimers.push(
+          setTimeout(() => {
+            const e = $(sel);
+            if (e) e.classList[act]("show");
+          }, t),
+        ),
+      );
+      setTimeout(() => {
+        if (!$("#btnPlay").classList.contains("show"))
+          $("#btnSkip").classList.add("show");
+      }, 2400);
+
+      function startFilm() {
+        opTimers.forEach(clearTimeout);
+        try {
+          if (CONFIG.music.autoplay) Music.start();
+        } catch (err) {}
+        $("#opening").classList.add("exit");
+        document.body.classList.remove("film-open"); // letterbox retract
+        setTimeout(() => {
+          $("#opening").classList.add("hidden");
+          document.body.classList.remove("locked");
+          window.scrollTo(0, 0);
+        }, 1400);
+        $("#hud").classList.add("live");
+        $("#btnAudio").classList.add("live");
+        initObservers();
+        frame();
+      }
+      $("#btnPlay").addEventListener("click", startFilm);
+      $("#btnSkip").addEventListener("click", startFilm);
+
+      /* ---------- muzik: fail anda sendiri ATAU ambient score terjana ---------- */
+      const Music = (() => {
+        let audioEl = null,
+          ctx = null,
+          master = null,
+          timer = null,
+          idx = 0,
+          started = false,
+          playing = false;
+        const CHORDS = [
+          // Am7 · Fmaj7 · Cmaj7 · G — ballad progression
+          [220.0, 261.63, 329.63, 392.0],
+          [174.61, 220.0, 261.63, 329.63],
+          [261.63, 329.63, 392.0, 493.88],
+          [196.0, 246.94, 293.66, 392.0],
+        ];
+        function ensureCtx() {
+          if (ctx) return;
+          ctx = new (window.AudioContext || window.webkitAudioContext)();
+          master = ctx.createGain();
+          master.gain.value = 0.0001;
+          const filter = ctx.createBiquadFilter();
+          filter.type = "lowpass";
+          filter.frequency.value = 760;
+          master.connect(filter);
+          filter.connect(ctx.destination);
+        }
+        function playChord() {
+          const t = ctx.currentTime,
+            freqs = CHORDS[idx % CHORDS.length];
+          idx++;
+          freqs.forEach((f, i) => {
+            [
+              ["triangle", 0],
+              ["sine", 5],
+            ].forEach(([type, det]) => {
+              const o = ctx.createOscillator();
+              o.type = type;
+              o.frequency.value = f;
+              o.detune.value = det;
+              const g = ctx.createGain();
+              const vol =
+                (i === 0 ? 0.045 : 0.028) * (type === "sine" ? 0.9 : 1);
+              g.gain.setValueAtTime(0.0001, t);
+              g.gain.linearRampToValueAtTime(vol, t + 3.2);
+              g.gain.setValueAtTime(vol, t + 6.4);
+              g.gain.linearRampToValueAtTime(0.0001, t + 10.5);
+              o.connect(g);
+              g.connect(master);
+              o.start(t);
+              o.stop(t + 11);
+            });
+          });
+        }
+        function start() {
+          if (started) return;
+          started = true;
+          if (CONFIG.music.url) {
+            audioEl = new Audio(CONFIG.music.url);
+            audioEl.loop = true;
+            audioEl.volume = 0.75;
+            audioEl.play().catch(() => {});
+          } else if (window.AudioContext || window.webkitAudioContext) {
+            ensureCtx();
+            if (ctx.state === "suspended") ctx.resume();
+            playChord();
+            timer = setInterval(playChord, 8000);
+            master.gain.setValueAtTime(0.0001, ctx.currentTime);
+            master.gain.linearRampToValueAtTime(1, ctx.currentTime + 2.5);
+          }
+          playing = true;
+          updateBtn();
+        }
+        function toggle() {
+          if (!started) {
+            start();
+            return;
+          }
+          playing = !playing;
+          if (audioEl) {
+            playing ? audioEl.play().catch(() => {}) : audioEl.pause();
+          } else if (ctx) {
+            const t = ctx.currentTime;
+            master.gain.cancelScheduledValues(t);
+            master.gain.setValueAtTime(master.gain.value, t);
+            master.gain.linearRampToValueAtTime(playing ? 1 : 0.0001, t + 0.8);
+            if (playing && ctx.state === "suspended") ctx.resume();
+          }
+          updateBtn();
+        }
+        function updateBtn() {
+          const b = $("#btnAudio");
+          b.classList.toggle("playing", playing);
+          b.classList.toggle("muted", !playing);
+          b.title = playing ? "Mute score" : "Play score";
+        }
+        $("#btnAudio").addEventListener("click", toggle);
+        return { start, toggle };
+      })();
+
+      /* ---------- episodes overlay ---------- */
+      function openEpisodes() {
+        $("#episodes").classList.add("open");
+      }
+      function closeEpisodes() {
+        $("#episodes").classList.remove("open");
+      }
+      $("#hudBtn").addEventListener("click", openEpisodes);
+      $("#epClose").addEventListener("click", closeEpisodes);
+      $("#epBack").addEventListener("click", closeEpisodes);
+      $("#epList").addEventListener("click", (e) => {
+        const row = e.target.closest(".ep-row");
+        if (!row) return;
+        closeEpisodes();
+        setTimeout(
+          () =>
+            document
+              .getElementById(row.dataset.target)
+              .scrollIntoView({ behavior: "smooth" }),
+          250,
+        );
+      });
+
+      /* ---------- modal memory (chapter 03) ---------- */
+      let mIdx = 0;
+      function lockScroll(on) {
+        document.body.classList.toggle("locked", on);
+        document.body.classList.toggle("film-open", on); // letterbox masuk semula — rasa wayang
+        $("#hud").style.opacity = on ? 0 : "";
+      }
+      function renderModal() {
+        const a = CONFIG.adventures[mIdx];
+        $("#mImg").src = a.image;
+        $("#mTag").textContent = `SCENE 03.${mIdx + 1} · ${a.date}`;
+        $("#mCount").textContent = `${mIdx + 1} / ${CONFIG.adventures.length}`;
+        $("#mTitle").textContent = a.title;
+        $("#mStory").textContent = a.story;
+        $("#mCap").textContent = a.caption ? `"${a.caption}"` : "";
+      }
+      function openModal(i) {
+        mIdx = i;
+        renderModal();
+        $("#modal").classList.add("open");
+        lockScroll(true);
+      }
+      function closeModal() {
+        $("#modal").classList.remove("open");
+        lockScroll(false);
+      }
+      function modalStep(d) {
+        mIdx = (mIdx + d + CONFIG.adventures.length) % CONFIG.adventures.length;
+        renderModal();
+      }
+      $("#tlList").addEventListener("click", (e) => {
+        const it = e.target.closest(".tl-item");
+        if (it) openModal(+it.dataset.i);
+      });
+      $("#tlList").addEventListener("keydown", (e) => {
+        const it = e.target.closest(".tl-item");
+        if (it && (e.key === "Enter" || e.key === " ")) {
+          e.preventDefault();
+          openModal(+it.dataset.i);
+        }
+      });
+      $("#mClose").addEventListener("click", closeModal);
+      $("#mBack").addEventListener("click", (e) => {
+        if (e.target === e.currentTarget) closeModal();
+      });
+      $("#mPrev").addEventListener("click", () => modalStep(-1));
+      $("#mNext").addEventListener("click", () => modalStep(1));
+
+      /* ---------- lightbox (chapter 04) ---------- */
+      let lbxIdx = 0;
+      function renderLbx() {
+        const g = CONFIG.gallery[lbxIdx];
+        $("#lbxImg").src = g.image;
+        $("#lbxCap").textContent = g.caption;
+        $("#lbxCount").textContent = `${lbxIdx + 1} / ${CONFIG.gallery.length}`;
+      }
+      function openLbx(i) {
+        lbxIdx = i;
+        renderLbx();
+        $("#lightbox").classList.add("open");
+        lockScroll(true);
+      }
+      function closeLbx() {
+        $("#lightbox").classList.remove("open");
+        lockScroll(false);
+      }
+      function lbxStep(d) {
+        lbxIdx = (lbxIdx + d + CONFIG.gallery.length) % CONFIG.gallery.length;
+        renderLbx();
+      }
+      $("#scrap").addEventListener("click", (e) => {
+        const p = e.target.closest(".polaroid");
+        if (p) openLbx(+p.dataset.i);
+      });
+      $("#lbxClose").addEventListener("click", closeLbx);
+      $("#lbxPrev").addEventListener("click", () => lbxStep(-1));
+      $("#lbxNext").addEventListener("click", () => lbxStep(1));
+      let touchX = null;
+      $("#lightbox").addEventListener(
+        "touchstart",
+        (e) => {
+          touchX = e.touches[0].clientX;
+        },
+        { passive: true },
+      );
+      $("#lightbox").addEventListener(
+        "touchend",
+        (e) => {
+          if (touchX === null) return;
+          const dx = e.changedTouches[0].clientX - touchX;
+          if (Math.abs(dx) > 45) lbxStep(dx < 0 ? 1 : -1);
+          touchX = null;
+        },
+        { passive: true },
+      );
+
+      /* ---------- finale: Season 02 + end credits ---------- */
+      let finaleOpen = false;
+      function openFinale() {
+        if (finaleOpen) return;
+        finaleOpen = true;
+        document.body.classList.add("locked");
+        const fin = $("#finale");
+        fin.classList.remove("hidden");
+        requestAnimationFrame(() => fin.classList.add("open"));
+        const steps = [
+          {
+            html: "Because some stories are meant to last more than one season.",
+            hold: 3600,
+          },
+          { html: "Season 02…", hold: 2700 },
+          { html: "Coming Soon.", hold: 2700 },
+        ];
+        const finText = $("#finText");
+        let i = 0;
+        (function next() {
+          if (i < steps.length) {
+            finText.innerHTML = steps[i].html;
+            finText.classList.add("show");
+            setTimeout(() => {
+              finText.classList.remove("show");
+              setTimeout(() => {
+                i++;
+                next();
+              }, 1100);
+            }, steps[i].hold);
+          } else {
+            finText.innerHTML = "With you.";
+            finText.classList.add("show");
+            $("#finHeart").classList.add("show");
+            setTimeout(startCredits, 2300);
+          }
+        })();
+      }
+      function startCredits() {
+        $("#finStage").classList.add("dim");
+        $("#credits").classList.add("on");
+        const roll = $("#creditsRoll");
+        roll.style.animation = "none";
+        void roll.offsetWidth;
+        roll.style.animation = "";
+        roll.addEventListener("animationend", showReplay, { once: true });
+      }
+      function showReplay() {
+        $("#btnReplay").classList.add("show");
+      }
+      $("#credits").addEventListener("click", (e) => {
+        if (e.target.closest("#btnReplay")) return;
+        $("#creditsRoll").style.animation = "none";
+        showReplay();
+      });
+      $("#btnReplay").addEventListener("click", () => location.reload());
+      $("#final").addEventListener("click", (e) => {
+        if (e.target.closest("#btnNext")) openFinale();
+      });
+
+      /* ---------- surat: tap untuk siapkan serta-merta ---------- */
+      $("#letterScene").addEventListener("click", () => {
+        if (letterStarted && !letterDone) finishLetter();
+      });
+
+      /* ---------- keyboard ---------- */
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") {
+          if ($("#lightbox").classList.contains("open")) closeLbx();
+          else if ($("#modal").classList.contains("open")) closeModal();
+          else if ($("#episodes").classList.contains("open")) closeEpisodes();
+        }
+        const lbxOpen = $("#lightbox").classList.contains("open");
+        if (lbxOpen && e.key === "ArrowRight") lbxStep(1);
+        if (lbxOpen && e.key === "ArrowLeft") lbxStep(-1);
+      });
+
+      /* ---------- boot ---------- */
+      document.addEventListener("DOMContentLoaded", () => {
+        renderAll();
+        seqLove = makeSeq("#loveSeq", {
+          unit: 85,
+          onActive: (i) => {
+            $("#loveCount").textContent =
+              `${i + 1} / ${CONFIG.loveReasons.length}`;
+          },
+        });
+        seqFinal = makeSeq("#finSeq", { unit: 78, persistLast: true });
+        frame();
+      });
+    </script>
+  </body>
+</html>
