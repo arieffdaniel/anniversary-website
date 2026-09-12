@@ -3168,15 +3168,21 @@
           $("#btnSkip").classList.add("show");
       }, 2400);
 
+      let filmStarted = false;
       function startFilm() {
+        if (filmStarted) return;
+        filmStarted = true;
         opTimers.forEach(clearTimeout);
         try {
           if (CONFIG.music.autoplay) Music.start();
         } catch (err) {}
-        $("#opening").classList.add("exit");
+        const opening = $("#opening");
+        opening.classList.add("exit");
+        opening.setAttribute("aria-hidden", "true");
+        opening.inert = true;
         document.body.classList.remove("film-open"); // letterbox retract
         setTimeout(() => {
-          $("#opening").classList.add("hidden");
+          opening.classList.add("hidden");
           document.body.classList.remove("locked");
           window.scrollTo(0, 0);
         }, 1400);
