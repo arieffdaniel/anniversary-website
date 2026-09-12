@@ -638,6 +638,11 @@
         width: min(215px, 42vw);
         margin: 0;
       }
+      /* Crop the middle Chapter 01 photo slightly without changing the file. */
+      .pol-row .polaroid:nth-child(2) .ph img {
+        transform: scale(1.1);
+        transform-origin: center;
+      }
 
       /* ---------- CHAPTER 02: montage ---------- */
       .scene {
