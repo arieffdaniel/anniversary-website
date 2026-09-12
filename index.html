@@ -3598,6 +3598,7 @@
           card.type = "button";
           card.className = "polaroid clickable p-reveal in drive-video-card";
           card.dataset.videoIndex = index;
+          card.dataset.memoryNumber = video.memoryNumber;
           card.dataset.dep = (Math.random() * 0.8 + 0.4).toFixed(2);
           card.style.setProperty("--r", `${(Math.random() * 6 - 3).toFixed(1)}deg`);
           card.setAttribute(
