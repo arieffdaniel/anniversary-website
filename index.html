@@ -899,10 +899,59 @@
         width: 100%;
         height: 100%;
       }
+      #videoPlayer {
+        position: relative;
+      }
       #videoFrame {
         display: block;
         background: #000;
         object-fit: contain;
+      }
+      .video-open {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        border: 0;
+        background: linear-gradient(180deg, transparent 45%, rgba(2, 3, 6, 0.72));
+        color: var(--ink);
+        cursor: pointer;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 0.85rem;
+        font-family: var(--mono);
+        font-size: 0.58rem;
+        letter-spacing: 0.28em;
+      }
+      .video-play-icon {
+        width: 58px;
+        height: 58px;
+        border-radius: 50%;
+        display: grid;
+        place-items: center;
+        border: 1px solid rgba(240, 233, 220, 0.58);
+        background: rgba(7, 11, 20, 0.45);
+        backdrop-filter: blur(7px);
+        transition:
+          transform 0.35s,
+          background 0.35s,
+          border-color 0.35s;
+      }
+      .video-play-icon svg {
+        width: 22px;
+        height: 22px;
+        margin-left: 3px;
+        fill: currentColor;
+      }
+      .video-open:hover .video-play-icon,
+      .video-open:focus-visible .video-play-icon {
+        transform: scale(1.08);
+        background: rgba(169, 199, 232, 0.18);
+        border-color: var(--blue);
+      }
+      .video-open[hidden] {
+        display: none;
       }
       .video-status {
         position: absolute;
@@ -2088,8 +2137,8 @@
           <div class="drive-videos reveal" id="driveVideoGallery" style="--d: 0.2s">
             <div class="drive-video-head">
               <span class="drive-video-kicker">VIDEO ARCHIVE</span>
-              <h3>Scenes we kept.</h3>
-              <p>Press play, or shuffle to find another memory.</p>
+              <h3>A random scene from us.</h3>
+              <p>Tap the video to watch fullscreen, or shuffle for another memory.</p>
             </div>
             <div class="video-shell">
               <div class="video-screen">
@@ -2103,7 +2152,13 @@
                   <button class="video-btn" id="videoRetry" type="button">TRY AGAIN</button>
                 </div>
                 <div id="videoPlayer" hidden>
-                  <video id="videoFrame" controls playsinline preload="metadata"></video>
+                  <video id="videoFrame" muted playsinline preload="metadata"></video>
+                  <button class="video-open" id="videoOpen" type="button" aria-label="Play this memory fullscreen">
+                    <span class="video-play-icon" aria-hidden="true">
+                      <svg viewBox="0 0 24 24"><path d="m9 6 9 6-9 6z" /></svg>
+                    </span>
+                    <span>PLAY FULLSCREEN</span>
+                  </button>
                 </div>
               </div>
               <div class="video-toolbar" id="videoToolbar" hidden>
@@ -3547,7 +3602,7 @@
         function listUrl(pageToken = "") {
           const params = new URLSearchParams({
             q: `'${config.folderId}' in parents and trashed = false and mimeType contains 'video/'`,
-            fields: "nextPageToken,files(id,name,mimeType)",
+            fields: "nextPageToken,files(id,name,mimeType,thumbnailLink)",
             pageSize: "1000",
             key: config.apiKey,
           });
@@ -3611,16 +3666,62 @@
           currentIndex = index;
           const videoEl = $("#videoFrame");
           videoEl.pause();
+          videoEl.controls = false;
+          videoEl.muted = true;
+          $("#videoOpen").hidden = false;
           videoEl.removeAttribute("src");
+          videoEl.removeAttribute("poster");
           videoEl.load();
           videoEl.src = mediaUrl(video.id);
+          if (video.thumbnailLink) videoEl.poster = video.thumbnailLink;
+          videoEl.setAttribute("aria-label", `Video memory: ${video.name}`);
           videoEl.load();
 
           $("#videoCounter").textContent =
             `MEMORY ${index + 1} / ${allVideos.length}`;
           $("#videoName").textContent = video.name;
+          $("#videoOpen").setAttribute(
+            "aria-label",
+            `Play ${video.name} fullscreen`,
+          );
           $("#videoPrev").disabled = history.length === 0;
           setState("ready");
+        }
+
+        async function openFullscreenVideo() {
+          const videoEl = $("#videoFrame");
+          if (currentIndex < 0 || !videoEl.src) return;
+
+          Music.pause();
+          videoEl.controls = true;
+          videoEl.muted = false;
+
+          // Both calls begin directly inside the click event, which is required
+          // by mobile browsers for fullscreen playback with sound.
+          const playPromise = videoEl.play();
+          try {
+            if (videoEl.requestFullscreen) {
+              await videoEl.requestFullscreen();
+            } else if (videoEl.webkitEnterFullscreen) {
+              videoEl.webkitEnterFullscreen();
+            } else {
+              // Keep native controls available if fullscreen is unsupported.
+              $("#videoOpen").hidden = true;
+            }
+            await playPromise;
+          } catch (error) {
+            console.warn("Fullscreen video playback was unavailable:", error);
+            // Playback can still continue inline using the native controls.
+            $("#videoOpen").hidden = true;
+          }
+        }
+
+        function resetVideoPreview() {
+          const videoEl = $("#videoFrame");
+          videoEl.pause();
+          videoEl.controls = false;
+          videoEl.muted = true;
+          $("#videoOpen").hidden = false;
         }
 
         function shuffleVideo() {
@@ -3645,7 +3746,19 @@
           $("#videoShuffle").addEventListener("click", shuffleVideo);
           $("#videoPrev").addEventListener("click", prevVideo);
           $("#videoRetry").addEventListener("click", () => loadVideos(true));
+          $("#videoOpen").addEventListener("click", openFullscreenVideo);
           $("#videoFrame").addEventListener("play", () => Music.pause());
+          $("#videoFrame").addEventListener("webkitendfullscreen", resetVideoPreview);
+          $("#videoFrame").addEventListener("ended", () => {
+            if (!document.fullscreenElement && !$("#videoFrame").webkitDisplayingFullscreen) {
+              resetVideoPreview();
+            }
+          });
+          document.addEventListener("fullscreenchange", () => {
+            if (!document.fullscreenElement && $("#videoFrame").controls) {
+              resetVideoPreview();
+            }
+          });
           $("#videoFrame").addEventListener("error", () => {
             if (!$("#videoFrame").currentSrc) return;
             setState(
