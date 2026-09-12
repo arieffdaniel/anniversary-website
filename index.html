@@ -2121,9 +2121,9 @@
 
         // ---------- CHAPTER 01: hari pertama berjumpa ----------
         meeting: {
-          date: "22 March 2024",
-          place: "A little café, Kuala Lumpur", // ✏️ tarikh & tempat anda berjumpa
-          hero: "https://picsum.photos/seed/ourstory-cafe/1600/900.jpg",
+          date: "29 September 2025",
+          place: "10GRAM IOI PUTRAJAYA", // ✏️ tarikh & tempat anda berjumpa
+          hero: "assets/images/1st pages.png",
           figCaption: "THE PLACE WHERE IT ALL BEGAN",
           story: [
             "It was just another ordinary Friday. I remember the rain, the noise of the city, and then — you. We talked about nothing and everything until the café turned the lights down and politely asked us to leave.",
@@ -2984,7 +2984,8 @@
               id = url.searchParams.get("v");
               if (!id) {
                 const parts = url.pathname.split("/").filter(Boolean);
-                if (["embed", "shorts", "live"].includes(parts[0])) id = parts[1];
+                if (["embed", "shorts", "live"].includes(parts[0]))
+                  id = parts[1];
               }
             }
 
@@ -3070,7 +3071,10 @@
                 youtubeFailed = true;
                 playing = false;
                 wantsToPlay = false;
-                console.warn("YouTube music could not be played. Error:", event.data);
+                console.warn(
+                  "YouTube music could not be played. Error:",
+                  event.data,
+                );
                 updateBtn("YouTube music is unavailable");
               },
             },
@@ -3090,7 +3094,11 @@
             createYoutubePlayer();
           };
 
-          if (!document.querySelector('script[src="https://www.youtube.com/iframe_api"]')) {
+          if (
+            !document.querySelector(
+              'script[src="https://www.youtube.com/iframe_api"]',
+            )
+          ) {
             const script = document.createElement("script");
             script.src = "https://www.youtube.com/iframe_api";
             script.async = true;
