@@ -1176,6 +1176,18 @@
         opacity: 1;
       }
 
+      /* YouTube IFrame API player used for background music.
+         It stays off-screen because the existing audio button is the control. */
+      #youtubeMusicPlayerWrap {
+        position: fixed;
+        left: -10000px;
+        bottom: 0;
+        width: 200px;
+        height: 200px;
+        overflow: hidden;
+        pointer-events: none;
+      }
+
       /* ---------- overlays: episodes / modal / lightbox ---------- */
       .icon-btn {
         width: 42px;
@@ -1800,6 +1812,11 @@
       <span class="dot"></span>
     </button>
 
+    <!-- Official YouTube embed; controlled by the music button above. -->
+    <div id="youtubeMusicPlayerWrap" aria-hidden="true">
+      <div id="youtubeMusicPlayer"></div>
+    </div>
+
     <main id="film">
       <!-- ══════════ TITLE CARD ══════════ -->
       <section id="titlecard">
@@ -2407,9 +2424,10 @@
         },
 
         // ---------- muzik latar ----------
-        // ✏️ letak URL fail lagu anda, cth "music/our-song.mp3".
-        // Jika dibiarkan kosong, website akan mainkan ambient score
-        // yang dijana secara langsung (Web Audio) — tiada fail diperlukan.
+        // ✏️ Boleh guna URL YouTube atau fail audio, cth "music/our-song.mp3".
+        // YouTube dimainkan melalui IFrame Player API selepas pengunjung menekan
+        // PLAY OUR STORY / SKIP INTRO (browser tidak benarkan audio tanpa interaksi).
+        // Jika URL kosong, website akan mainkan ambient score yang dijana sendiri.
         music: {
           url: "https://youtu.be/pO3SgjYo90s?si=ddfdDNl3OdxYXqHF",
           title: "an ambient score, made for us",
@@ -2924,15 +2942,21 @@
       $("#btnPlay").addEventListener("click", startFilm);
       $("#btnSkip").addEventListener("click", startFilm);
 
-      /* ---------- muzik: fail anda sendiri ATAU ambient score terjana ---------- */
+      /* ---------- muzik: YouTube, fail audio, ATAU ambient score terjana ---------- */
       const Music = (() => {
         let audioEl = null,
+          youtubePlayer = null,
+          youtubeReady = false,
+          youtubeFailed = false,
+          wantsToPlay = false,
           ctx = null,
           master = null,
           timer = null,
           idx = 0,
           started = false,
           playing = false;
+
+        const youtubeId = getYoutubeVideoId(CONFIG.music.url);
         const CHORDS = [
           // Am7 · Fmaj7 · Cmaj7 · G — ballad progression
           [220.0, 261.63, 329.63, 392.0],
@@ -2940,6 +2964,120 @@
           [261.63, 329.63, 392.0, 493.88],
           [196.0, 246.94, 293.66, 392.0],
         ];
+
+        function getYoutubeVideoId(value) {
+          if (!value) return null;
+          try {
+            const url = new URL(value, window.location.href);
+            const host = url.hostname.replace(/^www\./, "").toLowerCase();
+            let id = null;
+
+            if (host === "youtu.be") {
+              id = url.pathname.split("/").filter(Boolean)[0];
+            } else if (
+              host === "youtube.com" ||
+              host.endsWith(".youtube.com") ||
+              host === "youtube-nocookie.com" ||
+              host.endsWith(".youtube-nocookie.com")
+            ) {
+              id = url.searchParams.get("v");
+              if (!id) {
+                const parts = url.pathname.split("/").filter(Boolean);
+                if (["embed", "shorts", "live"].includes(parts[0])) id = parts[1];
+              }
+            }
+
+            return /^[a-zA-Z0-9_-]{11}$/.test(id || "") ? id : null;
+          } catch (err) {
+            return null;
+          }
+        }
+
+        function updateBtn(message) {
+          const b = $("#btnAudio");
+          b.classList.toggle("playing", playing);
+          b.classList.toggle("muted", !playing);
+          const label =
+            message ||
+            (playing
+              ? "Pause music"
+              : youtubeId
+                ? "Play YouTube music"
+                : "Play score");
+          b.title = label;
+          b.setAttribute("aria-label", label);
+        }
+
+        function createYoutubePlayer() {
+          if (youtubePlayer || !(window.YT && window.YT.Player)) return;
+
+          youtubePlayer = new window.YT.Player("youtubeMusicPlayer", {
+            width: "200",
+            height: "200",
+            videoId: youtubeId,
+            playerVars: {
+              autoplay: 0,
+              controls: 0,
+              disablekb: 1,
+              fs: 0,
+              loop: 1,
+              playlist: youtubeId,
+              playsinline: 1,
+              rel: 0,
+            },
+            events: {
+              onReady(event) {
+                youtubeReady = true;
+                event.target.setVolume(75);
+                if (wantsToPlay) event.target.playVideo();
+              },
+              onStateChange(event) {
+                if (event.data === window.YT.PlayerState.PLAYING) {
+                  playing = true;
+                  updateBtn();
+                } else if (event.data === window.YT.PlayerState.PAUSED) {
+                  playing = false;
+                  wantsToPlay = false;
+                  updateBtn();
+                }
+              },
+              onAutoplayBlocked() {
+                playing = false;
+                wantsToPlay = false;
+                updateBtn("Tap to allow YouTube music");
+              },
+              onError(event) {
+                youtubeFailed = true;
+                playing = false;
+                wantsToPlay = false;
+                console.warn("YouTube music could not be played. Error:", event.data);
+                updateBtn("YouTube music is unavailable");
+              },
+            },
+          });
+        }
+
+        function prepareYoutube() {
+          if (!youtubeId || youtubePlayer || youtubeFailed) return;
+          if (window.YT && window.YT.Player) {
+            createYoutubePlayer();
+            return;
+          }
+
+          const previousReady = window.onYouTubeIframeAPIReady;
+          window.onYouTubeIframeAPIReady = () => {
+            if (typeof previousReady === "function") previousReady();
+            createYoutubePlayer();
+          };
+
+          if (!document.querySelector('script[src="https://www.youtube.com/iframe_api"]')) {
+            const script = document.createElement("script");
+            script.src = "https://www.youtube.com/iframe_api";
+            script.async = true;
+            document.head.appendChild(script);
+          }
+        }
+
         function ensureCtx() {
           if (ctx) return;
           ctx = new (window.AudioContext || window.webkitAudioContext)();
@@ -2951,6 +3089,7 @@
           master.connect(filter);
           filter.connect(ctx.destination);
         }
+
         function playChord() {
           const t = ctx.currentTime,
             freqs = CHORDS[idx % CHORDS.length];
@@ -2978,14 +3117,24 @@
             });
           });
         }
+
         function start() {
           if (started) return;
           started = true;
-          if (CONFIG.music.url) {
+          playing = true;
+
+          if (youtubeId) {
+            wantsToPlay = true;
+            prepareYoutube();
+            if (youtubeReady) youtubePlayer.playVideo();
+          } else if (CONFIG.music.url) {
             audioEl = new Audio(CONFIG.music.url);
             audioEl.loop = true;
             audioEl.volume = 0.75;
-            audioEl.play().catch(() => {});
+            audioEl.play().catch(() => {
+              playing = false;
+              updateBtn("Tap to play music");
+            });
           } else if (window.AudioContext || window.webkitAudioContext) {
             ensureCtx();
             if (ctx.state === "suspended") ctx.resume();
@@ -2994,17 +3143,32 @@
             master.gain.setValueAtTime(0.0001, ctx.currentTime);
             master.gain.linearRampToValueAtTime(1, ctx.currentTime + 2.5);
           }
-          playing = true;
           updateBtn();
         }
+
         function toggle() {
           if (!started) {
             start();
             return;
           }
+
           playing = !playing;
-          if (audioEl) {
-            playing ? audioEl.play().catch(() => {}) : audioEl.pause();
+          if (youtubeId) {
+            wantsToPlay = playing;
+            if (youtubeReady && !youtubeFailed) {
+              playing ? youtubePlayer.playVideo() : youtubePlayer.pauseVideo();
+            } else if (playing) {
+              prepareYoutube();
+            }
+          } else if (audioEl) {
+            if (playing) {
+              audioEl.play().catch(() => {
+                playing = false;
+                updateBtn("Tap to play music");
+              });
+            } else {
+              audioEl.pause();
+            }
           } else if (ctx) {
             const t = ctx.currentTime;
             master.gain.cancelScheduledValues(t);
@@ -3014,12 +3178,9 @@
           }
           updateBtn();
         }
-        function updateBtn() {
-          const b = $("#btnAudio");
-          b.classList.toggle("playing", playing);
-          b.classList.toggle("muted", !playing);
-          b.title = playing ? "Mute score" : "Play score";
-        }
+
+        // Preload the API during the intro so it is ready when PLAY is clicked.
+        if (youtubeId) prepareYoutube();
         $("#btnAudio").addEventListener("click", toggle);
         return { start, toggle };
       })();
