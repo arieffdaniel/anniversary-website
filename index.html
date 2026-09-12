@@ -851,6 +851,164 @@
         margin-top: 6vh;
       }
 
+      /* ---------- CHAPTER 04: Google Drive video memories ---------- */
+      .drive-videos {
+        width: min(900px, 100%);
+        margin: 12vh auto 10vh;
+      }
+      .drive-video-head {
+        text-align: center;
+        margin-bottom: 2.2rem;
+      }
+      .drive-video-kicker {
+        display: block;
+        font-family: var(--mono);
+        font-size: 0.6rem;
+        letter-spacing: 0.42em;
+        color: var(--blue);
+      }
+      .drive-video-head h3 {
+        margin-top: 1rem;
+        font-size: clamp(2rem, 5vw, 3.4rem);
+        font-weight: 300;
+        font-style: italic;
+      }
+      .drive-video-head p {
+        margin-top: 0.8rem;
+        color: var(--ink-dim);
+        font-size: 1.05rem;
+      }
+      .video-shell {
+        border: 1px solid var(--line);
+        background: rgba(11, 17, 32, 0.72);
+        box-shadow: 0 26px 70px -36px rgba(0, 0, 0, 0.95);
+        padding: clamp(0.6rem, 2vw, 1rem);
+      }
+      .video-screen {
+        position: relative;
+        aspect-ratio: 16 / 9;
+        overflow: hidden;
+        background: #020306;
+      }
+      .video-screen > [hidden],
+      .video-toolbar[hidden] {
+        display: none !important;
+      }
+      #videoPlayer,
+      #videoFrame {
+        width: 100%;
+        height: 100%;
+      }
+      #videoFrame {
+        display: block;
+        background: #000;
+        object-fit: contain;
+      }
+      .video-status {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 1rem;
+        padding: 2rem;
+        text-align: center;
+        color: var(--ink-dim);
+      }
+      .video-status p {
+        max-width: 52ch;
+        line-height: 1.7;
+      }
+      .video-spinner {
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        border: 1px solid var(--line);
+        border-top-color: var(--blue);
+        animation: videoSpin 0.9s linear infinite;
+      }
+      @keyframes videoSpin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+      .video-error-title {
+        color: var(--pink);
+        font-family: var(--mono);
+        font-size: 0.66rem;
+        letter-spacing: 0.28em;
+      }
+      .video-toolbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1.5rem;
+        padding: 1.1rem 0.25rem 0.2rem;
+      }
+      .video-details {
+        min-width: 0;
+      }
+      .video-counter {
+        display: block;
+        font-family: var(--mono);
+        font-size: 0.58rem;
+        letter-spacing: 0.22em;
+        color: var(--blue);
+      }
+      .video-name {
+        margin-top: 0.38rem;
+        color: var(--ink-dim);
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        max-width: 44ch;
+      }
+      .video-actions {
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+        flex: none;
+      }
+      .video-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.65rem;
+        min-height: 40px;
+        border: 1px solid var(--line);
+        background: transparent;
+        color: var(--ink-dim);
+        cursor: pointer;
+        padding: 0.7rem 1rem;
+        font-family: var(--mono);
+        font-size: 0.58rem;
+        letter-spacing: 0.18em;
+        transition:
+          color 0.3s,
+          border-color 0.3s,
+          background 0.3s;
+      }
+      .video-btn:hover:not(:disabled),
+      .video-btn:focus-visible {
+        color: var(--ink);
+        border-color: rgba(169, 199, 232, 0.55);
+        background: rgba(169, 199, 232, 0.08);
+      }
+      .video-btn:disabled {
+        opacity: 0.32;
+        cursor: not-allowed;
+      }
+      .video-btn svg {
+        width: 14px;
+        height: 14px;
+        fill: none;
+        stroke: currentColor;
+        stroke-width: 1.7;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+
       /* ---------- sticky sequences (ch05 & final) ---------- */
       .seq {
         position: relative;
@@ -1708,6 +1866,22 @@
           width: 40px;
           height: 40px;
         }
+        .video-toolbar {
+          align-items: flex-start;
+          flex-direction: column;
+        }
+        .video-details,
+        .video-name {
+          width: 100%;
+          max-width: 100%;
+        }
+        .video-actions {
+          width: 100%;
+        }
+        .video-btn {
+          flex: 1;
+          padding-inline: 0.65rem;
+        }
         .m-body {
           padding: 1.4rem 1.35rem 2rem;
         }
@@ -1910,6 +2084,47 @@
               ><span class="stat-l">MEMORIES</span>
             </div>
           </div>
+
+          <div class="drive-videos reveal" id="driveVideoGallery" style="--d: 0.2s">
+            <div class="drive-video-head">
+              <span class="drive-video-kicker">VIDEO ARCHIVE</span>
+              <h3>Scenes we kept.</h3>
+              <p>Press play, or shuffle to find another memory.</p>
+            </div>
+            <div class="video-shell">
+              <div class="video-screen">
+                <div class="video-status" id="videoLoading" role="status">
+                  <span class="video-spinner" aria-hidden="true"></span>
+                  <p>Loading our video memories…</p>
+                </div>
+                <div class="video-status" id="videoError" role="alert" hidden>
+                  <span class="video-error-title">VIDEO ARCHIVE UNAVAILABLE</span>
+                  <p id="videoErrorText">The videos could not be loaded.</p>
+                  <button class="video-btn" id="videoRetry" type="button">TRY AGAIN</button>
+                </div>
+                <div id="videoPlayer" hidden>
+                  <video id="videoFrame" controls playsinline preload="metadata"></video>
+                </div>
+              </div>
+              <div class="video-toolbar" id="videoToolbar" hidden>
+                <div class="video-details">
+                  <span class="video-counter" id="videoCounter" aria-live="polite"></span>
+                  <p class="video-name" id="videoName"></p>
+                </div>
+                <div class="video-actions">
+                  <button class="video-btn" id="videoPrev" type="button" disabled>
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 18-6-6 6-6" /></svg>
+                    PREVIOUS
+                  </button>
+                  <button class="video-btn" id="videoShuffle" type="button">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 3h5v5" /><path d="M4 20 21 3" /><path d="M21 16v5h-5" /><path d="m15 15 6 6" /><path d="M4 4 9 9" /></svg>
+                    SHUFFLE
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
           <p class="ch-note reveal" style="text-align: center; margin: 4vh 0 0">
             TAP A PHOTO TO VIEW IT FULLSCREEN
           </p>
@@ -2316,6 +2531,15 @@
             thumb: "https://picsum.photos/seed/adv-random/400/300.jpg",
           },
         ],
+
+        // ---------- CHAPTER 04: video Google Drive ----------
+        // ✏️ Masukkan Folder ID dan Browser API Key anda di bawah.
+        // Folder dan semua video mesti dikongsi sebagai "Anyone with the link".
+        // Hadkan API key kepada domain website ini + Google Drive API.
+        driveVideos: {
+          folderId: "", // cth: ID selepas /folders/ dalam URL Google Drive
+          apiKey: "", // Google Cloud Browser API key (HTTP referrer restricted)
+        },
 
         // ---------- CHAPTER 04: galeri scrapbook (polaroid) ----------
         // ✏️ tambah gambar dengan copy satu { } — caption gaya tulisan tangan
@@ -3196,6 +3420,24 @@
           updateBtn();
         }
 
+        function pause() {
+          if (!started || !playing) return false;
+          playing = false;
+          wantsToPlay = false;
+          if (youtubeId) {
+            silenceYoutube();
+          } else if (audioEl) {
+            audioEl.pause();
+          } else if (ctx) {
+            const t = ctx.currentTime;
+            master.gain.cancelScheduledValues(t);
+            master.gain.setValueAtTime(master.gain.value, t);
+            master.gain.linearRampToValueAtTime(0.0001, t + 0.35);
+          }
+          updateBtn();
+          return true;
+        }
+
         function toggle() {
           if (!started) {
             start();
@@ -3251,7 +3493,180 @@
           }
         }
         $("#btnAudio").addEventListener("click", toggle);
-        return { start, toggle };
+        return { start, toggle, pause };
+      })();
+
+      /* ---------- Google Drive video archive (chapter 04) ---------- */
+      const DriveVideos = (() => {
+        let allVideos = [];
+        let currentIndex = -1;
+        let history = [];
+        let videosLoaded = false;
+        let loading = false;
+        let initialized = false;
+
+        const config = CONFIG.driveVideos || {};
+
+        function setState(state, message = "") {
+          const loadingEl = $("#videoLoading");
+          const errorEl = $("#videoError");
+          const playerEl = $("#videoPlayer");
+          const toolbarEl = $("#videoToolbar");
+
+          loadingEl.hidden = state !== "loading";
+          errorEl.hidden = state !== "error";
+          playerEl.hidden = state !== "ready";
+          toolbarEl.hidden = state !== "ready";
+          if (message) $("#videoErrorText").textContent = message;
+        }
+
+        function getConfigError() {
+          if (!config.folderId || !config.apiKey) {
+            return "Add your Google Drive folderId and apiKey in CONFIG.driveVideos.";
+          }
+          if (!/^[a-zA-Z0-9_-]+$/.test(config.folderId)) {
+            return "The Google Drive folder ID is not valid.";
+          }
+          return "";
+        }
+
+        function shuffleArr(items) {
+          const result = [...items];
+          for (let i = result.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [result[i], result[j]] = [result[j], result[i]];
+          }
+          return result;
+        }
+
+        function listUrl(pageToken = "") {
+          const params = new URLSearchParams({
+            q: `'${config.folderId}' in parents and trashed = false and mimeType contains 'video/'`,
+            fields: "nextPageToken,files(id,name,mimeType)",
+            pageSize: "1000",
+            key: config.apiKey,
+          });
+          if (pageToken) params.set("pageToken", pageToken);
+          return `https://www.googleapis.com/drive/v3/files?${params.toString()}`;
+        }
+
+        function mediaUrl(fileId) {
+          const params = new URLSearchParams({
+            alt: "media",
+            key: config.apiKey,
+          });
+          return `https://www.googleapis.com/drive/v3/files/${encodeURIComponent(fileId)}?${params.toString()}`;
+        }
+
+        async function loadVideos(force = false) {
+          if (loading || (videosLoaded && !force)) return;
+          const configError = getConfigError();
+          if (configError) {
+            setState("error", configError);
+            return;
+          }
+
+          loading = true;
+          setState("loading");
+          try {
+            let videos = [];
+            let pageToken = "";
+            do {
+              const response = await fetch(listUrl(pageToken));
+              const data = await response.json();
+              if (!response.ok || data.error) {
+                throw new Error(data.error?.message || `Google Drive returned ${response.status}`);
+              }
+              videos = videos.concat(data.files || []);
+              pageToken = data.nextPageToken || "";
+            } while (pageToken);
+
+            if (!videos.length) throw new Error("No public video files were found in this folder.");
+
+            allVideos = shuffleArr(videos);
+            videosLoaded = true;
+            history = [];
+            currentIndex = 0;
+            showVideo(currentIndex);
+          } catch (error) {
+            console.error("Google Drive video load error:", error);
+            setState(
+              "error",
+              `${error.message} Check the folder sharing and API key restrictions.`,
+            );
+          } finally {
+            loading = false;
+          }
+        }
+
+        function showVideo(index) {
+          const video = allVideos[index];
+          if (!video) return;
+
+          currentIndex = index;
+          const videoEl = $("#videoFrame");
+          videoEl.pause();
+          videoEl.removeAttribute("src");
+          videoEl.load();
+          videoEl.src = mediaUrl(video.id);
+          videoEl.load();
+
+          $("#videoCounter").textContent =
+            `MEMORY ${index + 1} / ${allVideos.length}`;
+          $("#videoName").textContent = video.name;
+          $("#videoPrev").disabled = history.length === 0;
+          setState("ready");
+        }
+
+        function shuffleVideo() {
+          if (!allVideos.length) return;
+          history.push(currentIndex);
+          let next = currentIndex;
+          while (next === currentIndex && allVideos.length > 1) {
+            next = Math.floor(Math.random() * allVideos.length);
+          }
+          showVideo(next);
+        }
+
+        function prevVideo() {
+          if (!history.length) return;
+          showVideo(history.pop());
+        }
+
+        function init() {
+          if (initialized) return;
+          initialized = true;
+
+          $("#videoShuffle").addEventListener("click", shuffleVideo);
+          $("#videoPrev").addEventListener("click", prevVideo);
+          $("#videoRetry").addEventListener("click", () => loadVideos(true));
+          $("#videoFrame").addEventListener("play", () => Music.pause());
+          $("#videoFrame").addEventListener("error", () => {
+            if (!$("#videoFrame").currentSrc) return;
+            setState(
+              "error",
+              "This video could not be streamed. Make sure the file is public and uses a browser-supported format such as MP4 (H.264).",
+            );
+          });
+
+          const gallery = $("#driveVideoGallery");
+          if (!("IntersectionObserver" in window)) {
+            loadVideos();
+            return;
+          }
+          const observer = new IntersectionObserver(
+            (entries) => {
+              if (entries.some((entry) => entry.isIntersecting)) {
+                observer.disconnect();
+                loadVideos();
+              }
+            },
+            { rootMargin: "300px 0px", threshold: 0.01 },
+          );
+          observer.observe(gallery);
+        }
+
+        return { init, loadVideos, shuffleVideo, prevVideo };
       })();
 
       /* ---------- episodes overlay ---------- */
@@ -3453,6 +3868,7 @@
       /* ---------- boot ---------- */
       document.addEventListener("DOMContentLoaded", () => {
         renderAll();
+        DriveVideos.init();
         seqLove = makeSeq("#loveSeq", {
           unit: 85,
           onActive: (i) => {
