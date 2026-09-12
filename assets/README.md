@@ -25,8 +25,17 @@ or:
 hero: "assets/images/where-we-met.jpg",
 ```
 
-The current photo sections render images. Files placed in `videos/` are stored and ready, but a video must be connected to a section in `index.html` before it will appear on the website.
+The photo sections render local images directly. Chapter 04 can stream video memories from a public Google Drive folder. Configure it in `index.html`:
+
+```js
+driveVideos: {
+  folderId: "YOUR_GOOGLE_DRIVE_FOLDER_ID",
+  apiKey: "YOUR_RESTRICTED_BROWSER_API_KEY",
+},
+```
+
+Share the folder and each video as **Anyone with the link — Viewer**. Enable the Google Drive API in Google Cloud, and restrict the browser key to the website's HTTP referrer and the Google Drive API. Remember that a browser API key is visible in a static website's source.
 
 ## Video size
 
-Keep videos compressed for faster page loading. GitHub rejects individual files larger than 100 MB, and smaller web videos generally provide a better mobile experience.
+For local files, keep videos compressed for faster page loading. GitHub rejects individual files larger than 100 MB, and smaller web videos generally provide a better mobile experience. MP4 using H.264 video and AAC audio has the widest browser support.
