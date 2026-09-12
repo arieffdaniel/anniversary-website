@@ -2616,20 +2616,6 @@
           visibleCount: 6, // jumlah video rawak yang dipaparkan pada satu masa
           folderId: "1rnAhKZREaqcYklp2jxxH4nGkX8J7XZCe", // cth: ID selepas /folders/ dalam URL Google Drive
           apiKey: "AIzaSyAADDt0Twxfy9By5-8wfxP5Eb8S06wHNKg", // Google Cloud Browser API key (HTTP referrer restricted)
-          captions: [
-            "a little piece of us",
-            "one for the memories",
-            "ordinary days, favourite moments",
-            "you make life feel cinematic",
-            "another moment worth keeping",
-            "us, exactly as we are",
-            "my favourite kind of forever",
-            "the little moments mean the most",
-            "life looks better with you",
-            "a scene I would replay forever",
-            "wherever you are feels like home",
-            "still my favourite story",
-          ],
         },
 
         // ---------- CHAPTER 04: scrapbook ----------
@@ -3589,16 +3575,8 @@
           return `https://www.googleapis.com/drive/v3/files/${encodeURIComponent(fileId)}?${params.toString()}`;
         }
 
-        function getVideoCaptions() {
-          const captions = Array.isArray(config.captions)
-            ? config.captions.filter(
-                (caption) => typeof caption === "string" && caption.trim(),
-              )
-            : [];
-          return captions.length ? captions : ["one of our favourite moments"];
-        }
-
-        function createVideoCard(video, index, captionText) {
+        function createVideoCard(video, index, memoryNumber) {
+          const captionText = `Memory ${String(memoryNumber).padStart(2, "0")}`;
           const card = document.createElement("button");
           card.type = "button";
           card.className = "polaroid clickable p-reveal in drive-video-card";
@@ -3704,17 +3682,11 @@
             0,
             getVisibleCount(),
           );
-          const captions = shuffleArr(getVideoCaptions());
           const cards = indexes.map((index, cardIndex) =>
-            createVideoCard(
-              allVideos[index],
-              index,
-              captions[cardIndex % captions.length],
-            ),
+            createVideoCard(allVideos[index], index, cardIndex + 1),
           );
-          const everyMemory = shuffleArr([...scrapbook.children, ...cards]);
           const fragment = document.createDocumentFragment();
-          everyMemory.forEach((card) => fragment.appendChild(card));
+          cards.forEach((card) => fragment.appendChild(card));
           scrapbook.appendChild(fragment);
           playPreviewVideos();
 
@@ -3791,7 +3763,7 @@
           }
         }
 
-        async function openVideo(index, captionText = "one of our memories") {
+        async function openVideo(index, captionText = "Memory") {
           const video = allVideos[index];
           if (!video) return;
 
