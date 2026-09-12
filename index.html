@@ -3017,6 +3017,14 @@
           youtubePlayer.playVideo();
         }
 
+        function silenceYoutube() {
+          if (!youtubeReady || !youtubePlayer) return;
+          // Mute as well as pause so a delayed YouTube PLAYING event cannot
+          // make sound after the visitor has pressed the mute button.
+          youtubePlayer.mute();
+          youtubePlayer.pauseVideo();
+        }
+
         function createYoutubePlayer() {
           if (youtubePlayer || !(window.YT && window.YT.Player)) return;
 
@@ -3042,7 +3050,9 @@
               },
               onStateChange(event) {
                 if (event.data === window.YT.PlayerState.PLAYING) {
-                  playing = true;
+                  // Autoplay can report PLAYING while YouTube is still muted.
+                  // Keep the button tied to audible playback, not video state.
+                  playing = wantsToPlay && !event.target.isMuted();
                   updateBtn();
                 } else if (event.data === window.YT.PlayerState.PAUSED) {
                   playing = false;
@@ -3177,7 +3187,7 @@
           if (youtubeId) {
             wantsToPlay = playing;
             if (youtubeReady && !youtubeFailed) {
-              playing ? playYoutube() : youtubePlayer.pauseVideo();
+              playing ? playYoutube() : silenceYoutube();
             } else if (playing) {
               prepareYoutube();
             }
