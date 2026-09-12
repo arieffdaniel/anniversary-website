@@ -2085,7 +2085,11 @@
             </div>
           </div>
 
-          <div class="drive-videos reveal" id="driveVideoGallery" style="--d: 0.2s">
+          <div
+            class="drive-videos reveal"
+            id="driveVideoGallery"
+            style="--d: 0.2s"
+          >
             <div class="drive-video-head">
               <span class="drive-video-kicker">VIDEO ARCHIVE</span>
               <h3>Scenes we kept.</h3>
@@ -2098,26 +2102,52 @@
                   <p>Loading our video memories…</p>
                 </div>
                 <div class="video-status" id="videoError" role="alert" hidden>
-                  <span class="video-error-title">VIDEO ARCHIVE UNAVAILABLE</span>
+                  <span class="video-error-title"
+                    >VIDEO ARCHIVE UNAVAILABLE</span
+                  >
                   <p id="videoErrorText">The videos could not be loaded.</p>
-                  <button class="video-btn" id="videoRetry" type="button">TRY AGAIN</button>
+                  <button class="video-btn" id="videoRetry" type="button">
+                    TRY AGAIN
+                  </button>
                 </div>
                 <div id="videoPlayer" hidden>
-                  <video id="videoFrame" controls playsinline preload="metadata"></video>
+                  <video
+                    id="videoFrame"
+                    controls
+                    playsinline
+                    preload="metadata"
+                  ></video>
                 </div>
               </div>
               <div class="video-toolbar" id="videoToolbar" hidden>
                 <div class="video-details">
-                  <span class="video-counter" id="videoCounter" aria-live="polite"></span>
+                  <span
+                    class="video-counter"
+                    id="videoCounter"
+                    aria-live="polite"
+                  ></span>
                   <p class="video-name" id="videoName"></p>
                 </div>
                 <div class="video-actions">
-                  <button class="video-btn" id="videoPrev" type="button" disabled>
-                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 18-6-6 6-6" /></svg>
+                  <button
+                    class="video-btn"
+                    id="videoPrev"
+                    type="button"
+                    disabled
+                  >
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="m15 18-6-6 6-6" />
+                    </svg>
                     PREVIOUS
                   </button>
                   <button class="video-btn" id="videoShuffle" type="button">
-                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 3h5v5" /><path d="M4 20 21 3" /><path d="M21 16v5h-5" /><path d="m15 15 6 6" /><path d="M4 4 9 9" /></svg>
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="M16 3h5v5" />
+                      <path d="M4 20 21 3" />
+                      <path d="M21 16v5h-5" />
+                      <path d="m15 15 6 6" />
+                      <path d="M4 4 9 9" />
+                    </svg>
                     SHUFFLE
                   </button>
                 </div>
@@ -2542,8 +2572,8 @@
         // Folder dan semua video mesti dikongsi sebagai "Anyone with the link".
         // Hadkan API key kepada domain website ini + Google Drive API.
         driveVideos: {
-          folderId: "", // cth: ID selepas /folders/ dalam URL Google Drive
-          apiKey: "", // Google Cloud Browser API key (HTTP referrer restricted)
+          folderId: "1rnAhKZREaqcYklp2jxxH4nGkX8J7XZCe", // cth: ID selepas /folders/ dalam URL Google Drive
+          apiKey: "AIzaSyAADDt0Twxfy9By5-8wfxP5Eb8S06wHNKg", // Google Cloud Browser API key (HTTP referrer restricted)
         },
 
         // ---------- CHAPTER 04: galeri scrapbook (polaroid) ----------
@@ -3580,13 +3610,19 @@
               const response = await fetch(listUrl(pageToken));
               const data = await response.json();
               if (!response.ok || data.error) {
-                throw new Error(data.error?.message || `Google Drive returned ${response.status}`);
+                throw new Error(
+                  data.error?.message ||
+                    `Google Drive returned ${response.status}`,
+                );
               }
               videos = videos.concat(data.files || []);
               pageToken = data.nextPageToken || "";
             } while (pageToken);
 
-            if (!videos.length) throw new Error("No public video files were found in this folder.");
+            if (!videos.length)
+              throw new Error(
+                "No public video files were found in this folder.",
+              );
 
             allVideos = shuffleArr(videos);
             videosLoaded = true;
