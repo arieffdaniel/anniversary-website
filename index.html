@@ -242,6 +242,10 @@
           transform 1.5s ease 0.1s,
           filter 1.3s ease 0.1s;
       }
+      /* Remove the finished intro from hit testing after its exit animation. */
+      #opening.hidden {
+        display: none;
+      }
       .op-line {
         position: absolute;
         inset: 0;
@@ -1686,10 +1690,19 @@
         align-items: center;
         justify-content: center;
         opacity: 0;
-        transition: opacity 1.1s ease;
+        visibility: hidden;
+        pointer-events: none;
+        transition:
+          opacity 1.1s ease,
+          visibility 1.1s ease;
+      }
+      #finale.hidden {
+        display: none;
       }
       #finale.open {
         opacity: 1;
+        visibility: visible;
+        pointer-events: auto;
       }
       .fin-stage {
         text-align: center;
