@@ -3008,6 +3008,15 @@
           b.setAttribute("aria-label", label);
         }
 
+        function playYoutube() {
+          if (!youtubeReady || !youtubePlayer || youtubeFailed) return;
+          // YouTube commonly allows autoplay only in a muted state. Calling
+          // unMute() during the visitor's click/tap makes the song audible.
+          youtubePlayer.unMute();
+          youtubePlayer.setVolume(75);
+          youtubePlayer.playVideo();
+        }
+
         function createYoutubePlayer() {
           if (youtubePlayer || !(window.YT && window.YT.Player)) return;
 
@@ -3029,7 +3038,7 @@
               onReady(event) {
                 youtubeReady = true;
                 event.target.setVolume(75);
-                if (wantsToPlay) event.target.playVideo();
+                if (wantsToPlay) playYoutube();
               },
               onStateChange(event) {
                 if (event.data === window.YT.PlayerState.PLAYING) {
@@ -3126,7 +3135,7 @@
               wantsToPlay = true;
               playing = true;
               prepareYoutube();
-              if (youtubeReady) youtubePlayer.playVideo();
+              if (youtubeReady) playYoutube();
               updateBtn();
             }
             return;
@@ -3138,7 +3147,7 @@
           if (youtubeId) {
             wantsToPlay = true;
             prepareYoutube();
-            if (youtubeReady) youtubePlayer.playVideo();
+            if (youtubeReady) playYoutube();
           } else if (CONFIG.music.url) {
             audioEl = new Audio(CONFIG.music.url);
             audioEl.loop = true;
@@ -3168,7 +3177,7 @@
           if (youtubeId) {
             wantsToPlay = playing;
             if (youtubeReady && !youtubeFailed) {
-              playing ? youtubePlayer.playVideo() : youtubePlayer.pauseVideo();
+              playing ? playYoutube() : youtubePlayer.pauseVideo();
             } else if (playing) {
               prepareYoutube();
             }
