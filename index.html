@@ -972,9 +972,11 @@
         pointer-events: none;
       }
       .drive-video-card .pcap {
+        display: -webkit-box;
+        min-height: 3.4rem;
         overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
       }
       .video-card-play {
         position: absolute;
@@ -2614,6 +2616,20 @@
           visibleCount: 6, // jumlah video rawak yang dipaparkan pada satu masa
           folderId: "1rnAhKZREaqcYklp2jxxH4nGkX8J7XZCe", // cth: ID selepas /folders/ dalam URL Google Drive
           apiKey: "AIzaSyAADDt0Twxfy9By5-8wfxP5Eb8S06wHNKg", // Google Cloud Browser API key (HTTP referrer restricted)
+          captions: [
+            "a little piece of us",
+            "one for the memories",
+            "ordinary days, favourite moments",
+            "you make life feel cinematic",
+            "another moment worth keeping",
+            "us, exactly as we are",
+            "my favourite kind of forever",
+            "the little moments mean the most",
+            "life looks better with you",
+            "a scene I would replay forever",
+            "wherever you are feels like home",
+            "still my favourite story",
+          ],
         },
 
         // ---------- CHAPTER 04: scrapbook ----------
@@ -3557,8 +3573,7 @@
         function listUrl(pageToken = "") {
           const params = new URLSearchParams({
             q: `'${config.folderId}' in parents and trashed = false and mimeType contains 'video/'`,
-            fields:
-              "nextPageToken,files(id,name,mimeType,thumbnailLink,createdTime,modifiedTime)",
+            fields: "nextPageToken,files(id,mimeType,thumbnailLink)",
             pageSize: "1000",
             key: config.apiKey,
           });
@@ -3574,19 +3589,16 @@
           return `https://www.googleapis.com/drive/v3/files/${encodeURIComponent(fileId)}?${params.toString()}`;
         }
 
-        function videoDate(video) {
-          const value = video.createdTime || video.modifiedTime;
-          const date = value ? new Date(value) : null;
-          if (!date || Number.isNaN(date.getTime())) return "Date unavailable";
-          return new Intl.DateTimeFormat("en-MY", {
-            day: "2-digit",
-            month: "long",
-            year: "numeric",
-            timeZone: "Asia/Kuala_Lumpur",
-          }).format(date);
+        function getVideoCaptions() {
+          const captions = Array.isArray(config.captions)
+            ? config.captions.filter(
+                (caption) => typeof caption === "string" && caption.trim(),
+              )
+            : [];
+          return captions.length ? captions : ["one of our favourite moments"];
         }
 
-        function createVideoCard(video, index) {
+        function createVideoCard(video, index, captionText) {
           const card = document.createElement("button");
           card.type = "button";
           card.className = "polaroid clickable p-reveal in drive-video-card";
@@ -3595,7 +3607,7 @@
           card.style.setProperty("--r", `${(Math.random() * 6 - 3).toFixed(1)}deg`);
           card.setAttribute(
             "aria-label",
-            `Open video from ${videoDate(video)} fullscreen with sound`,
+            `Open “${captionText}” fullscreen with sound`,
           );
 
           const inner = document.createElement("span");
@@ -3632,7 +3644,7 @@
 
           const caption = document.createElement("span");
           caption.className = "pcap";
-          caption.textContent = videoDate(video);
+          caption.textContent = captionText;
 
           const date = document.createElement("span");
           date.className = "pdate";
@@ -3648,7 +3660,7 @@
             event.preventDefault();
             event.stopPropagation();
             lastVideoCard = card;
-            openVideo(index);
+            openVideo(index, captionText);
           });
           return card;
         }
@@ -3692,8 +3704,13 @@
             0,
             getVisibleCount(),
           );
-          const cards = indexes.map((index) =>
-            createVideoCard(allVideos[index], index),
+          const captions = shuffleArr(getVideoCaptions());
+          const cards = indexes.map((index, cardIndex) =>
+            createVideoCard(
+              allVideos[index],
+              index,
+              captions[cardIndex % captions.length],
+            ),
           );
           const everyMemory = shuffleArr([...scrapbook.children, ...cards]);
           const fragment = document.createDocumentFragment();
@@ -3774,7 +3791,7 @@
           }
         }
 
-        async function openVideo(index) {
+        async function openVideo(index, captionText = "one of our memories") {
           const video = allVideos[index];
           if (!video) return;
 
@@ -3788,11 +3805,8 @@
           videoEl.muted = false;
           videoEl.src = mediaUrl(video.id);
           if (video.thumbnailLink) videoEl.poster = video.thumbnailLink;
-          videoEl.setAttribute(
-            "aria-label",
-            `Video memory from ${videoDate(video)}`,
-          );
-          $("#videoFullscreenName").textContent = videoDate(video);
+          videoEl.setAttribute("aria-label", `Video memory: ${captionText}`);
+          $("#videoFullscreenName").textContent = captionText;
 
           // Show the overlay immediately so every click has visible feedback,
           // even while a large Google Drive video is still buffering.

@@ -25,13 +25,18 @@ or:
 hero: "assets/images/where-we-met.jpg",
 ```
 
-The photo sections render local images directly. Chapter 04 adds six random videos from a public Google Drive folder to the scrapbook. These cards show the video's Google Drive date instead of its filename and autoplay as muted, looping previews; tapping one opens it fullscreen with sound and native controls. Visitors can also shuffle to a new random selection. Configure it in `index.html`:
+The photo sections render local images directly. Chapter 04 adds six random videos from a public Google Drive folder to the scrapbook. Each card uses a short romantic caption instead of an unreliable Drive date or filename and autoplays as a muted, looping preview; tapping one opens it fullscreen with sound and native controls. Visitors can also shuffle to a new random selection. Configure the videos and editable caption list in `index.html`.
 
 ```js
 driveVideos: {
   visibleCount: 6,
   folderId: "YOUR_GOOGLE_DRIVE_FOLDER_ID",
   apiKey: "YOUR_RESTRICTED_BROWSER_API_KEY",
+  captions: [
+    "a little piece of us",
+    "one for the memories",
+    "ordinary days, favourite moments",
+  ],
 },
 ```
 
