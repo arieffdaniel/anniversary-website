@@ -25,7 +25,7 @@ or:
 hero: "assets/images/where-we-met.jpg",
 ```
 
-The photo sections render local images directly. Chapter 04 adds six random videos from a public Google Drive folder to the scrapbook. Each card is numbered **Memory 01** through **Memory 06** and autoplays as a muted, looping preview; tapping one opens it fullscreen with sound and native controls. Visitors can also shuffle to a new random selection. Configure the videos in `index.html`.
+The photo sections render local images directly. Chapter 04 adds six random videos from a public Google Drive folder to the scrapbook. Every video receives its own stable archive-wide number, such as **Memory 001** or **Memory 247**, based on its order in the complete Drive collection; Shuffle keeps that video's number instead of resetting the visible cards to 01–06. Cards autoplay as muted, looping previews, and tapping one opens it fullscreen with sound and native controls. Configure the videos in `index.html`.
 
 ```js
 driveVideos: {

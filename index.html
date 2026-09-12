@@ -3559,7 +3559,8 @@
         function listUrl(pageToken = "") {
           const params = new URLSearchParams({
             q: `'${config.folderId}' in parents and trashed = false and mimeType contains 'video/'`,
-            fields: "nextPageToken,files(id,mimeType,thumbnailLink)",
+            fields:
+              "nextPageToken,files(id,mimeType,thumbnailLink,createdTime)",
             pageSize: "1000",
             key: config.apiKey,
           });
@@ -3575,8 +3576,24 @@
           return `https://www.googleapis.com/drive/v3/files/${encodeURIComponent(fileId)}?${params.toString()}`;
         }
 
-        function createVideoCard(video, index, memoryNumber) {
-          const captionText = `Memory ${String(memoryNumber).padStart(2, "0")}`;
+        function assignMemoryNumbers(videos) {
+          return [...videos]
+            .sort((a, b) => {
+              const byCreatedTime = (a.createdTime || "").localeCompare(
+                b.createdTime || "",
+              );
+              return byCreatedTime || a.id.localeCompare(b.id);
+            })
+            .map((video, index) => ({ ...video, memoryNumber: index + 1 }));
+        }
+
+        function getMemoryLabel(video) {
+          const digits = Math.max(3, String(allVideos.length).length);
+          return `Memory ${String(video.memoryNumber).padStart(digits, "0")}`;
+        }
+
+        function createVideoCard(video, index) {
+          const captionText = getMemoryLabel(video);
           const card = document.createElement("button");
           card.type = "button";
           card.className = "polaroid clickable p-reveal in drive-video-card";
@@ -3682,8 +3699,8 @@
             0,
             getVisibleCount(),
           );
-          const cards = indexes.map((index, cardIndex) =>
-            createVideoCard(allVideos[index], index, cardIndex + 1),
+          const cards = indexes.map((index) =>
+            createVideoCard(allVideos[index], index),
           );
           const fragment = document.createDocumentFragment();
           cards.forEach((card) => fragment.appendChild(card));
@@ -3728,7 +3745,10 @@
               throw new Error("No public video files were found in this folder.");
             }
 
-            allVideos = shuffleArr(videos);
+            // Assign each Drive video its own archive-wide number before any
+            // random display shuffle. Newer uploads naturally receive later
+            // numbers, so a video keeps its label between Shuffle presses.
+            allVideos = shuffleArr(assignMemoryNumbers(videos));
             videosLoaded = true;
             renderVideoBatch();
             setState("ready");
