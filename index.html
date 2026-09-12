@@ -851,127 +851,34 @@
         margin-top: 6vh;
       }
 
-      /* ---------- CHAPTER 04: Google Drive video memories ---------- */
-      .drive-videos {
-        width: min(900px, 100%);
-        margin: 12vh auto 10vh;
+      /* ---------- CHAPTER 04: Drive videos inside the scrapbook ---------- */
+      .drive-video-tools {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 48px;
+        margin: 7vh 0 1vh;
       }
-      .drive-video-head {
-        text-align: center;
-        margin-bottom: 2.2rem;
-      }
-      .drive-video-kicker {
-        display: block;
-        font-family: var(--mono);
-        font-size: 0.6rem;
-        letter-spacing: 0.42em;
-        color: var(--blue);
-      }
-      .drive-video-head h3 {
-        margin-top: 1rem;
-        font-size: clamp(2rem, 5vw, 3.4rem);
-        font-weight: 300;
-        font-style: italic;
-      }
-      .drive-video-head p {
-        margin-top: 0.8rem;
-        color: var(--ink-dim);
-        font-size: 1.05rem;
-      }
-      .video-shell {
-        border: 1px solid var(--line);
-        background: rgba(11, 17, 32, 0.72);
-        box-shadow: 0 26px 70px -36px rgba(0, 0, 0, 0.95);
-        padding: clamp(0.6rem, 2vw, 1rem);
-      }
-      .video-screen {
-        position: relative;
-        aspect-ratio: 16 / 9;
-        overflow: hidden;
-        background: #020306;
-      }
-      .video-screen > [hidden],
-      .video-toolbar[hidden] {
+      .drive-video-tools > [hidden] {
         display: none !important;
       }
-      #videoPlayer,
-      #videoFrame {
-        width: 100%;
-        height: 100%;
-      }
-      #videoPlayer {
-        position: relative;
-      }
-      #videoFrame {
-        display: block;
-        background: #000;
-        object-fit: contain;
-      }
-      .video-open {
-        position: absolute;
-        inset: 0;
-        width: 100%;
-        border: 0;
-        background: linear-gradient(180deg, transparent 45%, rgba(2, 3, 6, 0.72));
-        color: var(--ink);
-        cursor: pointer;
+      .video-status-inline,
+      .video-toolbar {
         display: flex;
-        flex-direction: column;
         align-items: center;
         justify-content: center;
-        gap: 0.85rem;
-        font-family: var(--mono);
-        font-size: 0.58rem;
-        letter-spacing: 0.28em;
-      }
-      .video-play-icon {
-        width: 58px;
-        height: 58px;
-        border-radius: 50%;
-        display: grid;
-        place-items: center;
-        border: 1px solid rgba(240, 233, 220, 0.58);
-        background: rgba(7, 11, 20, 0.45);
-        backdrop-filter: blur(7px);
-        transition:
-          transform 0.35s,
-          background 0.35s,
-          border-color 0.35s;
-      }
-      .video-play-icon svg {
-        width: 22px;
-        height: 22px;
-        margin-left: 3px;
-        fill: currentColor;
-      }
-      .video-open:hover .video-play-icon,
-      .video-open:focus-visible .video-play-icon {
-        transform: scale(1.08);
-        background: rgba(169, 199, 232, 0.18);
-        border-color: var(--blue);
-      }
-      .video-open[hidden] {
-        display: none;
-      }
-      .video-status {
-        position: absolute;
-        inset: 0;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        gap: 1rem;
-        padding: 2rem;
-        text-align: center;
+        flex-wrap: wrap;
+        gap: 0.9rem;
         color: var(--ink-dim);
+        text-align: center;
       }
-      .video-status p {
-        max-width: 52ch;
-        line-height: 1.7;
+      .video-status-inline p {
+        line-height: 1.6;
       }
       .video-spinner {
-        width: 28px;
-        height: 28px;
+        width: 22px;
+        height: 22px;
+        flex: none;
         border-radius: 50%;
         border: 1px solid var(--line);
         border-top-color: var(--blue);
@@ -982,42 +889,17 @@
           transform: rotate(360deg);
         }
       }
-      .video-error-title {
-        color: var(--pink);
-        font-family: var(--mono);
-        font-size: 0.66rem;
-        letter-spacing: 0.28em;
-      }
-      .video-toolbar {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 1.5rem;
-        padding: 1.1rem 0.25rem 0.2rem;
-      }
-      .video-details {
-        min-width: 0;
-      }
+      .video-error-title,
       .video-counter {
-        display: block;
         font-family: var(--mono);
         font-size: 0.58rem;
-        letter-spacing: 0.22em;
+        letter-spacing: 0.24em;
+      }
+      .video-error-title {
+        color: var(--pink);
+      }
+      .video-counter {
         color: var(--blue);
-      }
-      .video-name {
-        margin-top: 0.38rem;
-        color: var(--ink-dim);
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        max-width: 44ch;
-      }
-      .video-actions {
-        display: flex;
-        align-items: center;
-        gap: 0.6rem;
-        flex: none;
       }
       .video-btn {
         display: inline-flex;
@@ -1038,15 +920,11 @@
           border-color 0.3s,
           background 0.3s;
       }
-      .video-btn:hover:not(:disabled),
+      .video-btn:hover,
       .video-btn:focus-visible {
         color: var(--ink);
         border-color: rgba(169, 199, 232, 0.55);
         background: rgba(169, 199, 232, 0.08);
-      }
-      .video-btn:disabled {
-        opacity: 0.32;
-        cursor: not-allowed;
       }
       .video-btn svg {
         width: 14px;
@@ -1056,6 +934,72 @@
         stroke-width: 1.7;
         stroke-linecap: round;
         stroke-linejoin: round;
+      }
+      .drive-video-card .ph {
+        position: relative;
+        aspect-ratio: 4 / 3;
+        background: #080b12;
+      }
+      .drive-video-card .ph img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      .drive-video-card .pcap {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      .video-card-play {
+        position: absolute;
+        inset: 0;
+        display: grid;
+        place-items: center;
+        color: #fff;
+        background: linear-gradient(180deg, transparent 45%, rgba(2, 3, 6, 0.4));
+      }
+      .video-card-play i {
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        display: grid;
+        place-items: center;
+        border: 1px solid rgba(255, 255, 255, 0.72);
+        background: rgba(7, 11, 20, 0.5);
+        backdrop-filter: blur(6px);
+        transition:
+          transform 0.35s,
+          background 0.35s;
+      }
+      .video-card-play svg {
+        width: 19px;
+        height: 19px;
+        margin-left: 3px;
+        fill: currentColor;
+      }
+      .drive-video-card:hover .video-card-play i,
+      .drive-video-card:focus-visible .video-card-play i {
+        transform: scale(1.1);
+        background: rgba(169, 199, 232, 0.3);
+      }
+      #videoFrame {
+        position: fixed;
+        left: -10000px;
+        top: 0;
+        width: 2px;
+        height: 2px;
+        opacity: 0;
+        pointer-events: none;
+        background: #000;
+        object-fit: contain;
+      }
+      #videoFrame:fullscreen,
+      #videoFrame:-webkit-full-screen {
+        position: static;
+        width: 100vw;
+        height: 100vh;
+        opacity: 1;
+        pointer-events: auto;
       }
 
       /* ---------- sticky sequences (ch05 & final) ---------- */
@@ -1915,21 +1859,12 @@
           width: 40px;
           height: 40px;
         }
+        .video-status-inline,
         .video-toolbar {
-          align-items: flex-start;
-          flex-direction: column;
-        }
-        .video-details,
-        .video-name {
-          width: 100%;
-          max-width: 100%;
-        }
-        .video-actions {
-          width: 100%;
+          flex-wrap: wrap;
         }
         .video-btn {
-          flex: 1;
-          padding-inline: 0.65rem;
+          padding-inline: 0.75rem;
         }
         .m-body {
           padding: 1.4rem 1.35rem 2rem;
@@ -2135,92 +2070,41 @@
           </div>
 
           <div
-            class="drive-videos reveal"
+            class="drive-video-tools reveal"
             id="driveVideoGallery"
             style="--d: 0.2s"
           >
-            <div class="drive-video-head">
-              <span class="drive-video-kicker">VIDEO ARCHIVE</span>
-              <h3>A random scene from us.</h3>
-              <p>Tap the video to watch fullscreen, or shuffle for another memory.</p>
+            <div class="video-status-inline" id="videoLoading" role="status">
+              <span class="video-spinner" aria-hidden="true"></span>
+              <p>Loading videos into the scrapbook…</p>
             </div>
-            <div class="video-shell">
-              <div class="video-screen">
-                <div class="video-status" id="videoLoading" role="status">
-                  <span class="video-spinner" aria-hidden="true"></span>
-                  <p>Loading our video memories…</p>
-                </div>
-                <div class="video-status" id="videoError" role="alert" hidden>
-                  <span class="video-error-title"
-                    >VIDEO ARCHIVE UNAVAILABLE</span
-                  >
-                  <p id="videoErrorText">The videos could not be loaded.</p>
-                  <button class="video-btn" id="videoRetry" type="button">
-                    TRY AGAIN
-                  </button>
-                </div>
-                <div id="videoPlayer" hidden>
-                  <video
-                    id="videoFrame"
-                    muted
-                    playsinline
-                    preload="metadata"
-                  ></video>
-                  <button
-                    class="video-open"
-                    id="videoOpen"
-                    type="button"
-                    aria-label="Play this memory fullscreen"
-                  >
-                    <span class="video-play-icon" aria-hidden="true">
-                      <svg viewBox="0 0 24 24">
-                        <path d="m9 6 9 6-9 6z" />
-                      </svg>
-                    </span>
-                    <span>PLAY FULLSCREEN</span>
-                  </button>
-                </div>
-              </div>
-              <div class="video-toolbar" id="videoToolbar" hidden>
-                <div class="video-details">
-                  <span
-                    class="video-counter"
-                    id="videoCounter"
-                    aria-live="polite"
-                  ></span>
-                  <p class="video-name" id="videoName"></p>
-                </div>
-                <div class="video-actions">
-                  <button
-                    class="video-btn"
-                    id="videoPrev"
-                    type="button"
-                    disabled
-                  >
-                    <svg viewBox="0 0 24 24" aria-hidden="true">
-                      <path d="m15 18-6-6 6-6" />
-                    </svg>
-                    PREVIOUS
-                  </button>
-                  <button class="video-btn" id="videoShuffle" type="button">
-                    <svg viewBox="0 0 24 24" aria-hidden="true">
-                      <path d="M16 3h5v5" />
-                      <path d="M4 20 21 3" />
-                      <path d="M21 16v5h-5" />
-                      <path d="m15 15 6 6" />
-                      <path d="M4 4 9 9" />
-                    </svg>
-                    SHUFFLE
-                  </button>
-                </div>
-              </div>
+            <div class="video-status-inline" id="videoError" role="alert" hidden>
+              <span class="video-error-title">VIDEO ARCHIVE UNAVAILABLE</span>
+              <p id="videoErrorText">The videos could not be loaded.</p>
+              <button class="video-btn" id="videoRetry" type="button">
+                TRY AGAIN
+              </button>
+            </div>
+            <div class="video-toolbar" id="videoToolbar" hidden>
+              <span class="video-counter" id="videoCounter" aria-live="polite"></span>
+              <button class="video-btn" id="videoShuffle" type="button">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M16 3h5v5" />
+                  <path d="M4 20 21 3" />
+                  <path d="M21 16v5h-5" />
+                  <path d="m15 15 6 6" />
+                  <path d="M4 4 9 9" />
+                </svg>
+                SHUFFLE ALL
+              </button>
             </div>
           </div>
 
           <p class="ch-note reveal" style="text-align: center; margin: 4vh 0 0">
-            TAP A PHOTO TO VIEW IT FULLSCREEN
+            TAP A PHOTO OR VIDEO TO VIEW IT FULLSCREEN
           </p>
           <div class="scrap" id="scrap"></div>
+          <video id="videoFrame" controls playsinline preload="metadata"></video>
         </div>
       </section>
 
@@ -3593,11 +3477,9 @@
         return { start, toggle, pause };
       })();
 
-      /* ---------- Google Drive video archive (chapter 04) ---------- */
+      /* ---------- Google Drive videos inside the Chapter 04 scrapbook ---------- */
       const DriveVideos = (() => {
         let allVideos = [];
-        let currentIndex = -1;
-        let history = [];
         let videosLoaded = false;
         let loading = false;
         let initialized = false;
@@ -3605,15 +3487,9 @@
         const config = CONFIG.driveVideos || {};
 
         function setState(state, message = "") {
-          const loadingEl = $("#videoLoading");
-          const errorEl = $("#videoError");
-          const playerEl = $("#videoPlayer");
-          const toolbarEl = $("#videoToolbar");
-
-          loadingEl.hidden = state !== "loading";
-          errorEl.hidden = state !== "error";
-          playerEl.hidden = state !== "ready";
-          toolbarEl.hidden = state !== "ready";
+          $("#videoLoading").hidden = state !== "loading";
+          $("#videoError").hidden = state !== "error";
+          $("#videoToolbar").hidden = state !== "ready";
           if (message) $("#videoErrorText").textContent = message;
         }
 
@@ -3655,6 +3531,83 @@
           return `https://www.googleapis.com/drive/v3/files/${encodeURIComponent(fileId)}?${params.toString()}`;
         }
 
+        function videoTitle(name) {
+          return name
+            .replace(/\.[^.]+$/, "")
+            .replace(/[_-]+/g, " ")
+            .trim();
+        }
+
+        function createVideoCard(video, index) {
+          const card = document.createElement("button");
+          card.type = "button";
+          card.className = "polaroid clickable p-reveal in drive-video-card";
+          card.dataset.videoIndex = index;
+          card.dataset.dep = (Math.random() * 0.8 + 0.4).toFixed(2);
+          card.style.setProperty("--r", `${(Math.random() * 6 - 3).toFixed(1)}deg`);
+          card.setAttribute("aria-label", `Play ${videoTitle(video.name)} fullscreen`);
+
+          const inner = document.createElement("span");
+          inner.className = "pol-in";
+          inner.style.setProperty("--fd", `${(Math.random() * -7).toFixed(1)}s`);
+
+          const photo = document.createElement("span");
+          photo.className = "ph";
+          if (video.thumbnailLink) {
+            const image = document.createElement("img");
+            image.src = video.thumbnailLink;
+            image.alt = "";
+            image.loading = "lazy";
+            photo.appendChild(image);
+          }
+
+          const play = document.createElement("span");
+          play.className = "video-card-play";
+          play.setAttribute("aria-hidden", "true");
+          play.innerHTML =
+            '<i><svg viewBox="0 0 24 24"><path d="m9 6 9 6-9 6z"/></svg></i>';
+          photo.appendChild(play);
+
+          const caption = document.createElement("span");
+          caption.className = "pcap";
+          caption.textContent = videoTitle(video.name) || "video memory";
+
+          const date = document.createElement("span");
+          date.className = "pdate";
+          date.textContent = "VIDEO · TAP TO PLAY";
+
+          const tape = document.createElement("i");
+          tape.className = "tape";
+          inner.append(photo, caption, date, tape);
+          card.appendChild(inner);
+          return card;
+        }
+
+        function renderAllVideos() {
+          const scrapbook = $("#scrap");
+          $$("#scrap .drive-video-card").forEach((card) => card.remove());
+
+          const cards = allVideos.map(createVideoCard);
+          const everyMemory = shuffleArr([...scrapbook.children, ...cards]);
+          const fragment = document.createDocumentFragment();
+          everyMemory.forEach((card) => fragment.appendChild(card));
+          scrapbook.appendChild(fragment);
+
+          $("#videoCounter").textContent =
+            `${allVideos.length} VIDEO ${allVideos.length === 1 ? "MEMORY" : "MEMORIES"}`;
+        }
+
+        function shuffleAllCards() {
+          const scrapbook = $("#scrap");
+          const cards = shuffleArr([...scrapbook.children]);
+          const fragment = document.createDocumentFragment();
+          cards.forEach((card) => {
+            card.style.setProperty("--r", `${(Math.random() * 6 - 3).toFixed(1)}deg`);
+            fragment.appendChild(card);
+          });
+          scrapbook.appendChild(fragment);
+        }
+
         async function loadVideos(force = false) {
           if (loading || (videosLoaded && !force)) return;
           const configError = getConfigError();
@@ -3681,16 +3634,14 @@
               pageToken = data.nextPageToken || "";
             } while (pageToken);
 
-            if (!videos.length)
-              throw new Error(
-                "No public video files were found in this folder.",
-              );
+            if (!videos.length) {
+              throw new Error("No public video files were found in this folder.");
+            }
 
             allVideos = shuffleArr(videos);
             videosLoaded = true;
-            history = [];
-            currentIndex = 0;
-            showVideo(currentIndex);
+            renderAllVideos();
+            setState("ready");
           } catch (error) {
             console.error("Google Drive video load error:", error);
             setState(
@@ -3702,45 +3653,19 @@
           }
         }
 
-        function showVideo(index) {
+        async function openVideo(index) {
           const video = allVideos[index];
           if (!video) return;
 
-          currentIndex = index;
           const videoEl = $("#videoFrame");
           videoEl.pause();
-          videoEl.controls = false;
-          videoEl.muted = true;
-          $("#videoOpen").hidden = false;
-          videoEl.removeAttribute("src");
-          videoEl.removeAttribute("poster");
-          videoEl.load();
+          videoEl.muted = false;
           videoEl.src = mediaUrl(video.id);
           if (video.thumbnailLink) videoEl.poster = video.thumbnailLink;
           videoEl.setAttribute("aria-label", `Video memory: ${video.name}`);
           videoEl.load();
 
-          $("#videoCounter").textContent =
-            `MEMORY ${index + 1} / ${allVideos.length}`;
-          $("#videoName").textContent = video.name;
-          $("#videoOpen").setAttribute(
-            "aria-label",
-            `Play ${video.name} fullscreen`,
-          );
-          $("#videoPrev").disabled = history.length === 0;
-          setState("ready");
-        }
-
-        async function openFullscreenVideo() {
-          const videoEl = $("#videoFrame");
-          if (currentIndex < 0 || !videoEl.src) return;
-
           Music.pause();
-          videoEl.controls = true;
-          videoEl.muted = false;
-
-          // Both calls begin directly inside the click event, which is required
-          // by mobile browsers for fullscreen playback with sound.
           const playPromise = videoEl.play();
           try {
             if (videoEl.requestFullscreen) {
@@ -3748,69 +3673,45 @@
             } else if (videoEl.webkitEnterFullscreen) {
               videoEl.webkitEnterFullscreen();
             } else {
-              // Keep native controls available if fullscreen is unsupported.
-              $("#videoOpen").hidden = true;
+              throw new Error("Fullscreen video is not supported by this browser.");
             }
             await playPromise;
           } catch (error) {
             console.warn("Fullscreen video playback was unavailable:", error);
-            // Playback can still continue inline using the native controls.
-            $("#videoOpen").hidden = true;
+            videoEl.pause();
+            setState(
+              "error",
+              "This video could not be played fullscreen. Try another video or check its sharing settings.",
+            );
           }
         }
 
-        function resetVideoPreview() {
+        function resetFullscreenVideo() {
           const videoEl = $("#videoFrame");
           videoEl.pause();
-          videoEl.controls = false;
           videoEl.muted = true;
-          $("#videoOpen").hidden = false;
-        }
-
-        function shuffleVideo() {
-          if (!allVideos.length) return;
-          history.push(currentIndex);
-          let next = currentIndex;
-          while (next === currentIndex && allVideos.length > 1) {
-            next = Math.floor(Math.random() * allVideos.length);
-          }
-          showVideo(next);
-        }
-
-        function prevVideo() {
-          if (!history.length) return;
-          showVideo(history.pop());
         }
 
         function init() {
           if (initialized) return;
           initialized = true;
 
-          $("#videoShuffle").addEventListener("click", shuffleVideo);
-          $("#videoPrev").addEventListener("click", prevVideo);
+          $("#videoShuffle").addEventListener("click", shuffleAllCards);
           $("#videoRetry").addEventListener("click", () => loadVideos(true));
-          $("#videoOpen").addEventListener("click", openFullscreenVideo);
           $("#videoFrame").addEventListener("play", () => Music.pause());
-          $("#videoFrame").addEventListener("webkitendfullscreen", resetVideoPreview);
-          $("#videoFrame").addEventListener("ended", () => {
-            if (!document.fullscreenElement && !$("#videoFrame").webkitDisplayingFullscreen) {
-              resetVideoPreview();
-            }
-          });
+          $("#videoFrame").addEventListener("webkitendfullscreen", resetFullscreenVideo);
           document.addEventListener("fullscreenchange", () => {
-            if (!document.fullscreenElement && $("#videoFrame").controls) {
-              resetVideoPreview();
-            }
+            if (!document.fullscreenElement) resetFullscreenVideo();
           });
           $("#videoFrame").addEventListener("error", () => {
             if (!$("#videoFrame").currentSrc) return;
             setState(
               "error",
-              "This video could not be streamed. Make sure the file is public and uses a browser-supported format such as MP4 (H.264).",
+              "This video could not be streamed. Make sure it is public and uses MP4 (H.264).",
             );
           });
 
-          const gallery = $("#driveVideoGallery");
+          const target = $("#driveVideoGallery");
           if (!("IntersectionObserver" in window)) {
             loadVideos();
             return;
@@ -3822,12 +3723,12 @@
                 loadVideos();
               }
             },
-            { rootMargin: "300px 0px", threshold: 0.01 },
+            { rootMargin: "500px 0px", threshold: 0.01 },
           );
-          observer.observe(gallery);
+          observer.observe(target);
         }
 
-        return { init, loadVideos, shuffleVideo, prevVideo };
+        return { init, loadVideos, openVideo, shuffleAllCards };
       })();
 
       /* ---------- episodes overlay ---------- */
@@ -3924,8 +3825,13 @@
         renderLbx();
       }
       $("#scrap").addEventListener("click", (e) => {
-        const p = e.target.closest(".polaroid");
-        if (p) openLbx(+p.dataset.i);
+        const videoCard = e.target.closest(".drive-video-card");
+        if (videoCard) {
+          DriveVideos.openVideo(+videoCard.dataset.videoIndex);
+          return;
+        }
+        const photo = e.target.closest(".polaroid[data-i]");
+        if (photo) openLbx(+photo.dataset.i);
       });
       $("#lbxClose").addEventListener("click", closeLbx);
       $("#lbxPrev").addEventListener("click", () => lbxStep(-1));

@@ -25,7 +25,7 @@ or:
 hero: "assets/images/where-we-met.jpg",
 ```
 
-The photo sections render local images directly. Chapter 04 can show a random video from a public Google Drive folder; visitors can open it fullscreen or shuffle to another memory. Configure it in `index.html`:
+The photo sections render local images directly. Chapter 04 adds every video from a public Google Drive folder to the same scrapbook grid as the photos. Visitors can open any video fullscreen or shuffle all the cards. Configure it in `index.html`:
 
 ```js
 driveVideos: {
