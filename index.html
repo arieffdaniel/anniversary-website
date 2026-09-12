@@ -3557,7 +3557,8 @@
         function listUrl(pageToken = "") {
           const params = new URLSearchParams({
             q: `'${config.folderId}' in parents and trashed = false and mimeType contains 'video/'`,
-            fields: "nextPageToken,files(id,name,mimeType,thumbnailLink)",
+            fields:
+              "nextPageToken,files(id,name,mimeType,thumbnailLink,createdTime,modifiedTime)",
             pageSize: "1000",
             key: config.apiKey,
           });
@@ -3573,11 +3574,16 @@
           return `https://www.googleapis.com/drive/v3/files/${encodeURIComponent(fileId)}?${params.toString()}`;
         }
 
-        function videoTitle(name) {
-          return name
-            .replace(/\.[^.]+$/, "")
-            .replace(/[_-]+/g, " ")
-            .trim();
+        function videoDate(video) {
+          const value = video.createdTime || video.modifiedTime;
+          const date = value ? new Date(value) : null;
+          if (!date || Number.isNaN(date.getTime())) return "Date unavailable";
+          return new Intl.DateTimeFormat("en-MY", {
+            day: "2-digit",
+            month: "long",
+            year: "numeric",
+            timeZone: "Asia/Kuala_Lumpur",
+          }).format(date);
         }
 
         function createVideoCard(video, index) {
@@ -3589,7 +3595,7 @@
           card.style.setProperty("--r", `${(Math.random() * 6 - 3).toFixed(1)}deg`);
           card.setAttribute(
             "aria-label",
-            `Open ${videoTitle(video.name)} fullscreen with sound`,
+            `Open video from ${videoDate(video)} fullscreen with sound`,
           );
 
           const inner = document.createElement("span");
@@ -3626,7 +3632,7 @@
 
           const caption = document.createElement("span");
           caption.className = "pcap";
-          caption.textContent = videoTitle(video.name) || "video memory";
+          caption.textContent = videoDate(video);
 
           const date = document.createElement("span");
           date.className = "pdate";
@@ -3782,8 +3788,11 @@
           videoEl.muted = false;
           videoEl.src = mediaUrl(video.id);
           if (video.thumbnailLink) videoEl.poster = video.thumbnailLink;
-          videoEl.setAttribute("aria-label", `Video memory: ${video.name}`);
-          $("#videoFullscreenName").textContent = videoTitle(video.name);
+          videoEl.setAttribute(
+            "aria-label",
+            `Video memory from ${videoDate(video)}`,
+          );
+          $("#videoFullscreenName").textContent = videoDate(video);
 
           // Show the overlay immediately so every click has visible feedback,
           // even while a large Google Drive video is still buffering.
