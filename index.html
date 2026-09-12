@@ -2425,8 +2425,8 @@
 
         // ---------- muzik latar ----------
         // ✏️ Boleh guna URL YouTube atau fail audio, cth "music/our-song.mp3".
-        // YouTube dimainkan melalui IFrame Player API selepas pengunjung menekan
-        // PLAY OUR STORY / SKIP INTRO (browser tidak benarkan audio tanpa interaksi).
+        // YouTube akan cuba autoplay semasa halaman dibuka. Jika browser menyekat
+        // audio autoplay, sentuhan/klik pertama pengunjung akan memulakannya.
         // Jika URL kosong, website akan mainkan ambient score yang dijana sendiri.
         music: {
           url: "https://youtu.be/pO3SgjYo90s?si=ddfdDNl3OdxYXqHF",
@@ -3016,7 +3016,7 @@
             height: "200",
             videoId: youtubeId,
             playerVars: {
-              autoplay: 0,
+              autoplay: CONFIG.music.autoplay ? 1 : 0,
               controls: 0,
               disablekb: 1,
               fs: 0,
@@ -3119,7 +3119,19 @@
         }
 
         function start() {
-          if (started) return;
+          // A second call can happen inside a user gesture after the browser has
+          // blocked the first autoplay attempt. Retry YouTube in that case.
+          if (started) {
+            if (youtubeId && !youtubeFailed) {
+              wantsToPlay = true;
+              playing = true;
+              prepareYoutube();
+              if (youtubeReady) youtubePlayer.playVideo();
+              updateBtn();
+            }
+            return;
+          }
+
           started = true;
           playing = true;
 
@@ -3179,8 +3191,27 @@
           updateBtn();
         }
 
-        // Preload the API during the intro so it is ready when PLAY is clicked.
-        if (youtubeId) prepareYoutube();
+        // Start loading immediately and make a best-effort audible autoplay.
+        // Browsers that block it will allow the same request on the first gesture.
+        if (youtubeId) {
+          prepareYoutube();
+          if (CONFIG.music.autoplay) {
+            start();
+            const unlockAutoplay = () => {
+              document.removeEventListener("pointerdown", unlockAutoplay, true);
+              document.removeEventListener("keydown", unlockAutoplay, true);
+              start();
+            };
+            document.addEventListener("pointerdown", unlockAutoplay, {
+              once: true,
+              capture: true,
+            });
+            document.addEventListener("keydown", unlockAutoplay, {
+              once: true,
+              capture: true,
+            });
+          }
+        }
         $("#btnAudio").addEventListener("click", toggle);
         return { start, toggle };
       })();
