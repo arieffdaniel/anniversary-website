@@ -985,7 +985,11 @@
         place-items: center;
         color: #fff;
         pointer-events: none;
-        background: linear-gradient(180deg, transparent 45%, rgba(2, 3, 6, 0.4));
+        background: linear-gradient(
+          180deg,
+          transparent 45%,
+          rgba(2, 3, 6, 0.4)
+        );
       }
       .video-card-play i {
         width: 48px;
@@ -2150,7 +2154,12 @@
               <span class="video-spinner" aria-hidden="true"></span>
               <p>Loading videos into the scrapbook…</p>
             </div>
-            <div class="video-status-inline" id="videoError" role="alert" hidden>
+            <div
+              class="video-status-inline"
+              id="videoError"
+              role="alert"
+              hidden
+            >
               <span class="video-error-title">VIDEO ARCHIVE UNAVAILABLE</span>
               <p id="videoErrorText">The videos could not be loaded.</p>
               <button class="video-btn" id="videoRetry" type="button">
@@ -2158,7 +2167,11 @@
               </button>
             </div>
             <div class="video-toolbar" id="videoToolbar" hidden>
-              <span class="video-counter" id="videoCounter" aria-live="polite"></span>
+              <span
+                class="video-counter"
+                id="videoCounter"
+                aria-live="polite"
+              ></span>
               <button class="video-btn" id="videoShuffle" type="button">
                 <svg viewBox="0 0 24 24" aria-hidden="true">
                   <path d="M16 3h5v5" />
@@ -2402,11 +2415,11 @@
 
     <script>
       /* ════════════════════════════════════════════════════════════════
-   ✏️  TUKAR SEMUA CONTENT ANDA DI SINI — tak perlu sentuh kod lain
-   Letak gambar dalam "assets/images/" dan video dalam "assets/videos/".
-   Gantikan URL gambar picsum, cth: "assets/images/kami.jpg"
-   Untuk tambah memory baharu, cuma copy satu { ... } dan tukar isinya.
-   ════════════════════════════════════════════════════════════════ */
+       ✏️  TUKAR SEMUA CONTENT ANDA DI SINI — tak perlu sentuh kod lain
+       Letak gambar dalam "assets/images/" dan video dalam "assets/videos/".
+       Gantikan URL gambar picsum, cth: "assets/images/kami.jpg"
+       Untuk tambah memory baharu, cuma copy satu { ... } dan tukar isinya.
+       ════════════════════════════════════════════════════════════════ */
       const CONFIG = {
         names: { you: "Arieff", her: "Liyana" }, // ✏️ nama anda & nama dia
         season: {
@@ -2459,9 +2472,9 @@
             date: "23 MARCH 2024",
             title: "The First Conversation",
             story:
-              "It started with a message. Then another. Then somehow, three hours had passed and we were still talking — about everything and nothing at all. That night, I fell asleep smiling at my phone.",
+              "On this day, you were performing Umrah, and we were still just two complete strangers. I remember always asking people who went for Umrah to make doa for me, but with you, I didn't ask for anything specific. Maybe you thought I was being ego, but all I asked was, Semoga urusan kita dipermudahkan. Little did we know that this random conversation would become something so meaningful. From that moment, we would always make the same doa together, asking Allah to ease everything for us and, one day, our future together. Aamiin.",
             caption: "Some conversations never really end.",
-            image: "https://picsum.photos/seed/mem-conv/1200/900.jpg",
+            image: "assets/images/chat.png",
           },
           {
             date: "05 APRIL 2024",
@@ -2567,14 +2580,14 @@
             thumb: "https://picsum.photos/seed/adv-walk/400/300.jpg",
           },
           {
-            date: "DECEMBER 2024",
+            date: "MAY 2026",
             title: "Your Birthday",
             teaser: "Cake, candles, and one wish I already knew.",
             story:
               "I tried to make it perfect and mostly succeeded. You closed your eyes to make a wish, and I closed mine — because mine had already come true.",
-            caption: "Happiest of birthdays, my love.",
-            image: "https://picsum.photos/seed/adv-birthday/1600/1000.jpg",
-            thumb: "https://picsum.photos/seed/adv-birthday/400/300.jpg",
+            caption: "Happiest of birthdays, my lovely lilly.",
+            image: "assets/images/birthday header.png",
+            thumb: "assets/images/Tumbnail birthday.png",
           },
           {
             date: "JANUARY 2025",
@@ -2772,13 +2785,13 @@
       /* ---------- render semua content dari CONFIG ---------- */
       function polaroid(g, clickable, extra) {
         return `<${clickable ? "button" : "div"} class="polaroid ${clickable ? "clickable p-reveal" : ""}" ${extra || ""}>
-    <span class="pol-in" style="--fd:${(Math.random() * -7).toFixed(1)}s">
-      <span class="ph"><img src="${g.image}" alt="" loading="lazy"></span>
-      <span class="pcap">${g.caption}</span>
-      <span class="pdate">${g.date}</span>
-      <i class="tape"></i>
-    </span>
-  </${clickable ? "button" : "div"}>`;
+        <span class="pol-in" style="--fd:${(Math.random() * -7).toFixed(1)}s">
+          <span class="ph"><img src="${g.image}" alt="" loading="lazy"></span>
+          <span class="pcap">${g.caption}</span>
+          <span class="pdate">${g.date}</span>
+          <i class="tape"></i>
+        </span>
+      </${clickable ? "button" : "div"}>`;
       }
 
       function renderAll() {
@@ -2792,39 +2805,39 @@
         CHAPTERS.forEach((c) => {
           $(`#${c.id} .ch-head`).innerHTML =
             `<span class="ch-label reveal">${c.label}</span>
-       <h2 class="ch-title reveal" style="--d:.12s">${c.title}</h2>`;
+           <h2 class="ch-title reveal" style="--d:.12s">${c.title}</h2>`;
         });
 
         // CH1
         const m = CONFIG.meeting;
         $("#ch1body").innerHTML = `
-    <div class="ch-meta reveal"><span>${m.date}</span><i></i><span>${m.place}</span></div>
-    <figure class="hero reveal" style="--d:.15s">
-      <div class="hero-media"><img src="${m.hero}" alt=""></div>
-      <figcaption>FIG. 01 — ${m.figCaption}</figcaption>
-    </figure>
-    <div class="story">
-      <div class="reveal" style="--d:.1s">${m.story.map((p) => `<p>${p}</p>`).join("")}</div>
-    </div>
-    <blockquote class="bigquote reveal">"${m.quote}"</blockquote>
-    <div class="pol-row">${m.photos.map((p) => polaroid(p, false)).join("")}</div>`;
+        <div class="ch-meta reveal"><span>${m.date}</span><i></i><span>${m.place}</span></div>
+        <figure class="hero reveal" style="--d:.15s">
+          <div class="hero-media"><img src="${m.hero}" alt=""></div>
+          <figcaption>FIG. 01 — ${m.figCaption}</figcaption>
+        </figure>
+        <div class="story">
+          <div class="reveal" style="--d:.1s">${m.story.map((p) => `<p>${p}</p>`).join("")}</div>
+        </div>
+        <blockquote class="bigquote reveal">"${m.quote}"</blockquote>
+        <div class="pol-row">${m.photos.map((p) => polaroid(p, false)).join("")}</div>`;
 
         // CH2 — montage
         $("#memList").innerHTML = CONFIG.memories
           .map(
             (mm, i) => `
-    <article class="scene reveal">
-      <div class="scene-media">
-        <span class="scene-tag">SCENE 02.${i + 1}</span>
-        <figure><img src="${mm.image}" alt="" loading="lazy"></figure>
-      </div>
-      <div class="scene-body">
-        <span class="scene-date">${mm.date}</span>
-        <h3>${mm.title}</h3>
-        <p>${mm.story}</p>
-        <p class="scene-cap">"${mm.caption}"</p>
-      </div>
-    </article>`,
+        <article class="scene reveal">
+          <div class="scene-media">
+            <span class="scene-tag">SCENE 02.${i + 1}</span>
+            <figure><img src="${mm.image}" alt="" loading="lazy"></figure>
+          </div>
+          <div class="scene-body">
+            <span class="scene-date">${mm.date}</span>
+            <h3>${mm.title}</h3>
+            <p>${mm.story}</p>
+            <p class="scene-cap">"${mm.caption}"</p>
+          </div>
+        </article>`,
           )
           .join("");
 
@@ -2832,18 +2845,18 @@
         $("#tlList").innerHTML = CONFIG.adventures
           .map(
             (a, i) => `
-    <div class="tl-item reveal" data-i="${i}" tabindex="0" role="button" aria-label="${a.title}">
-      <span class="tl-dot"></span>
-      <div class="tl-card">
-        <img src="${a.thumb || a.image}" alt="" loading="lazy">
-        <div class="tl-txt">
-          <span class="scene-date">${a.date}</span>
-          <h3>${a.title}</h3>
-          <p>${a.teaser || a.story}</p>
-        </div>
-        <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
-      </div>
-    </div>`,
+        <div class="tl-item reveal" data-i="${i}" tabindex="0" role="button" aria-label="${a.title}">
+          <span class="tl-dot"></span>
+          <div class="tl-card">
+            <img src="${a.thumb || a.image}" alt="" loading="lazy">
+            <div class="tl-txt">
+              <span class="scene-date">${a.date}</span>
+              <h3>${a.title}</h3>
+              <p>${a.teaser || a.story}</p>
+            </div>
+            <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
+          </div>
+        </div>`,
           )
           .join("");
 
@@ -2870,18 +2883,18 @@
         // CH6 — keluarga
         const f = CONFIG.family;
         $("#famBody").innerHTML = `
-    <p class="bigquote reveal">Somewhere along the way, you became more than someone I love.</p>
-    <p class="bigquote reveal" style="--d:.25s">You became <em>part of my life.</em></p>
-    <div class="fam-row">
-      <div class="fam-block reveal">
-        <figure><img src="${f.hers.image}" alt="" loading="lazy"><figcaption>${f.hers.caption}</figcaption></figure>
-        <h3>${f.hers.title}</h3><p>${f.hers.story}</p>
-      </div>
-      <div class="fam-block offset reveal" style="--d:.2s">
-        <figure><img src="${f.mine.image}" alt="" loading="lazy"><figcaption>${f.mine.caption}</figcaption></figure>
-        <h3>${f.mine.title}</h3><p>${f.mine.story}</p>
-      </div>
-    </div>`;
+        <p class="bigquote reveal">Somewhere along the way, you became more than someone I love.</p>
+        <p class="bigquote reveal" style="--d:.25s">You became <em>part of my life.</em></p>
+        <div class="fam-row">
+          <div class="fam-block reveal">
+            <figure><img src="${f.hers.image}" alt="" loading="lazy"><figcaption>${f.hers.caption}</figcaption></figure>
+            <h3>${f.hers.title}</h3><p>${f.hers.story}</p>
+          </div>
+          <div class="fam-block offset reveal" style="--d:.2s">
+            <figure><img src="${f.mine.image}" alt="" loading="lazy"><figcaption>${f.mine.caption}</figcaption></figure>
+            <h3>${f.mine.title}</h3><p>${f.mine.story}</p>
+          </div>
+        </div>`;
 
         // FINAL — sticky sequence
         const finSteps = [
@@ -2899,10 +2912,10 @@
             )
             .join("") +
           `<div class="seq-item seq-fin" data-weight="2.2">
-         <button class="btn-heart" id="btnNext">${I.heart}<span>OPEN THE NEXT CHAPTER</span></button>
-         <span class="fin-hint">TAP TO CONTINUE</span>
-       </div>
-       <span class="seq-tag">FINAL CHAPTER</span>`;
+             <button class="btn-heart" id="btnNext">${I.heart}<span>OPEN THE NEXT CHAPTER</span></button>
+             <span class="fin-hint">TAP TO CONTINUE</span>
+           </div>
+           <span class="seq-tag">FINAL CHAPTER</span>`;
 
         // episod
         const eps = CHAPTERS.map((c) => ({
@@ -2913,26 +2926,26 @@
         $("#epList").innerHTML = eps
           .map(
             (e) => `
-    <button class="ep-row ${e.final ? "final" : ""}" data-target="${e.target}">
-      <span class="ep-num">${e.num}</span><span class="ep-name">${e.name}</span>
-    </button>`,
+        <button class="ep-row ${e.final ? "final" : ""}" data-target="${e.target}">
+          <span class="ep-num">${e.num}</span><span class="ep-name">${e.name}</span>
+        </button>`,
           )
           .join("");
 
         // end credits
         $("#creditsRoll").innerHTML = `
-    <div class="cr-title">OUR STORY</div>
-    <div class="cr-sub">SEASON ONE</div>
-    <div class="cr"><span>DIRECTED BY</span><b>${CONFIG.names.you}</b></div>
-    <div class="cr"><span>STARRING</span><b>${CONFIG.names.her} &amp; ${CONFIG.names.you}</b></div>
-    <div class="cr"><span>STORY BY</span><b>The two of us</b></div>
-    <div class="cr"><span>CINEMATOGRAPHY</span><b>Every stranger we asked to take our photo</b></div>
-    <div class="cr"><span>MUSIC</span><b>${CONFIG.music.title}</b></div>
-    <div class="cr"><span>ON LOCATION IN</span><b>${CONFIG.season.place} &amp; everywhere we went</b></div>
-    <div class="cr"><span>RUNNING TIME</span><b>365 days</b></div>
-    <div class="cr"><span>SPECIAL THANKS</span><b>Both our families</b></div>
-    <div class="cr"><span>BASED ON</span><b>A true story</b></div>
-    <div class="cr end"><span>TO BE CONTINUED</span><b>Season 02 — with you.</b></div>`;
+        <div class="cr-title">OUR STORY</div>
+        <div class="cr-sub">SEASON ONE</div>
+        <div class="cr"><span>DIRECTED BY</span><b>${CONFIG.names.you}</b></div>
+        <div class="cr"><span>STARRING</span><b>${CONFIG.names.her} &amp; ${CONFIG.names.you}</b></div>
+        <div class="cr"><span>STORY BY</span><b>The two of us</b></div>
+        <div class="cr"><span>CINEMATOGRAPHY</span><b>Every stranger we asked to take our photo</b></div>
+        <div class="cr"><span>MUSIC</span><b>${CONFIG.music.title}</b></div>
+        <div class="cr"><span>ON LOCATION IN</span><b>${CONFIG.season.place} &amp; everywhere we went</b></div>
+        <div class="cr"><span>RUNNING TIME</span><b>365 days</b></div>
+        <div class="cr"><span>SPECIAL THANKS</span><b>Both our families</b></div>
+        <div class="cr"><span>BASED ON</span><b>A true story</b></div>
+        <div class="cr end"><span>TO BE CONTINUED</span><b>Season 02 — with you.</b></div>`;
       }
 
       /* ---------- engine untuk scroll-sequence (ch5 & final) ---------- */
@@ -3600,7 +3613,10 @@
           card.dataset.videoIndex = index;
           card.dataset.memoryNumber = video.memoryNumber;
           card.dataset.dep = (Math.random() * 0.8 + 0.4).toFixed(2);
-          card.style.setProperty("--r", `${(Math.random() * 6 - 3).toFixed(1)}deg`);
+          card.style.setProperty(
+            "--r",
+            `${(Math.random() * 6 - 3).toFixed(1)}deg`,
+          );
           card.setAttribute(
             "aria-label",
             `Open “${captionText}” fullscreen with sound`,
@@ -3608,7 +3624,10 @@
 
           const inner = document.createElement("span");
           inner.className = "pol-in";
-          inner.style.setProperty("--fd", `${(Math.random() * -7).toFixed(1)}s`);
+          inner.style.setProperty(
+            "--fd",
+            `${(Math.random() * -7).toFixed(1)}s`,
+          );
 
           const photo = document.createElement("span");
           photo.className = "ph";
@@ -3743,7 +3762,9 @@
             } while (pageToken);
 
             if (!videos.length) {
-              throw new Error("No public video files were found in this folder.");
+              throw new Error(
+                "No public video files were found in this folder.",
+              );
             }
 
             // Assign each Drive video its own archive-wide number before any
