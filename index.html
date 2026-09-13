@@ -242,10 +242,15 @@
           transform 1.5s ease 0.1s,
           filter 1.3s ease 0.1s;
       }
+      /* Remove the finished intro from hit testing after its exit animation. */
+      #opening.hidden {
+        display: none;
+      }
       .op-line {
         position: absolute;
         inset: 0;
         display: flex;
+        pointer-events: none;
         align-items: center;
         justify-content: center;
         font-size: clamp(1.5rem, 4.6vw, 2.6rem);
@@ -271,6 +276,8 @@
         transform: translateY(-14px);
       }
       #op3 {
+        position: relative;
+        z-index: 2;
         opacity: 0;
         transform: translateY(22px);
         filter: blur(12px);
@@ -638,6 +645,16 @@
         width: min(215px, 42vw);
         margin: 0;
       }
+      /* Crop the taller middle Chapter 01 photo without changing the file. */
+      .pol-row .polaroid:nth-child(2) .ph {
+        aspect-ratio: 3 / 4;
+      }
+      .pol-row .polaroid:nth-child(2) .ph img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center;
+      }
 
       /* ---------- CHAPTER 02: montage ---------- */
       .scene {
@@ -839,6 +856,217 @@
         columns: 17rem;
         column-gap: 2rem;
         margin-top: 6vh;
+      }
+
+      /* ---------- CHAPTER 04: Drive videos inside the scrapbook ---------- */
+      .drive-video-tools {
+        position: relative;
+        z-index: 10;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 48px;
+        margin: 7vh 0 1vh;
+        pointer-events: auto;
+      }
+      .drive-video-tools > [hidden] {
+        display: none !important;
+      }
+      .video-status-inline,
+      .video-toolbar {
+        position: relative;
+        z-index: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 0.9rem;
+        color: var(--ink-dim);
+        text-align: center;
+        pointer-events: auto;
+      }
+      .video-status-inline p {
+        line-height: 1.6;
+      }
+      .video-spinner {
+        width: 22px;
+        height: 22px;
+        flex: none;
+        border-radius: 50%;
+        border: 1px solid var(--line);
+        border-top-color: var(--blue);
+        animation: videoSpin 0.9s linear infinite;
+      }
+      @keyframes videoSpin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+      .video-error-title,
+      .video-counter {
+        font-family: var(--mono);
+        font-size: 0.58rem;
+        letter-spacing: 0.24em;
+      }
+      .video-error-title {
+        color: var(--pink);
+      }
+      .video-counter {
+        color: var(--blue);
+      }
+      .video-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.65rem;
+        min-height: 40px;
+        border: 1px solid var(--line);
+        background: transparent;
+        color: var(--ink-dim);
+        cursor: pointer;
+        pointer-events: auto;
+        padding: 0.7rem 1rem;
+        font-family: var(--mono);
+        font-size: 0.58rem;
+        letter-spacing: 0.18em;
+        transition:
+          color 0.3s,
+          border-color 0.3s,
+          background 0.3s;
+      }
+      .video-btn:hover,
+      .video-btn:focus-visible {
+        color: var(--ink);
+        border-color: rgba(169, 199, 232, 0.55);
+        background: rgba(169, 199, 232, 0.08);
+      }
+      .video-btn svg {
+        width: 14px;
+        height: 14px;
+        fill: none;
+        stroke: currentColor;
+        stroke-width: 1.7;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+      .drive-video-card {
+        pointer-events: auto;
+      }
+      .drive-video-card .pol-in {
+        animation: none;
+      }
+      .drive-video-card .ph {
+        position: relative;
+        aspect-ratio: 4 / 3;
+        background: #080b12;
+      }
+      .drive-video-card .ph img,
+      .drive-video-preview {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      .drive-video-preview {
+        display: block;
+        background: #080b12;
+        pointer-events: none;
+      }
+      .drive-video-card .pcap {
+        display: -webkit-box;
+        min-height: 3.4rem;
+        overflow: hidden;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+      }
+      .video-card-play {
+        position: absolute;
+        inset: 0;
+        display: grid;
+        place-items: center;
+        color: #fff;
+        pointer-events: none;
+        background: linear-gradient(
+          180deg,
+          transparent 45%,
+          rgba(2, 3, 6, 0.4)
+        );
+      }
+      .video-card-play i {
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        display: grid;
+        place-items: center;
+        border: 1px solid rgba(255, 255, 255, 0.72);
+        background: rgba(7, 11, 20, 0.5);
+        backdrop-filter: blur(6px);
+        transition:
+          transform 0.35s,
+          background 0.35s;
+      }
+      .video-card-play svg {
+        width: 19px;
+        height: 19px;
+        fill: currentColor;
+      }
+      .drive-video-card:hover .video-card-play i,
+      .drive-video-card:focus-visible .video-card-play i {
+        transform: scale(1.1);
+        background: rgba(169, 199, 232, 0.3);
+      }
+      #videoLightbox {
+        position: fixed;
+        inset: 0;
+        z-index: 900;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: clamp(1rem, 4vw, 3rem);
+        background: rgba(2, 3, 7, 0.97);
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+        transition:
+          opacity 0.35s ease,
+          visibility 0.35s ease;
+      }
+      #videoLightbox.open {
+        opacity: 1;
+        visibility: visible;
+        pointer-events: auto;
+      }
+      .video-fullscreen-stage {
+        width: min(1200px, 100%);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+      }
+      #videoFrame {
+        display: block;
+        width: 100%;
+        max-height: calc(100vh - 7rem);
+        max-height: calc(100dvh - 7rem);
+        background: #000;
+        object-fit: contain;
+        box-shadow: 0 30px 90px rgba(0, 0, 0, 0.65);
+      }
+      .video-fullscreen-name {
+        max-width: min(70ch, 80vw);
+        color: var(--ink-dim);
+        font-family: var(--mono);
+        font-size: 0.58rem;
+        letter-spacing: 0.18em;
+        text-align: center;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      .video-fullscreen-close {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        z-index: 2;
       }
 
       /* ---------- sticky sequences (ch05 & final) ---------- */
@@ -1473,10 +1701,19 @@
         align-items: center;
         justify-content: center;
         opacity: 0;
-        transition: opacity 1.1s ease;
+        visibility: hidden;
+        pointer-events: none;
+        transition:
+          opacity 1.1s ease,
+          visibility 1.1s ease;
+      }
+      #finale.hidden {
+        display: none;
       }
       #finale.open {
         opacity: 1;
+        visibility: visible;
+        pointer-events: auto;
       }
       .fin-stage {
         text-align: center;
@@ -1698,6 +1935,13 @@
           width: 40px;
           height: 40px;
         }
+        .video-status-inline,
+        .video-toolbar {
+          flex-wrap: wrap;
+        }
+        .video-btn {
+          padding-inline: 0.75rem;
+        }
         .m-body {
           padding: 1.4rem 1.35rem 2rem;
         }
@@ -1900,8 +2144,49 @@
               ><span class="stat-l">MEMORIES</span>
             </div>
           </div>
+
+          <div
+            class="drive-video-tools"
+            id="driveVideoGallery"
+            style="--d: 0.2s"
+          >
+            <div class="video-status-inline" id="videoLoading" role="status">
+              <span class="video-spinner" aria-hidden="true"></span>
+              <p>Loading videos into the scrapbook…</p>
+            </div>
+            <div
+              class="video-status-inline"
+              id="videoError"
+              role="alert"
+              hidden
+            >
+              <span class="video-error-title">VIDEO ARCHIVE UNAVAILABLE</span>
+              <p id="videoErrorText">The videos could not be loaded.</p>
+              <button class="video-btn" id="videoRetry" type="button">
+                TRY AGAIN
+              </button>
+            </div>
+            <div class="video-toolbar" id="videoToolbar" hidden>
+              <span
+                class="video-counter"
+                id="videoCounter"
+                aria-live="polite"
+              ></span>
+              <button class="video-btn" id="videoShuffle" type="button">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M16 3h5v5" />
+                  <path d="M4 20 21 3" />
+                  <path d="M21 16v5h-5" />
+                  <path d="m15 15 6 6" />
+                  <path d="M4 4 9 9" />
+                </svg>
+                SHUFFLE VIDEOS
+              </button>
+            </div>
+          </div>
+
           <p class="ch-note reveal" style="text-align: center; margin: 4vh 0 0">
-            TAP A PHOTO TO VIEW IT FULLSCREEN
+            VIDEOS AUTOPLAY MUTED · TAP FOR FULLSCREEN + SOUND
           </p>
           <div class="scrap" id="scrap"></div>
         </div>
@@ -1953,6 +2238,30 @@
         <div class="seq" id="finSeq"><div class="seq-sticky"></div></div>
       </section>
     </main>
+
+    <!-- Full-page video player — opens only after a scrapbook video is clicked. -->
+    <div id="videoLightbox" aria-hidden="true">
+      <button
+        class="icon-btn video-fullscreen-close"
+        id="videoClose"
+        type="button"
+        aria-label="Close video"
+      >
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.6"
+          stroke-linecap="round"
+        >
+          <path d="M6 6l12 12M18 6 6 18" />
+        </svg>
+      </button>
+      <div class="video-fullscreen-stage">
+        <video id="videoFrame" controls playsinline preload="metadata"></video>
+        <p class="video-fullscreen-name" id="videoFullscreenName"></p>
+      </div>
+    </div>
 
     <!-- ══════════ SENARAI EPISOD (klik HUD) ══════════ -->
     <div id="episodes">
@@ -2106,10 +2415,11 @@
 
     <script>
       /* ════════════════════════════════════════════════════════════════
-   ✏️  TUKAR SEMUA CONTENT ANDA DI SINI — tak perlu sentuh kod lain
-   Gantikan URL gambar picsum dengan gambar anda, cth: "photos/kami.jpg"
-   Untuk tambah memory baharu, cuma copy satu { ... } dan tukar isinya.
-   ════════════════════════════════════════════════════════════════ */
+       ✏️  TUKAR SEMUA CONTENT ANDA DI SINI — tak perlu sentuh kod lain
+       Letak gambar dalam "assets/images/" dan video dalam "assets/videos/".
+       Gantikan URL gambar picsum, cth: "assets/images/kami.jpg"
+       Untuk tambah memory baharu, cuma copy satu { ... } dan tukar isinya.
+       ════════════════════════════════════════════════════════════════ */
       const CONFIG = {
         names: { you: "Arieff", her: "Liyana" }, // ✏️ nama anda & nama dia
         season: {
@@ -2120,9 +2430,9 @@
 
         // ---------- CHAPTER 01: hari pertama berjumpa ----------
         meeting: {
-          date: "22 March 2024",
-          place: "A little café, Kuala Lumpur", // ✏️ tarikh & tempat anda berjumpa
-          hero: "https://picsum.photos/seed/ourstory-cafe/1600/900.jpg",
+          date: "29 September 2025",
+          place: "10GRAM IOI PUTRAJAYA", // ✏️ tarikh & tempat anda berjumpa
+          hero: "assets/images/1st pages.png",
           figCaption: "THE PLACE WHERE IT ALL BEGAN",
           story: [
             "It was just another ordinary Friday. I remember the rain, the noise of the city, and then — you. We talked about nothing and everything until the café turned the lights down and politely asked us to leave.",
@@ -2133,19 +2443,24 @@
           photos: [
             // ✏️ gambar-gambar lama
             {
-              image: "https://picsum.photos/seed/firstday-1/560/640.jpg",
-              caption: "the beginning",
-              date: "22.03.24",
+              image: "assets/images/IMG_3921.jpg",
+              caption: "Our first photo together",
+              date: "29.09.25",
             },
             {
-              image: "https://picsum.photos/seed/firstday-2/560/640.jpg",
-              caption: "that rainy friday",
-              date: "22.03.24",
+              image: "assets/images/IMG_3915.jpg",
+              caption: "Our first food together",
+              date: "29.09.25",
             },
             {
-              image: "https://picsum.photos/seed/firstday-3/560/640.jpg",
-              caption: "us, before 'us'",
-              date: "22.03.24",
+              image: "assets/images/IMG_3991.jpg",
+              caption: "Our first selfie together",
+              date: "29.09.25",
+            },
+            {
+              image: "assets/images/IMG_3960.jpg",
+              caption: "Our first bowling together",
+              date: "29.09.25",
             },
           ],
         },
@@ -2154,12 +2469,14 @@
         // ✏️ tambah / buang scene — setiap { } = satu babak
         memories: [
           {
-            date: "23 MARCH 2024",
+            date: "1 SEPTEMBER 2025",
+
             title: "The First Conversation",
             story:
-              "It started with a message. Then another. Then somehow, three hours had passed and we were still talking — about everything and nothing at all. That night, I fell asleep smiling at my phone.",
-            caption: "Some conversations never really end.",
-            image: "https://picsum.photos/seed/mem-conv/1200/900.jpg",
+              "On this day, you were performing Umrah, and we were still just two complete strangers. I remember always asking people who went for Umrah to make doa for me, but with you, I didn't ask for anything specific. Maybe you thought I was being ego, but all I asked was, Semoga urusan kita dipermudahkan. Little did we know that this random conversation would become something so meaningful. From that moment, we would always make the same doa together, asking Allah to ease everything for us and, one day, our future together. Aamiin.",
+            caption:
+              "We were strangers when we made this doa. We just didn't know it would become our doa. Aamiin.",
+            image: "assets/images/chat.png",
           },
           {
             date: "05 APRIL 2024",
@@ -2265,14 +2582,14 @@
             thumb: "https://picsum.photos/seed/adv-walk/400/300.jpg",
           },
           {
-            date: "DECEMBER 2024",
+            date: "MAY 2026",
             title: "Your Birthday",
             teaser: "Cake, candles, and one wish I already knew.",
             story:
               "I tried to make it perfect and mostly succeeded. You closed your eyes to make a wish, and I closed mine — because mine had already come true.",
-            caption: "Happiest of birthdays, my love.",
-            image: "https://picsum.photos/seed/adv-birthday/1600/1000.jpg",
-            thumb: "https://picsum.photos/seed/adv-birthday/400/300.jpg",
+            caption: "Happiest of birthdays, my lovely lilly.",
+            image: "assets/images/birthday header.png",
+            thumb: "assets/images/Tumbnail birthday.png",
           },
           {
             date: "JANUARY 2025",
@@ -2306,70 +2623,19 @@
           },
         ],
 
-        // ---------- CHAPTER 04: galeri scrapbook (polaroid) ----------
-        // ✏️ tambah gambar dengan copy satu { } — caption gaya tulisan tangan
-        gallery: [
-          {
-            image: "https://picsum.photos/seed/gal-01/620/760.jpg",
-            caption: "golden hour",
-            date: "APR '24",
-          },
-          {
-            image: "https://picsum.photos/seed/gal-02/620/760.jpg",
-            caption: "mid-laugh",
-            date: "MAY '24",
-          },
-          {
-            image: "https://picsum.photos/seed/gal-03/620/760.jpg",
-            caption: "your favourite seat",
-            date: "JUN '24",
-          },
-          {
-            image: "https://picsum.photos/seed/gal-04/620/760.jpg",
-            caption: "random tuesday",
-            date: "JUL '24",
-          },
-          {
-            image: "https://picsum.photos/seed/gal-05/620/760.jpg",
-            caption: "us, being us",
-            date: "AUG '24",
-          },
-          {
-            image: "https://picsum.photos/seed/gal-06/620/760.jpg",
-            caption: "the little things",
-            date: "SEP '24",
-          },
-          {
-            image: "https://picsum.photos/seed/gal-07/620/760.jpg",
-            caption: "after the rain",
-            date: "OCT '24",
-          },
-          {
-            image: "https://picsum.photos/seed/gal-08/620/760.jpg",
-            caption: "date night",
-            date: "NOV '24",
-          },
-          {
-            image: "https://picsum.photos/seed/gal-09/620/760.jpg",
-            caption: "secret joke",
-            date: "DEC '24",
-          },
-          {
-            image: "https://picsum.photos/seed/gal-10/620/760.jpg",
-            caption: "weekend light",
-            date: "JAN '25",
-          },
-          {
-            image: "https://picsum.photos/seed/gal-11/620/760.jpg",
-            caption: "your smile",
-            date: "FEB '25",
-          },
-          {
-            image: "https://picsum.photos/seed/gal-12/620/760.jpg",
-            caption: "always",
-            date: "MAR '25",
-          },
-        ],
+        // ---------- CHAPTER 04: video Google Drive ----------
+        // ✏️ Masukkan Folder ID dan Browser API Key anda di bawah.
+        // Folder dan semua video mesti dikongsi sebagai "Anyone with the link".
+        // Hadkan API key kepada domain website ini + Google Drive API.
+        driveVideos: {
+          visibleCount: 6, // jumlah video rawak yang dipaparkan pada satu masa
+          folderId: "1rnAhKZREaqcYklp2jxxH4nGkX8J7XZCe", // cth: ID selepas /folders/ dalam URL Google Drive
+          apiKey: "AIzaSyAADDt0Twxfy9By5-8wfxP5Eb8S06wHNKg", // Google Cloud Browser API key (HTTP referrer restricted)
+        },
+
+        // ---------- CHAPTER 04: scrapbook ----------
+        // Template gambar dibuang — ruang ini memaparkan video Drive sahaja.
+        gallery: [],
 
         // ---------- CHAPTER 05: sebab-sebab saya sayangkan dia ----------
         // ✏️ tambah sebab anda sendiri di sini, sebanyak mana pun
@@ -2521,13 +2787,13 @@
       /* ---------- render semua content dari CONFIG ---------- */
       function polaroid(g, clickable, extra) {
         return `<${clickable ? "button" : "div"} class="polaroid ${clickable ? "clickable p-reveal" : ""}" ${extra || ""}>
-    <span class="pol-in" style="--fd:${(Math.random() * -7).toFixed(1)}s">
-      <span class="ph"><img src="${g.image}" alt="" loading="lazy"></span>
-      <span class="pcap">${g.caption}</span>
-      <span class="pdate">${g.date}</span>
-      <i class="tape"></i>
-    </span>
-  </${clickable ? "button" : "div"}>`;
+        <span class="pol-in" style="--fd:${(Math.random() * -7).toFixed(1)}s">
+          <span class="ph"><img src="${g.image}" alt="" loading="lazy"></span>
+          <span class="pcap">${g.caption}</span>
+          <span class="pdate">${g.date}</span>
+          <i class="tape"></i>
+        </span>
+      </${clickable ? "button" : "div"}>`;
       }
 
       function renderAll() {
@@ -2541,39 +2807,39 @@
         CHAPTERS.forEach((c) => {
           $(`#${c.id} .ch-head`).innerHTML =
             `<span class="ch-label reveal">${c.label}</span>
-       <h2 class="ch-title reveal" style="--d:.12s">${c.title}</h2>`;
+           <h2 class="ch-title reveal" style="--d:.12s">${c.title}</h2>`;
         });
 
         // CH1
         const m = CONFIG.meeting;
         $("#ch1body").innerHTML = `
-    <div class="ch-meta reveal"><span>${m.date}</span><i></i><span>${m.place}</span></div>
-    <figure class="hero reveal" style="--d:.15s">
-      <div class="hero-media"><img src="${m.hero}" alt=""></div>
-      <figcaption>FIG. 01 — ${m.figCaption}</figcaption>
-    </figure>
-    <div class="story">
-      <div class="reveal" style="--d:.1s">${m.story.map((p) => `<p>${p}</p>`).join("")}</div>
-    </div>
-    <blockquote class="bigquote reveal">"${m.quote}"</blockquote>
-    <div class="pol-row">${m.photos.map((p) => polaroid(p, false)).join("")}</div>`;
+        <div class="ch-meta reveal"><span>${m.date}</span><i></i><span>${m.place}</span></div>
+        <figure class="hero reveal" style="--d:.15s">
+          <div class="hero-media"><img src="${m.hero}" alt=""></div>
+          <figcaption>FIG. 01 — ${m.figCaption}</figcaption>
+        </figure>
+        <div class="story">
+          <div class="reveal" style="--d:.1s">${m.story.map((p) => `<p>${p}</p>`).join("")}</div>
+        </div>
+        <blockquote class="bigquote reveal">"${m.quote}"</blockquote>
+        <div class="pol-row">${m.photos.map((p) => polaroid(p, false)).join("")}</div>`;
 
         // CH2 — montage
         $("#memList").innerHTML = CONFIG.memories
           .map(
             (mm, i) => `
-    <article class="scene reveal">
-      <div class="scene-media">
-        <span class="scene-tag">SCENE 02.${i + 1}</span>
-        <figure><img src="${mm.image}" alt="" loading="lazy"></figure>
-      </div>
-      <div class="scene-body">
-        <span class="scene-date">${mm.date}</span>
-        <h3>${mm.title}</h3>
-        <p>${mm.story}</p>
-        <p class="scene-cap">"${mm.caption}"</p>
-      </div>
-    </article>`,
+        <article class="scene reveal">
+          <div class="scene-media">
+            <span class="scene-tag">SCENE 02.${i + 1}</span>
+            <figure><img src="${mm.image}" alt="" loading="lazy"></figure>
+          </div>
+          <div class="scene-body">
+            <span class="scene-date">${mm.date}</span>
+            <h3>${mm.title}</h3>
+            <p>${mm.story}</p>
+            <p class="scene-cap">"${mm.caption}"</p>
+          </div>
+        </article>`,
           )
           .join("");
 
@@ -2581,18 +2847,18 @@
         $("#tlList").innerHTML = CONFIG.adventures
           .map(
             (a, i) => `
-    <div class="tl-item reveal" data-i="${i}" tabindex="0" role="button" aria-label="${a.title}">
-      <span class="tl-dot"></span>
-      <div class="tl-card">
-        <img src="${a.thumb || a.image}" alt="" loading="lazy">
-        <div class="tl-txt">
-          <span class="scene-date">${a.date}</span>
-          <h3>${a.title}</h3>
-          <p>${a.teaser || a.story}</p>
-        </div>
-        <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
-      </div>
-    </div>`,
+        <div class="tl-item reveal" data-i="${i}" tabindex="0" role="button" aria-label="${a.title}">
+          <span class="tl-dot"></span>
+          <div class="tl-card">
+            <img src="${a.thumb || a.image}" alt="" loading="lazy">
+            <div class="tl-txt">
+              <span class="scene-date">${a.date}</span>
+              <h3>${a.title}</h3>
+              <p>${a.teaser || a.story}</p>
+            </div>
+            <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
+          </div>
+        </div>`,
           )
           .join("");
 
@@ -2619,18 +2885,18 @@
         // CH6 — keluarga
         const f = CONFIG.family;
         $("#famBody").innerHTML = `
-    <p class="bigquote reveal">Somewhere along the way, you became more than someone I love.</p>
-    <p class="bigquote reveal" style="--d:.25s">You became <em>part of my life.</em></p>
-    <div class="fam-row">
-      <div class="fam-block reveal">
-        <figure><img src="${f.hers.image}" alt="" loading="lazy"><figcaption>${f.hers.caption}</figcaption></figure>
-        <h3>${f.hers.title}</h3><p>${f.hers.story}</p>
-      </div>
-      <div class="fam-block offset reveal" style="--d:.2s">
-        <figure><img src="${f.mine.image}" alt="" loading="lazy"><figcaption>${f.mine.caption}</figcaption></figure>
-        <h3>${f.mine.title}</h3><p>${f.mine.story}</p>
-      </div>
-    </div>`;
+        <p class="bigquote reveal">Somewhere along the way, you became more than someone I love.</p>
+        <p class="bigquote reveal" style="--d:.25s">You became <em>part of my life.</em></p>
+        <div class="fam-row">
+          <div class="fam-block reveal">
+            <figure><img src="${f.hers.image}" alt="" loading="lazy"><figcaption>${f.hers.caption}</figcaption></figure>
+            <h3>${f.hers.title}</h3><p>${f.hers.story}</p>
+          </div>
+          <div class="fam-block offset reveal" style="--d:.2s">
+            <figure><img src="${f.mine.image}" alt="" loading="lazy"><figcaption>${f.mine.caption}</figcaption></figure>
+            <h3>${f.mine.title}</h3><p>${f.mine.story}</p>
+          </div>
+        </div>`;
 
         // FINAL — sticky sequence
         const finSteps = [
@@ -2648,10 +2914,10 @@
             )
             .join("") +
           `<div class="seq-item seq-fin" data-weight="2.2">
-         <button class="btn-heart" id="btnNext">${I.heart}<span>OPEN THE NEXT CHAPTER</span></button>
-         <span class="fin-hint">TAP TO CONTINUE</span>
-       </div>
-       <span class="seq-tag">FINAL CHAPTER</span>`;
+             <button class="btn-heart" id="btnNext">${I.heart}<span>OPEN THE NEXT CHAPTER</span></button>
+             <span class="fin-hint">TAP TO CONTINUE</span>
+           </div>
+           <span class="seq-tag">FINAL CHAPTER</span>`;
 
         // episod
         const eps = CHAPTERS.map((c) => ({
@@ -2662,26 +2928,26 @@
         $("#epList").innerHTML = eps
           .map(
             (e) => `
-    <button class="ep-row ${e.final ? "final" : ""}" data-target="${e.target}">
-      <span class="ep-num">${e.num}</span><span class="ep-name">${e.name}</span>
-    </button>`,
+        <button class="ep-row ${e.final ? "final" : ""}" data-target="${e.target}">
+          <span class="ep-num">${e.num}</span><span class="ep-name">${e.name}</span>
+        </button>`,
           )
           .join("");
 
         // end credits
         $("#creditsRoll").innerHTML = `
-    <div class="cr-title">OUR STORY</div>
-    <div class="cr-sub">SEASON ONE</div>
-    <div class="cr"><span>DIRECTED BY</span><b>${CONFIG.names.you}</b></div>
-    <div class="cr"><span>STARRING</span><b>${CONFIG.names.her} &amp; ${CONFIG.names.you}</b></div>
-    <div class="cr"><span>STORY BY</span><b>The two of us</b></div>
-    <div class="cr"><span>CINEMATOGRAPHY</span><b>Every stranger we asked to take our photo</b></div>
-    <div class="cr"><span>MUSIC</span><b>${CONFIG.music.title}</b></div>
-    <div class="cr"><span>ON LOCATION IN</span><b>${CONFIG.season.place} &amp; everywhere we went</b></div>
-    <div class="cr"><span>RUNNING TIME</span><b>365 days</b></div>
-    <div class="cr"><span>SPECIAL THANKS</span><b>Both our families</b></div>
-    <div class="cr"><span>BASED ON</span><b>A true story</b></div>
-    <div class="cr end"><span>TO BE CONTINUED</span><b>Season 02 — with you.</b></div>`;
+        <div class="cr-title">OUR STORY</div>
+        <div class="cr-sub">SEASON ONE</div>
+        <div class="cr"><span>DIRECTED BY</span><b>${CONFIG.names.you}</b></div>
+        <div class="cr"><span>STARRING</span><b>${CONFIG.names.her} &amp; ${CONFIG.names.you}</b></div>
+        <div class="cr"><span>STORY BY</span><b>The two of us</b></div>
+        <div class="cr"><span>CINEMATOGRAPHY</span><b>Every stranger we asked to take our photo</b></div>
+        <div class="cr"><span>MUSIC</span><b>${CONFIG.music.title}</b></div>
+        <div class="cr"><span>ON LOCATION IN</span><b>${CONFIG.season.place} &amp; everywhere we went</b></div>
+        <div class="cr"><span>RUNNING TIME</span><b>365 days</b></div>
+        <div class="cr"><span>SPECIAL THANKS</span><b>Both our families</b></div>
+        <div class="cr"><span>BASED ON</span><b>A true story</b></div>
+        <div class="cr end"><span>TO BE CONTINUED</span><b>Season 02 — with you.</b></div>`;
       }
 
       /* ---------- engine untuk scroll-sequence (ch5 & final) ---------- */
@@ -2740,7 +3006,9 @@
           const pr = (vh - r.top) / (vh + r.height);
           el.style.setProperty("--py", ((pr - 0.5) * 9).toFixed(2) + "%");
         });
-        $$("#scrap .polaroid").forEach((el) => {
+        // Drive folders can contain hundreds of videos. Keep those cards out of
+        // the per-frame parallax loop so controls remain responsive.
+        $$("#scrap .polaroid:not(.drive-video-card)").forEach((el) => {
           if (!el.classList.contains("in")) return;
           const r = el.getBoundingClientRect();
           if (r.bottom < -100 || r.top > vh + 100) return;
@@ -2922,15 +3190,21 @@
           $("#btnSkip").classList.add("show");
       }, 2400);
 
+      let filmStarted = false;
       function startFilm() {
+        if (filmStarted) return;
+        filmStarted = true;
         opTimers.forEach(clearTimeout);
         try {
           if (CONFIG.music.autoplay) Music.start();
         } catch (err) {}
-        $("#opening").classList.add("exit");
+        const opening = $("#opening");
+        opening.classList.add("exit");
+        opening.setAttribute("aria-hidden", "true");
+        opening.inert = true;
         document.body.classList.remove("film-open"); // letterbox retract
         setTimeout(() => {
-          $("#opening").classList.add("hidden");
+          opening.classList.add("hidden");
           document.body.classList.remove("locked");
           window.scrollTo(0, 0);
         }, 1400);
@@ -2983,7 +3257,8 @@
               id = url.searchParams.get("v");
               if (!id) {
                 const parts = url.pathname.split("/").filter(Boolean);
-                if (["embed", "shorts", "live"].includes(parts[0])) id = parts[1];
+                if (["embed", "shorts", "live"].includes(parts[0]))
+                  id = parts[1];
               }
             }
 
@@ -3008,6 +3283,23 @@
           b.setAttribute("aria-label", label);
         }
 
+        function playYoutube() {
+          if (!youtubeReady || !youtubePlayer || youtubeFailed) return;
+          // YouTube commonly allows autoplay only in a muted state. Calling
+          // unMute() during the visitor's click/tap makes the song audible.
+          youtubePlayer.unMute();
+          youtubePlayer.setVolume(75);
+          youtubePlayer.playVideo();
+        }
+
+        function silenceYoutube() {
+          if (!youtubeReady || !youtubePlayer) return;
+          // Mute as well as pause so a delayed YouTube PLAYING event cannot
+          // make sound after the visitor has pressed the mute button.
+          youtubePlayer.mute();
+          youtubePlayer.pauseVideo();
+        }
+
         function createYoutubePlayer() {
           if (youtubePlayer || !(window.YT && window.YT.Player)) return;
 
@@ -3029,11 +3321,13 @@
               onReady(event) {
                 youtubeReady = true;
                 event.target.setVolume(75);
-                if (wantsToPlay) event.target.playVideo();
+                if (wantsToPlay) playYoutube();
               },
               onStateChange(event) {
                 if (event.data === window.YT.PlayerState.PLAYING) {
-                  playing = true;
+                  // Autoplay can report PLAYING while YouTube is still muted.
+                  // Keep the button tied to audible playback, not video state.
+                  playing = wantsToPlay && !event.target.isMuted();
                   updateBtn();
                 } else if (event.data === window.YT.PlayerState.PAUSED) {
                   playing = false;
@@ -3050,7 +3344,10 @@
                 youtubeFailed = true;
                 playing = false;
                 wantsToPlay = false;
-                console.warn("YouTube music could not be played. Error:", event.data);
+                console.warn(
+                  "YouTube music could not be played. Error:",
+                  event.data,
+                );
                 updateBtn("YouTube music is unavailable");
               },
             },
@@ -3070,7 +3367,11 @@
             createYoutubePlayer();
           };
 
-          if (!document.querySelector('script[src="https://www.youtube.com/iframe_api"]')) {
+          if (
+            !document.querySelector(
+              'script[src="https://www.youtube.com/iframe_api"]',
+            )
+          ) {
             const script = document.createElement("script");
             script.src = "https://www.youtube.com/iframe_api";
             script.async = true;
@@ -3126,7 +3427,7 @@
               wantsToPlay = true;
               playing = true;
               prepareYoutube();
-              if (youtubeReady) youtubePlayer.playVideo();
+              if (youtubeReady) playYoutube();
               updateBtn();
             }
             return;
@@ -3138,7 +3439,7 @@
           if (youtubeId) {
             wantsToPlay = true;
             prepareYoutube();
-            if (youtubeReady) youtubePlayer.playVideo();
+            if (youtubeReady) playYoutube();
           } else if (CONFIG.music.url) {
             audioEl = new Audio(CONFIG.music.url);
             audioEl.loop = true;
@@ -3158,6 +3459,24 @@
           updateBtn();
         }
 
+        function pause() {
+          if (!started || !playing) return false;
+          playing = false;
+          wantsToPlay = false;
+          if (youtubeId) {
+            silenceYoutube();
+          } else if (audioEl) {
+            audioEl.pause();
+          } else if (ctx) {
+            const t = ctx.currentTime;
+            master.gain.cancelScheduledValues(t);
+            master.gain.setValueAtTime(master.gain.value, t);
+            master.gain.linearRampToValueAtTime(0.0001, t + 0.35);
+          }
+          updateBtn();
+          return true;
+        }
+
         function toggle() {
           if (!started) {
             start();
@@ -3168,7 +3487,7 @@
           if (youtubeId) {
             wantsToPlay = playing;
             if (youtubeReady && !youtubeFailed) {
-              playing ? youtubePlayer.playVideo() : youtubePlayer.pauseVideo();
+              playing ? playYoutube() : silenceYoutube();
             } else if (playing) {
               prepareYoutube();
             }
@@ -3213,7 +3532,395 @@
           }
         }
         $("#btnAudio").addEventListener("click", toggle);
-        return { start, toggle };
+        return { start, toggle, pause };
+      })();
+
+      /* ---------- Google Drive videos inside the Chapter 04 scrapbook ---------- */
+      const DriveVideos = (() => {
+        let allVideos = [];
+        let videosLoaded = false;
+        let loading = false;
+        let initialized = false;
+        let lastVideoCard = null;
+
+        const config = CONFIG.driveVideos || {};
+
+        function setState(state, message = "") {
+          $("#videoLoading").hidden = state !== "loading";
+          $("#videoError").hidden = state !== "error";
+          $("#videoToolbar").hidden = state !== "ready";
+          if (message) $("#videoErrorText").textContent = message;
+        }
+
+        function getConfigError() {
+          if (!config.folderId || !config.apiKey) {
+            return "Add your Google Drive folderId and apiKey in CONFIG.driveVideos.";
+          }
+          if (!/^[a-zA-Z0-9_-]+$/.test(config.folderId)) {
+            return "The Google Drive folder ID is not valid.";
+          }
+          return "";
+        }
+
+        function shuffleArr(items) {
+          const result = [...items];
+          for (let i = result.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [result[i], result[j]] = [result[j], result[i]];
+          }
+          return result;
+        }
+
+        function listUrl(pageToken = "") {
+          const params = new URLSearchParams({
+            q: `'${config.folderId}' in parents and trashed = false and mimeType contains 'video/'`,
+            fields:
+              "nextPageToken,files(id,mimeType,thumbnailLink,createdTime)",
+            pageSize: "1000",
+            key: config.apiKey,
+          });
+          if (pageToken) params.set("pageToken", pageToken);
+          return `https://www.googleapis.com/drive/v3/files?${params.toString()}`;
+        }
+
+        function mediaUrl(fileId) {
+          const params = new URLSearchParams({
+            alt: "media",
+            key: config.apiKey,
+          });
+          return `https://www.googleapis.com/drive/v3/files/${encodeURIComponent(fileId)}?${params.toString()}`;
+        }
+
+        function assignMemoryNumbers(videos) {
+          return [...videos]
+            .sort((a, b) => {
+              const byCreatedTime = (a.createdTime || "").localeCompare(
+                b.createdTime || "",
+              );
+              return byCreatedTime || a.id.localeCompare(b.id);
+            })
+            .map((video, index) => ({ ...video, memoryNumber: index + 1 }));
+        }
+
+        function getMemoryLabel(video) {
+          const digits = Math.max(3, String(allVideos.length).length);
+          return `Memory ${String(video.memoryNumber).padStart(digits, "0")}`;
+        }
+
+        function createVideoCard(video, index) {
+          const captionText = getMemoryLabel(video);
+          const card = document.createElement("button");
+          card.type = "button";
+          card.className = "polaroid clickable p-reveal in drive-video-card";
+          card.dataset.videoIndex = index;
+          card.dataset.memoryNumber = video.memoryNumber;
+          card.dataset.dep = (Math.random() * 0.8 + 0.4).toFixed(2);
+          card.style.setProperty(
+            "--r",
+            `${(Math.random() * 6 - 3).toFixed(1)}deg`,
+          );
+          card.setAttribute(
+            "aria-label",
+            `Open “${captionText}” fullscreen with sound`,
+          );
+
+          const inner = document.createElement("span");
+          inner.className = "pol-in";
+          inner.style.setProperty(
+            "--fd",
+            `${(Math.random() * -7).toFixed(1)}s`,
+          );
+
+          const photo = document.createElement("span");
+          photo.className = "ph";
+
+          // Muting is required by browser autoplay policies. Clicking the card
+          // opens the same memory fullscreen with sound and native controls.
+          const preview = document.createElement("video");
+          preview.className = "drive-video-preview";
+          preview.src = mediaUrl(video.id);
+          if (video.thumbnailLink) preview.poster = video.thumbnailLink;
+          preview.autoplay = true;
+          preview.defaultMuted = true;
+          preview.muted = true;
+          preview.loop = true;
+          preview.playsInline = true;
+          preview.preload = "metadata";
+          preview.setAttribute("muted", "");
+          preview.setAttribute("playsinline", "");
+          preview.setAttribute("aria-hidden", "true");
+          preview.tabIndex = -1;
+          photo.appendChild(preview);
+
+          const play = document.createElement("span");
+          play.className = "video-card-play";
+          play.setAttribute("aria-hidden", "true");
+          play.innerHTML =
+            '<i><svg viewBox="0 0 24 24"><path d="M8 3H3v5M16 3h5v5M3 16v5h5M21 16v5h-5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></i>';
+          photo.appendChild(play);
+
+          const caption = document.createElement("span");
+          caption.className = "pcap";
+          caption.textContent = captionText;
+
+          const date = document.createElement("span");
+          date.className = "pdate";
+          date.textContent = "MUTED PREVIEW · TAP FOR SOUND";
+
+          const tape = document.createElement("i");
+          tape.className = "tape";
+          inner.append(photo, caption, date, tape);
+          card.appendChild(inner);
+          // Bind directly to every generated card so playback does not depend
+          // on event bubbling through the scrapbook layout.
+          card.addEventListener("click", (event) => {
+            event.preventDefault();
+            event.stopPropagation();
+            lastVideoCard = card;
+            openVideo(index, captionText);
+          });
+          return card;
+        }
+
+        function getVisibleCount() {
+          const requested = Math.floor(Number(config.visibleCount) || 6);
+          return Math.min(allVideos.length, Math.max(1, requested));
+        }
+
+        function playPreviewVideos() {
+          $$("#scrap .drive-video-preview").forEach((preview) => {
+            preview.muted = true;
+            const playRequest = preview.play();
+            if (playRequest?.catch) playRequest.catch(() => {});
+          });
+        }
+
+        function pausePreviewVideos() {
+          $$("#scrap .drive-video-preview").forEach((preview) =>
+            preview.pause(),
+          );
+        }
+
+        function removeVideoCards() {
+          $$("#scrap .drive-video-card").forEach((card) => {
+            const preview = card.querySelector(".drive-video-preview");
+            if (preview) {
+              preview.pause();
+              preview.removeAttribute("src");
+              preview.load();
+            }
+            card.remove();
+          });
+        }
+
+        function renderVideoBatch() {
+          const scrapbook = $("#scrap");
+          removeVideoCards();
+
+          const indexes = shuffleArr(allVideos.map((_, index) => index)).slice(
+            0,
+            getVisibleCount(),
+          );
+          const cards = indexes.map((index) =>
+            createVideoCard(allVideos[index], index),
+          );
+          const fragment = document.createDocumentFragment();
+          cards.forEach((card) => fragment.appendChild(card));
+          scrapbook.appendChild(fragment);
+          playPreviewVideos();
+
+          $("#videoCounter").textContent =
+            `SHOWING ${cards.length} OF ${allVideos.length} VIDEOS`;
+        }
+
+        function shuffleVideos() {
+          renderVideoBatch();
+        }
+
+        async function loadVideos(force = false) {
+          if (loading || (videosLoaded && !force)) return;
+          const configError = getConfigError();
+          if (configError) {
+            setState("error", configError);
+            return;
+          }
+
+          loading = true;
+          setState("loading");
+          try {
+            let videos = [];
+            let pageToken = "";
+            do {
+              const response = await fetch(listUrl(pageToken));
+              const data = await response.json();
+              if (!response.ok || data.error) {
+                throw new Error(
+                  data.error?.message ||
+                    `Google Drive returned ${response.status}`,
+                );
+              }
+              videos = videos.concat(data.files || []);
+              pageToken = data.nextPageToken || "";
+            } while (pageToken);
+
+            if (!videos.length) {
+              throw new Error(
+                "No public video files were found in this folder.",
+              );
+            }
+
+            // Assign each Drive video its own archive-wide number before any
+            // random display shuffle. Newer uploads naturally receive later
+            // numbers, so a video keeps its label between Shuffle presses.
+            allVideos = shuffleArr(assignMemoryNumbers(videos));
+            videosLoaded = true;
+            renderVideoBatch();
+            setState("ready");
+          } catch (error) {
+            console.error("Google Drive video load error:", error);
+            setState(
+              "error",
+              `${error.message} Check the folder sharing and API key restrictions.`,
+            );
+          } finally {
+            loading = false;
+          }
+        }
+
+        function enterFullscreen(overlay, videoEl) {
+          try {
+            if (document.fullscreenElement) return;
+            let request = null;
+            if (overlay.requestFullscreen) {
+              request = overlay.requestFullscreen({ navigationUI: "hide" });
+            } else if (overlay.webkitRequestFullscreen) {
+              request = overlay.webkitRequestFullscreen();
+            } else if (videoEl.requestFullscreen) {
+              request = videoEl.requestFullscreen();
+            } else if (videoEl.webkitEnterFullscreen) {
+              videoEl.webkitEnterFullscreen();
+            }
+            if (request?.catch) request.catch(() => {});
+          } catch (error) {
+            // The full-page overlay remains the fallback when native fullscreen
+            // is unavailable or the browser declines the request.
+          }
+        }
+
+        async function openVideo(index, captionText = "Memory") {
+          const video = allVideos[index];
+          if (!video) return;
+
+          const overlay = $("#videoLightbox");
+          const videoEl = $("#videoFrame");
+          pausePreviewVideos();
+          videoEl.pause();
+          videoEl.removeAttribute("src");
+          videoEl.removeAttribute("poster");
+          videoEl.load();
+          videoEl.muted = false;
+          videoEl.src = mediaUrl(video.id);
+          if (video.thumbnailLink) videoEl.poster = video.thumbnailLink;
+          videoEl.setAttribute("aria-label", `Video memory: ${captionText}`);
+          $("#videoFullscreenName").textContent = captionText;
+
+          // Show the overlay immediately so every click has visible feedback,
+          // even while a large Google Drive video is still buffering.
+          overlay.classList.add("open");
+          overlay.setAttribute("aria-hidden", "false");
+          lockScroll(true);
+          Music.pause();
+          videoEl.load();
+          enterFullscreen(overlay, videoEl);
+
+          try {
+            await videoEl.play();
+          } catch (error) {
+            // Native controls remain available when autoplay takes longer or is
+            // blocked; the visitor can press play again inside the open player.
+            console.warn("Video is waiting for manual playback:", error);
+          }
+        }
+
+        function closeVideo() {
+          const overlay = $("#videoLightbox");
+          const videoEl = $("#videoFrame");
+          overlay.classList.remove("open");
+          overlay.setAttribute("aria-hidden", "true");
+          videoEl.pause();
+          videoEl.muted = true;
+          videoEl.removeAttribute("src");
+          videoEl.load();
+          if (
+            document.fullscreenElement &&
+            overlay.contains(document.fullscreenElement) &&
+            document.exitFullscreen
+          ) {
+            const exitRequest = document.exitFullscreen();
+            if (exitRequest?.catch) exitRequest.catch(() => {});
+          } else if (
+            document.webkitFullscreenElement &&
+            document.webkitExitFullscreen
+          ) {
+            document.webkitExitFullscreen();
+          } else if (
+            videoEl.webkitDisplayingFullscreen &&
+            videoEl.webkitExitFullscreen
+          ) {
+            videoEl.webkitExitFullscreen();
+          }
+          lockScroll(false);
+          playPreviewVideos();
+          if (lastVideoCard?.isConnected) lastVideoCard.focus();
+        }
+
+        function init() {
+          if (initialized) return;
+          initialized = true;
+
+          $("#videoShuffle").addEventListener("click", (event) => {
+            event.preventDefault();
+            event.stopPropagation();
+            shuffleVideos();
+          });
+          $("#videoRetry").addEventListener("click", () => loadVideos(true));
+          $("#videoClose").addEventListener("click", closeVideo);
+          $("#videoLightbox").addEventListener("click", (event) => {
+            if (event.target === event.currentTarget) closeVideo();
+          });
+          $("#videoFrame").addEventListener("play", () => Music.pause());
+          $("#videoFrame").addEventListener("error", () => {
+            if (!$("#videoFrame").currentSrc) return;
+            $("#videoFullscreenName").textContent =
+              "This video could not be streamed. Try another memory.";
+          });
+          document.addEventListener("keydown", (event) => {
+            if (
+              event.key === "Escape" &&
+              $("#videoLightbox").classList.contains("open")
+            ) {
+              closeVideo();
+            }
+          });
+
+          const target = $("#driveVideoGallery");
+          if (!("IntersectionObserver" in window)) {
+            loadVideos();
+            return;
+          }
+          const observer = new IntersectionObserver(
+            (entries) => {
+              if (entries.some((entry) => entry.isIntersecting)) {
+                observer.disconnect();
+                loadVideos();
+              }
+            },
+            { rootMargin: "500px 0px", threshold: 0.01 },
+          );
+          observer.observe(target);
+        }
+
+        return { init, loadVideos, openVideo, shuffleVideos };
       })();
 
       /* ---------- episodes overlay ---------- */
@@ -3310,8 +4017,13 @@
         renderLbx();
       }
       $("#scrap").addEventListener("click", (e) => {
-        const p = e.target.closest(".polaroid");
-        if (p) openLbx(+p.dataset.i);
+        const videoCard = e.target.closest(".drive-video-card");
+        if (videoCard) {
+          DriveVideos.openVideo(+videoCard.dataset.videoIndex);
+          return;
+        }
+        const photo = e.target.closest(".polaroid[data-i]");
+        if (photo) openLbx(+photo.dataset.i);
       });
       $("#lbxClose").addEventListener("click", closeLbx);
       $("#lbxPrev").addEventListener("click", () => lbxStep(-1));
@@ -3415,6 +4127,7 @@
       /* ---------- boot ---------- */
       document.addEventListener("DOMContentLoaded", () => {
         renderAll();
+        DriveVideos.init();
         seqLove = makeSeq("#loveSeq", {
           unit: 85,
           onActive: (i) => {
