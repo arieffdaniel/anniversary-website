@@ -2517,7 +2517,7 @@
             image: "assets/images/first badminton.png",
           },
           {
-            date: "11 MAY 2024",
+            date: "1 DECEMBER 2025",
             title: "Dinner By Ayang",
             story:
               "Our post-game ritual. Same table, same order, same argument about who gets the last of the egg. It became our little tradition without either of us planning it.",
@@ -2525,7 +2525,7 @@
             image: "assets/images/IMG_1558.jpg",
           },
           {
-            date: "01 JUNE 2024",
+            date: "19 NOVEMBER 2025",
             title: "Clinic",
             story:
               "I can't tell you much about the movie. I can tell you exactly how your laugh sounded in the dark, and how I hoped the film would never end.",
@@ -2674,7 +2674,7 @@
         family: {
           hers: {
             title: "Meeting Your Family",
-            caption: "DINNER WITH YOUR FAMILY · DEC 2024",
+            caption: "DINNER WITH YOUR FAMILY · DEC 2025",
             story:
               "I was nervous to meet your family. But somehow, I found the courage to sit down and have drinks with your Ayah and Umi even without you there. Your family asked me a hundred questions, and your dad asked twice as many with just his eyes. Somewhere along the way, I stopped feeling like a guest and started feeling like family.",
             image: "assets/images/jumpa ayah.png",
@@ -2896,7 +2896,9 @@
               return a.originalIndex - b.originalIndex;
             if (a.timestamp === null) return 1;
             if (b.timestamp === null) return -1;
-            return a.timestamp - b.timestamp || a.originalIndex - b.originalIndex;
+            return (
+              a.timestamp - b.timestamp || a.originalIndex - b.originalIndex
+            );
           })
           .map(({ memory }) => memory);
       }
