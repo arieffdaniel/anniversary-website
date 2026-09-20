@@ -2852,6 +2852,55 @@
             </${clickable ? "button" : "div"}>`;
       }
 
+      function parseMemoryDate(value) {
+        const months = {
+          JANUARY: 0,
+          FEBRUARY: 1,
+          MARCH: 2,
+          APRIL: 3,
+          MAY: 4,
+          JUNE: 5,
+          JULY: 6,
+          AUGUST: 7,
+          SEPTEMBER: 8,
+          OCTOBER: 9,
+          NOVEMBER: 10,
+          DECEMBER: 11,
+        };
+        const match = String(value || "")
+          .trim()
+          .match(/^(\d{1,2})\s+([a-z]+)\s+(\d{4})$/i);
+        if (!match) return null;
+        const month = months[match[2].toUpperCase()];
+        if (month === undefined) return null;
+        const day = Number(match[1]);
+        const year = Number(match[3]);
+        const timestamp = Date.UTC(year, month, day);
+        const date = new Date(timestamp);
+        return date.getUTCFullYear() === year &&
+          date.getUTCMonth() === month &&
+          date.getUTCDate() === day
+          ? timestamp
+          : null;
+      }
+
+      function getMemoriesChronologically() {
+        return CONFIG.memories
+          .map((memory, originalIndex) => ({
+            memory,
+            originalIndex,
+            timestamp: parseMemoryDate(memory.date),
+          }))
+          .sort((a, b) => {
+            if (a.timestamp === null && b.timestamp === null)
+              return a.originalIndex - b.originalIndex;
+            if (a.timestamp === null) return 1;
+            if (b.timestamp === null) return -1;
+            return a.timestamp - b.timestamp || a.originalIndex - b.originalIndex;
+          })
+          .map(({ memory }) => memory);
+      }
+
       function renderAll() {
         // title card
         $("#tcNames").innerHTML =
@@ -2880,8 +2929,8 @@
               <blockquote class="bigquote reveal">"${m.quote}"</blockquote>
               <div class="pol-row">${m.photos.map((p) => polaroid(p, false)).join("")}</div>`;
 
-        // CH2 — montage
-        $("#memList").innerHTML = CONFIG.memories
+        // CH2 — montage (oldest memory first)
+        $("#memList").innerHTML = getMemoriesChronologically()
           .map(
             (mm, i) => `
               <article class="scene reveal">
