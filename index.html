@@ -534,15 +534,19 @@
         margin-top: 1rem;
       }
       .story {
-        max-width: 62ch;
-        display: flex;
-        flex-direction: column;
-        gap: 1.7rem;
+        width: 100%;
+      }
+      .story > .reveal {
+        column-count: 2;
+        column-gap: clamp(2.8rem, 7vw, 5.5rem);
+        column-fill: balance;
       }
       .story p {
         color: var(--ink-dim);
         font-size: 1.13rem;
         line-height: 1.95;
+        break-inside: avoid;
+        margin: 0 0 1.7rem;
       }
       .story p:first-child::first-letter {
         font-size: 3.2em;
@@ -1896,6 +1900,9 @@
       @media (max-width: 760px) {
         .chapter {
           padding: 15vh 7vw;
+        }
+        .story > .reveal {
+          column-count: 1;
         }
         .timeline::before {
           left: 14px;
