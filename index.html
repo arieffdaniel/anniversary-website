@@ -3135,44 +3135,64 @@
                   </${clickable ? "button" : "div"}>`;
       }
 
-      function parseMemoryDate(value) {
-        const months = {
-          JANUARY: 0,
-          FEBRUARY: 1,
-          MARCH: 2,
-          APRIL: 3,
-          MAY: 4,
-          JUNE: 5,
-          JULY: 6,
-          AUGUST: 7,
-          SEPTEMBER: 8,
-          OCTOBER: 9,
-          NOVEMBER: 10,
-          DECEMBER: 11,
-        };
-        const match = String(value || "")
-          .trim()
-          .match(/^(\d{1,2})\s+([a-z]+)\s+(\d{4})$/i);
-        if (!match) return null;
-        const month = months[match[2].toUpperCase()];
-        if (month === undefined) return null;
-        const day = Number(match[1]);
-        const year = Number(match[3]);
+      const STORY_MONTHS = [
+        "JANUARY",
+        "FEBRUARY",
+        "MARCH",
+        "APRIL",
+        "MAY",
+        "JUNE",
+        "JULY",
+        "AUGUST",
+        "SEPTEMBER",
+        "OCTOBER",
+        "NOVEMBER",
+        "DECEMBER",
+      ];
+
+      function parseStoryDate(value) {
+        const normalized = String(value || "").trim().replace(/\s+/g, " ");
+        const fullDate = normalized.match(
+          /^(\d{1,2})\s+([a-z]+)\s+(\d{4})$/i,
+        );
+        const monthDate = normalized.match(/^([a-z]+)\s+(\d{4})$/i);
+        if (!fullDate && !monthDate) return null;
+
+        const hasDay = Boolean(fullDate);
+        const monthName = (hasDay ? fullDate[2] : monthDate[1]).toUpperCase();
+        const month = STORY_MONTHS.indexOf(monthName);
+        if (month < 0) return null;
+
+        const day = hasDay ? Number(fullDate[1]) : 1;
+        const year = Number(hasDay ? fullDate[3] : monthDate[2]);
         const timestamp = Date.UTC(year, month, day);
         const date = new Date(timestamp);
-        return date.getUTCFullYear() === year &&
-          date.getUTCMonth() === month &&
-          date.getUTCDate() === day
-          ? timestamp
-          : null;
+        if (
+          date.getUTCFullYear() !== year ||
+          date.getUTCMonth() !== month ||
+          date.getUTCDate() !== day
+        ) {
+          return null;
+        }
+
+        return { timestamp, day, month, year, hasDay };
       }
 
-      function getMemoriesChronologically() {
-        return CONFIG.memories
-          .map((memory, originalIndex) => ({
-            memory,
+      function formatStoryDate(value) {
+        const parsed = parseStoryDate(value);
+        if (!parsed) return String(value || "").trim().toUpperCase();
+        const monthAndYear = `${STORY_MONTHS[parsed.month]} ${parsed.year}`;
+        return parsed.hasDay
+          ? `${String(parsed.day).padStart(2, "0")} ${monthAndYear}`
+          : monthAndYear;
+      }
+
+      function sortDatedEntries(entries) {
+        return entries
+          .map((entry, originalIndex) => ({
+            entry,
             originalIndex,
-            timestamp: parseMemoryDate(memory.date),
+            timestamp: parseStoryDate(entry.date)?.timestamp ?? null,
           }))
           .sort((a, b) => {
             if (a.timestamp === null && b.timestamp === null)
@@ -3183,7 +3203,15 @@
               a.timestamp - b.timestamp || a.originalIndex - b.originalIndex
             );
           })
-          .map(({ memory }) => memory);
+          .map(({ entry }) => entry);
+      }
+
+      function getMemoriesChronologically() {
+        return sortDatedEntries(CONFIG.memories);
+      }
+
+      function getAdventuresChronologically() {
+        return sortDatedEntries(CONFIG.adventures);
       }
 
       function renderAll() {
@@ -3224,7 +3252,7 @@
                         <figure><img src="${mm.image}" alt="" loading="lazy"></figure>
                       </div>
                       <div class="scene-body">
-                        <span class="scene-date">${mm.date}</span>
+                        <span class="scene-date">${formatStoryDate(mm.date)}</span>
                         <h3>${mm.title}</h3>
                         <p>${mm.story}</p>
                         <p class="scene-cap">"${mm.caption}"</p>
@@ -3233,8 +3261,8 @@
           )
           .join("");
 
-        // CH3 — timeline
-        $("#tlList").innerHTML = CONFIG.adventures
+        // CH3 — timeline (oldest month first)
+        $("#tlList").innerHTML = getAdventuresChronologically()
           .map(
             (a, i) => `
                     <div class="tl-item reveal" data-i="${i}" tabindex="0" role="button" aria-label="${a.title}">
@@ -3242,7 +3270,7 @@
                       <div class="tl-card">
                         <img src="${a.thumb || a.image}" alt="" loading="lazy">
                         <div class="tl-txt">
-                          <span class="scene-date">${a.date}</span>
+                          <span class="scene-date">${formatStoryDate(a.date)}</span>
                           <h3>${a.title}</h3>
                           <p>${a.teaser || a.story}</p>
                         </div>
@@ -4344,10 +4372,12 @@
         $("#hud").style.opacity = on ? 0 : "";
       }
       function renderModal() {
-        const a = CONFIG.adventures[mIdx];
+        const adventures = getAdventuresChronologically();
+        const a = adventures[mIdx];
         $("#mImg").src = a.image;
-        $("#mTag").textContent = `SCENE 03.${mIdx + 1} · ${a.date}`;
-        $("#mCount").textContent = `${mIdx + 1} / ${CONFIG.adventures.length}`;
+        $("#mTag").textContent =
+          `SCENE 03.${mIdx + 1} · ${formatStoryDate(a.date)}`;
+        $("#mCount").textContent = `${mIdx + 1} / ${adventures.length}`;
         $("#mTitle").textContent = a.title;
         $("#mStory").textContent = a.story;
         $("#mCap").textContent = a.caption ? `"${a.caption}"` : "";
@@ -4363,7 +4393,8 @@
         lockScroll(false);
       }
       function modalStep(d) {
-        mIdx = (mIdx + d + CONFIG.adventures.length) % CONFIG.adventures.length;
+        const total = getAdventuresChronologically().length;
+        mIdx = (mIdx + d + total) % total;
         renderModal();
       }
       $("#tlList").addEventListener("click", (e) => {
