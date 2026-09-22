@@ -827,6 +827,38 @@
         width: 15px;
         height: 15px;
       }
+      .tl-future {
+        position: relative;
+        min-height: 8rem;
+        padding-top: 1.2rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+      }
+      .tl-future-dot {
+        position: relative;
+        z-index: 1;
+        width: 13px;
+        height: 13px;
+        border-radius: 50%;
+        background: var(--pink);
+        border: 2px solid var(--bg);
+        box-shadow:
+          0 0 0 1px var(--pink),
+          0 0 24px rgba(229, 179, 192, 0.38);
+      }
+      .tl-future p {
+        position: relative;
+        z-index: 1;
+        margin-top: 1.5rem;
+        padding: 0.35rem 1.4rem;
+        background: var(--bg);
+        color: var(--pink);
+        font-size: clamp(1.5rem, 3.6vw, 2.35rem);
+        font-style: italic;
+        font-weight: 300;
+      }
 
       /* ---------- CHAPTER 04: stats + scrapbook ---------- */
       .stats {
@@ -1918,6 +1950,19 @@
           left: 9.5px;
           right: auto;
           top: 1.7rem;
+        }
+        .tl-future {
+          align-items: flex-start;
+          text-align: left;
+          padding-left: 2.7rem;
+        }
+        .tl-future-dot {
+          position: absolute;
+          left: 9.5px;
+          top: 1.2rem;
+        }
+        .tl-future p {
+          padding-left: 0;
         }
         .tl-card img {
           width: 70px;
@@ -3278,7 +3323,11 @@
                       </div>
                     </div>`,
           )
-          .join("");
+          .join("") +
+          `<div class="tl-future reveal" aria-label="And many more to go">
+             <span class="tl-future-dot" aria-hidden="true"></span>
+             <p>And many more to go…</p>
+           </div>`;
 
         // CH4 — scrapbook
         $("#scrap").innerHTML = CONFIG.gallery
