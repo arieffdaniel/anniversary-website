@@ -2422,11 +2422,11 @@
 
     <script>
       /* ════════════════════════════════════════════════════════════════
-             ✏️  TUKAR SEMUA CONTENT ANDA DI SINI — tak perlu sentuh kod lain
-             Letak gambar dalam "assets/images/" dan video dalam "assets/videos/".
-             Gantikan URL gambar picsum, cth: "assets/images/kami.jpg"
-             Untuk tambah memory baharu, cuma copy satu { ... } dan tukar isinya.
-             ════════════════════════════════════════════════════════════════ */
+                   ✏️  TUKAR SEMUA CONTENT ANDA DI SINI — tak perlu sentuh kod lain
+                   Letak gambar dalam "assets/images/" dan video dalam "assets/videos/".
+                   Gantikan URL gambar picsum, cth: "assets/images/kami.jpg"
+                   Untuk tambah memory baharu, cuma copy satu { ... } dan tukar isinya.
+                   ════════════════════════════════════════════════════════════════ */
       const CONFIG = {
         names: { you: "Awieff", her: "Lilyana" }, // ✏️ nama anda & nama dia
         season: {
@@ -2501,17 +2501,20 @@
           },
           {
             date: "26 DECEMBER 2025",
+
             title: "Our First Date",
+
             story:
-              "I rehearsed what to say in the mirror. Twice. You noticed, and laughed, and somehow that made everything perfect instead of embarrassing.",
-            caption: "The first of many.",
+              "Now this was our first official date, and somehow, it finally felt real. The girl who first caught my eye at IOI was now my girlfriend. I even updated Mama that we were officially dating. We went to Sukiya, which was my first time trying it, and of course, I got to experience it with you, sayang. We also went to the cinema and karaoke together, making our first official date even more special.",
+            caption:
+              "Now we're officially dating, and I'm so happy to have you as my girlfriend.",
             image: "assets/images/first date.png",
           },
           {
             date: "02 OCTOBER 2025",
             title: "Badminton",
             story:
-              "You swore you were 'pretty good' at badminton. You were not. Wkwkwkw jk. 😂 But honestly, I was surprised the first time we played. Not everyone could take my smashes, but you took them like it was nothing. And somehow, playing together felt different. We weren't just a pair on the court, we were a team. We laughed, challenged each other, and had way too much fun. Maybe we weren't really unbeatable, but with you by my side, I always felt like we could take on anyone.",
+              "You swore you were 'pretty good' at badminton. You were not. Wkwkwkw jk. But honestly, I was surprised the first time we played. Not everyone could take my smashes, but you took them like it was nothing. And somehow, playing together felt different. We weren't just a pair on the court, we were a team. We laughed, challenged each other, and had way too much fun. Maybe we weren't really unbeatable, but with you by my side, I always felt like we could take on anyone.",
             caption:
               "Our first game together, and I already knew I wanted to play with you forever.",
             image: "assets/images/first badminton.png",
@@ -2520,24 +2523,24 @@
             date: "1 DECEMBER 2025",
             title: "Dinner By Ayang",
             story:
-              "Our post-game ritual. Same table, same order, same argument about who gets the last of the egg. It became our little tradition without either of us planning it.",
-            caption: "Comfort food tastes better with you.",
+              "This was the first time I got to eat something you cooked for me. I was so hungry and couldn't find Kicap Mudim anywhere, but then suddenly, we met at the dobi. You gave me telur mata, telur dadar, nasi, and of course, you didn't forget the Kicap Mudim. I loved it so much, and honestly, I love eating your cooking until today. I hope I get to taste many more of your cooking in the future. Aamiin.",
+            caption: "My favourite meals are the ones you make for me.",
             image: "assets/images/IMG_1558.jpg",
           },
           {
             date: "19 NOVEMBER 2025",
             title: "Clinic",
             story:
-              "I can't tell you much about the movie. I can tell you exactly how your laugh sounded in the dark, and how I hoped the film would never end.",
-            caption: "I'd watch anything, as long as it's with you.",
+              "Maybe it wasn't the most romantic place to make a memory, but I was sick, and somehow, you were there with me. You treated me to CHAGEE, stayed with me while I saw the doctor, and even had a dessert with me afterwards. I had a fever that day, but having you there made me feel so much better. Thank you for staying with me at the clinic, ayang. Tiba-tiba muncul pulak tu.",
+            caption: "Even on my sick days, you were there.",
             image: "assets/images/klinik.png",
           },
           {
             date: "4 DECEMBER 2025",
             title: "Pre-Convo Together",
             story:
-              "You sang every song like the microphone owed you something. I joined in for exactly one chorus and immediately regretted it. Best night of the month.",
-            caption: "Off-key, on love.",
+              "On this day was our pre-convo, and I loved it so much because you met Mama for the first time. She was so excited to meet you and loved you so much that she even gave you so many gifts, even though it was her first time meeting you. We also went for a photoshoot together, and this time, I tried to propose to you again. Wkwkwk. But you didn't give me an answer because apparently, I still didn't know how to propose properly. We spent the whole day together, and I'm so sorry because I suddenly had to work that day. You slept beside me while waiting for me to finish my work, and while you were sleeping, I couldn't stop looking at you. You looked so beautiful at that moment, sayang. I couldn't take my eyes off you.",
+            caption: "We graduated together, and started our journey together.",
             image: "assets/images/Pre-Convo.png",
           },
         ],
@@ -2843,13 +2846,13 @@
       /* ---------- render semua content dari CONFIG ---------- */
       function polaroid(g, clickable, extra) {
         return `<${clickable ? "button" : "div"} class="polaroid ${clickable ? "clickable p-reveal" : ""}" ${extra || ""}>
-              <span class="pol-in" style="--fd:${(Math.random() * -7).toFixed(1)}s">
-                <span class="ph"><img src="${g.image}" alt="" loading="lazy"></span>
-                <span class="pcap">${g.caption}</span>
-                <span class="pdate">${g.date}</span>
-                <i class="tape"></i>
-              </span>
-            </${clickable ? "button" : "div"}>`;
+                    <span class="pol-in" style="--fd:${(Math.random() * -7).toFixed(1)}s">
+                      <span class="ph"><img src="${g.image}" alt="" loading="lazy"></span>
+                      <span class="pcap">${g.caption}</span>
+                      <span class="pdate">${g.date}</span>
+                      <i class="tape"></i>
+                    </span>
+                  </${clickable ? "button" : "div"}>`;
       }
 
       function parseMemoryDate(value) {
@@ -2914,39 +2917,39 @@
         CHAPTERS.forEach((c) => {
           $(`#${c.id} .ch-head`).innerHTML =
             `<span class="ch-label reveal">${c.label}</span>
-                 <h2 class="ch-title reveal" style="--d:.12s">${c.title}</h2>`;
+                       <h2 class="ch-title reveal" style="--d:.12s">${c.title}</h2>`;
         });
 
         // CH1
         const m = CONFIG.meeting;
         $("#ch1body").innerHTML = `
-              <div class="ch-meta reveal"><span>${m.date}</span><i></i><span>${m.place}</span></div>
-              <figure class="hero reveal" style="--d:.15s">
-                <div class="hero-media"><img src="${m.hero}" alt=""></div>
-                <figcaption>FIG. 01 — ${m.figCaption}</figcaption>
-              </figure>
-              <div class="story">
-                <div class="reveal" style="--d:.1s">${m.story.map((p) => `<p>${p}</p>`).join("")}</div>
-              </div>
-              <blockquote class="bigquote reveal">"${m.quote}"</blockquote>
-              <div class="pol-row">${m.photos.map((p) => polaroid(p, false)).join("")}</div>`;
+                    <div class="ch-meta reveal"><span>${m.date}</span><i></i><span>${m.place}</span></div>
+                    <figure class="hero reveal" style="--d:.15s">
+                      <div class="hero-media"><img src="${m.hero}" alt=""></div>
+                      <figcaption>FIG. 01 — ${m.figCaption}</figcaption>
+                    </figure>
+                    <div class="story">
+                      <div class="reveal" style="--d:.1s">${m.story.map((p) => `<p>${p}</p>`).join("")}</div>
+                    </div>
+                    <blockquote class="bigquote reveal">"${m.quote}"</blockquote>
+                    <div class="pol-row">${m.photos.map((p) => polaroid(p, false)).join("")}</div>`;
 
         // CH2 — montage (oldest memory first)
         $("#memList").innerHTML = getMemoriesChronologically()
           .map(
             (mm, i) => `
-              <article class="scene reveal">
-                <div class="scene-media">
-                  <span class="scene-tag">SCENE 02.${i + 1}</span>
-                  <figure><img src="${mm.image}" alt="" loading="lazy"></figure>
-                </div>
-                <div class="scene-body">
-                  <span class="scene-date">${mm.date}</span>
-                  <h3>${mm.title}</h3>
-                  <p>${mm.story}</p>
-                  <p class="scene-cap">"${mm.caption}"</p>
-                </div>
-              </article>`,
+                    <article class="scene reveal">
+                      <div class="scene-media">
+                        <span class="scene-tag">SCENE 02.${i + 1}</span>
+                        <figure><img src="${mm.image}" alt="" loading="lazy"></figure>
+                      </div>
+                      <div class="scene-body">
+                        <span class="scene-date">${mm.date}</span>
+                        <h3>${mm.title}</h3>
+                        <p>${mm.story}</p>
+                        <p class="scene-cap">"${mm.caption}"</p>
+                      </div>
+                    </article>`,
           )
           .join("");
 
@@ -2954,18 +2957,18 @@
         $("#tlList").innerHTML = CONFIG.adventures
           .map(
             (a, i) => `
-              <div class="tl-item reveal" data-i="${i}" tabindex="0" role="button" aria-label="${a.title}">
-                <span class="tl-dot"></span>
-                <div class="tl-card">
-                  <img src="${a.thumb || a.image}" alt="" loading="lazy">
-                  <div class="tl-txt">
-                    <span class="scene-date">${a.date}</span>
-                    <h3>${a.title}</h3>
-                    <p>${a.teaser || a.story}</p>
-                  </div>
-                  <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
-                </div>
-              </div>`,
+                    <div class="tl-item reveal" data-i="${i}" tabindex="0" role="button" aria-label="${a.title}">
+                      <span class="tl-dot"></span>
+                      <div class="tl-card">
+                        <img src="${a.thumb || a.image}" alt="" loading="lazy">
+                        <div class="tl-txt">
+                          <span class="scene-date">${a.date}</span>
+                          <h3>${a.title}</h3>
+                          <p>${a.teaser || a.story}</p>
+                        </div>
+                        <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
+                      </div>
+                    </div>`,
           )
           .join("");
 
@@ -2992,18 +2995,18 @@
         // CH6 — keluarga
         const f = CONFIG.family;
         $("#famBody").innerHTML = `
-              <p class="bigquote reveal">Somewhere along the way, you became more than someone I love.</p>
-              <p class="bigquote reveal" style="--d:.25s">You became <em>part of my life.</em></p>
-              <div class="fam-row">
-                <div class="fam-block reveal">
-                  <figure><img src="${f.hers.image}" alt="" loading="lazy"><figcaption>${f.hers.caption}</figcaption></figure>
-                  <h3>${f.hers.title}</h3><p>${f.hers.story}</p>
-                </div>
-                <div class="fam-block offset reveal" style="--d:.2s">
-                  <figure><img src="${f.mine.image}" alt="" loading="lazy"><figcaption>${f.mine.caption}</figcaption></figure>
-                  <h3>${f.mine.title}</h3><p>${f.mine.story}</p>
-                </div>
-              </div>`;
+                    <p class="bigquote reveal">Somewhere along the way, you became more than someone I love.</p>
+                    <p class="bigquote reveal" style="--d:.25s">You became <em>part of my life.</em></p>
+                    <div class="fam-row">
+                      <div class="fam-block reveal">
+                        <figure><img src="${f.hers.image}" alt="" loading="lazy"><figcaption>${f.hers.caption}</figcaption></figure>
+                        <h3>${f.hers.title}</h3><p>${f.hers.story}</p>
+                      </div>
+                      <div class="fam-block offset reveal" style="--d:.2s">
+                        <figure><img src="${f.mine.image}" alt="" loading="lazy"><figcaption>${f.mine.caption}</figcaption></figure>
+                        <h3>${f.mine.title}</h3><p>${f.mine.story}</p>
+                      </div>
+                    </div>`;
 
         // FINAL — sticky sequence
         const finSteps = [
@@ -3021,10 +3024,10 @@
             )
             .join("") +
           `<div class="seq-item seq-fin" data-weight="2.2">
-                   <button class="btn-heart" id="btnNext">${I.heart}<span>OPEN THE NEXT CHAPTER</span></button>
-                   <span class="fin-hint">TAP TO CONTINUE</span>
-                 </div>
-                 <span class="seq-tag">FINAL CHAPTER</span>`;
+                         <button class="btn-heart" id="btnNext">${I.heart}<span>OPEN THE NEXT CHAPTER</span></button>
+                         <span class="fin-hint">TAP TO CONTINUE</span>
+                       </div>
+                       <span class="seq-tag">FINAL CHAPTER</span>`;
 
         // episod
         const eps = CHAPTERS.map((c) => ({
@@ -3035,26 +3038,26 @@
         $("#epList").innerHTML = eps
           .map(
             (e) => `
-              <button class="ep-row ${e.final ? "final" : ""}" data-target="${e.target}">
-                <span class="ep-num">${e.num}</span><span class="ep-name">${e.name}</span>
-              </button>`,
+                    <button class="ep-row ${e.final ? "final" : ""}" data-target="${e.target}">
+                      <span class="ep-num">${e.num}</span><span class="ep-name">${e.name}</span>
+                    </button>`,
           )
           .join("");
 
         // end credits
         $("#creditsRoll").innerHTML = `
-              <div class="cr-title">OUR STORY</div>
-              <div class="cr-sub">SEASON ONE</div>
-              <div class="cr"><span>DIRECTED BY</span><b>${CONFIG.names.you}</b></div>
-              <div class="cr"><span>STARRING</span><b>${CONFIG.names.her} &amp; ${CONFIG.names.you}</b></div>
-              <div class="cr"><span>STORY BY</span><b>The two of us</b></div>
-              <div class="cr"><span>CINEMATOGRAPHY</span><b>Every stranger we asked to take our photo</b></div>
-              <div class="cr"><span>MUSIC</span><b>${CONFIG.music.title}</b></div>
-              <div class="cr"><span>ON LOCATION IN</span><b>${CONFIG.season.place} &amp; everywhere we went</b></div>
-              <div class="cr"><span>RUNNING TIME</span><b>365 days</b></div>
-              <div class="cr"><span>SPECIAL THANKS</span><b>Both our families</b></div>
-              <div class="cr"><span>BASED ON</span><b>A true story</b></div>
-              <div class="cr end"><span>TO BE CONTINUED</span><b>Season 02 — with you.</b></div>`;
+                    <div class="cr-title">OUR STORY</div>
+                    <div class="cr-sub">SEASON ONE</div>
+                    <div class="cr"><span>DIRECTED BY</span><b>${CONFIG.names.you}</b></div>
+                    <div class="cr"><span>STARRING</span><b>${CONFIG.names.her} &amp; ${CONFIG.names.you}</b></div>
+                    <div class="cr"><span>STORY BY</span><b>The two of us</b></div>
+                    <div class="cr"><span>CINEMATOGRAPHY</span><b>Every stranger we asked to take our photo</b></div>
+                    <div class="cr"><span>MUSIC</span><b>${CONFIG.music.title}</b></div>
+                    <div class="cr"><span>ON LOCATION IN</span><b>${CONFIG.season.place} &amp; everywhere we went</b></div>
+                    <div class="cr"><span>RUNNING TIME</span><b>365 days</b></div>
+                    <div class="cr"><span>SPECIAL THANKS</span><b>Both our families</b></div>
+                    <div class="cr"><span>BASED ON</span><b>A true story</b></div>
+                    <div class="cr end"><span>TO BE CONTINUED</span><b>Season 02 — with you.</b></div>`;
       }
 
       /* ---------- engine untuk scroll-sequence (ch5 & final) ---------- */
