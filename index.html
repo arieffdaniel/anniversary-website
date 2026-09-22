@@ -2192,7 +2192,7 @@
               ><span class="stat-l">MONTHS</span>
             </div>
             <div class="stat reveal" style="--d: 0.45s">
-              <span class="stat-n stat-word">countless</span
+              <span class="stat-n stat-word">ENDLESS</span
               ><span class="stat-l">MEMORIES</span>
             </div>
           </div>
@@ -3196,10 +3196,10 @@
       ];
 
       function parseStoryDate(value) {
-        const normalized = String(value || "").trim().replace(/\s+/g, " ");
-        const fullDate = normalized.match(
-          /^(\d{1,2})\s+([a-z]+)\s+(\d{4})$/i,
-        );
+        const normalized = String(value || "")
+          .trim()
+          .replace(/\s+/g, " ");
+        const fullDate = normalized.match(/^(\d{1,2})\s+([a-z]+)\s+(\d{4})$/i);
         const monthDate = normalized.match(/^([a-z]+)\s+(\d{4})$/i);
         if (!fullDate && !monthDate) return null;
 
@@ -3225,7 +3225,10 @@
 
       function formatStoryDate(value) {
         const parsed = parseStoryDate(value);
-        if (!parsed) return String(value || "").trim().toUpperCase();
+        if (!parsed)
+          return String(value || "")
+            .trim()
+            .toUpperCase();
         const monthAndYear = `${STORY_MONTHS[parsed.month]} ${parsed.year}`;
         return parsed.hasDay
           ? `${String(parsed.day).padStart(2, "0")} ${monthAndYear}`
@@ -3307,9 +3310,10 @@
           .join("");
 
         // CH3 — timeline (oldest month first)
-        $("#tlList").innerHTML = getAdventuresChronologically()
-          .map(
-            (a, i) => `
+        $("#tlList").innerHTML =
+          getAdventuresChronologically()
+            .map(
+              (a, i) => `
                     <div class="tl-item reveal" data-i="${i}" tabindex="0" role="button" aria-label="${a.title}">
                       <span class="tl-dot"></span>
                       <div class="tl-card">
@@ -3322,8 +3326,8 @@
                         <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
                       </div>
                     </div>`,
-          )
-          .join("") +
+            )
+            .join("") +
           `<div class="tl-future reveal" aria-label="And many more to go">
              <span class="tl-future-dot" aria-hidden="true"></span>
              <p>And many more to go…</p>
