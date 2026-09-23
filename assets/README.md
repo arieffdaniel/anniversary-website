@@ -25,7 +25,9 @@ or:
 hero: "assets/images/where-we-met.jpg",
 ```
 
-The photo sections render local images directly. Chapter 04 adds six random videos from a public Google Drive folder to the scrapbook. Every video receives its own stable archive-wide number, such as **Memory 001** or **Memory 247**, based on its order in the complete Drive collection; Shuffle keeps that video's number instead of resetting the visible cards to 01–06. Cards autoplay as muted, looping previews, and tapping one opens it fullscreen with sound and native controls. Configure the videos in `index.html`.
+The photo sections render local images directly. Chapter 03 uses compact WebP derivatives from `images/timeline-thumbs/` for its small timeline cards while retaining the original `image` files for full-resolution modals. Keep new timeline thumbnails at 352 × 256 pixels so phones do not need to download and decode full-size photos for those cards.
+
+Chapter 04 adds six random videos from a public Google Drive folder to the scrapbook. Every video receives its own stable archive-wide number, such as **Memory 001** or **Memory 247**, based on its order in the complete Drive collection; Shuffle keeps that video's number instead of resetting the visible cards to 01–06. Visible cards autoplay as muted, looping previews; offscreen previews pause, and tapping one opens it fullscreen with sound and native controls. Configure the videos in `index.html`.
 
 ```js
 driveVideos: {
