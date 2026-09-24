@@ -242,10 +242,15 @@
           transform 1.5s ease 0.1s,
           filter 1.3s ease 0.1s;
       }
+      /* Remove the finished intro from hit testing after its exit animation. */
+      #opening.hidden {
+        display: none;
+      }
       .op-line {
         position: absolute;
         inset: 0;
         display: flex;
+        pointer-events: none;
         align-items: center;
         justify-content: center;
         font-size: clamp(1.5rem, 4.6vw, 2.6rem);
@@ -271,6 +276,8 @@
         transform: translateY(-14px);
       }
       #op3 {
+        position: relative;
+        z-index: 2;
         opacity: 0;
         transform: translateY(22px);
         filter: blur(12px);
@@ -527,15 +534,19 @@
         margin-top: 1rem;
       }
       .story {
-        max-width: 62ch;
-        display: flex;
-        flex-direction: column;
-        gap: 1.7rem;
+        width: 100%;
+      }
+      .story > .reveal {
+        column-count: 2;
+        column-gap: clamp(2.8rem, 7vw, 5.5rem);
+        column-fill: balance;
       }
       .story p {
         color: var(--ink-dim);
         font-size: 1.13rem;
         line-height: 1.95;
+        break-inside: avoid;
+        margin: 0 0 1.7rem;
       }
       .story p:first-child::first-letter {
         font-size: 3.2em;
@@ -637,6 +648,16 @@
       .pol-row .polaroid {
         width: min(215px, 42vw);
         margin: 0;
+      }
+      /* Crop the taller middle Chapter 01 photo without changing the file. */
+      .pol-row .polaroid:nth-child(2) .ph {
+        aspect-ratio: 3 / 4;
+      }
+      .pol-row .polaroid:nth-child(2) .ph img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center;
       }
 
       /* ---------- CHAPTER 02: montage ---------- */
@@ -806,6 +827,38 @@
         width: 15px;
         height: 15px;
       }
+      .tl-future {
+        position: relative;
+        min-height: 8rem;
+        padding-top: 1.2rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+      }
+      .tl-future-dot {
+        position: relative;
+        z-index: 1;
+        width: 13px;
+        height: 13px;
+        border-radius: 50%;
+        background: var(--pink);
+        border: 2px solid var(--bg);
+        box-shadow:
+          0 0 0 1px var(--pink),
+          0 0 24px rgba(229, 179, 192, 0.38);
+      }
+      .tl-future p {
+        position: relative;
+        z-index: 1;
+        margin-top: 1.5rem;
+        padding: 0.35rem 1.4rem;
+        background: var(--bg);
+        color: var(--pink);
+        font-size: clamp(1.5rem, 3.6vw, 2.35rem);
+        font-style: italic;
+        font-weight: 300;
+      }
 
       /* ---------- CHAPTER 04: stats + scrapbook ---------- */
       .stats {
@@ -839,6 +892,217 @@
         columns: 17rem;
         column-gap: 2rem;
         margin-top: 6vh;
+      }
+
+      /* ---------- CHAPTER 04: Drive videos inside the scrapbook ---------- */
+      .drive-video-tools {
+        position: relative;
+        z-index: 10;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 48px;
+        margin: 7vh 0 1vh;
+        pointer-events: auto;
+      }
+      .drive-video-tools > [hidden] {
+        display: none !important;
+      }
+      .video-status-inline,
+      .video-toolbar {
+        position: relative;
+        z-index: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 0.9rem;
+        color: var(--ink-dim);
+        text-align: center;
+        pointer-events: auto;
+      }
+      .video-status-inline p {
+        line-height: 1.6;
+      }
+      .video-spinner {
+        width: 22px;
+        height: 22px;
+        flex: none;
+        border-radius: 50%;
+        border: 1px solid var(--line);
+        border-top-color: var(--blue);
+        animation: videoSpin 0.9s linear infinite;
+      }
+      @keyframes videoSpin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+      .video-error-title,
+      .video-counter {
+        font-family: var(--mono);
+        font-size: 0.58rem;
+        letter-spacing: 0.24em;
+      }
+      .video-error-title {
+        color: var(--pink);
+      }
+      .video-counter {
+        color: var(--blue);
+      }
+      .video-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.65rem;
+        min-height: 40px;
+        border: 1px solid var(--line);
+        background: transparent;
+        color: var(--ink-dim);
+        cursor: pointer;
+        pointer-events: auto;
+        padding: 0.7rem 1rem;
+        font-family: var(--mono);
+        font-size: 0.58rem;
+        letter-spacing: 0.18em;
+        transition:
+          color 0.3s,
+          border-color 0.3s,
+          background 0.3s;
+      }
+      .video-btn:hover,
+      .video-btn:focus-visible {
+        color: var(--ink);
+        border-color: rgba(169, 199, 232, 0.55);
+        background: rgba(169, 199, 232, 0.08);
+      }
+      .video-btn svg {
+        width: 14px;
+        height: 14px;
+        fill: none;
+        stroke: currentColor;
+        stroke-width: 1.7;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+      .drive-video-card {
+        pointer-events: auto;
+      }
+      .drive-video-card .pol-in {
+        animation: none;
+      }
+      .drive-video-card .ph {
+        position: relative;
+        aspect-ratio: 4 / 3;
+        background: #080b12;
+      }
+      .drive-video-card .ph img,
+      .drive-video-preview {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      .drive-video-preview {
+        display: block;
+        background: #080b12;
+        pointer-events: none;
+      }
+      .drive-video-card .pcap {
+        display: -webkit-box;
+        min-height: 3.4rem;
+        overflow: hidden;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+      }
+      .video-card-play {
+        position: absolute;
+        inset: 0;
+        display: grid;
+        place-items: center;
+        color: #fff;
+        pointer-events: none;
+        background: linear-gradient(
+          180deg,
+          transparent 45%,
+          rgba(2, 3, 6, 0.4)
+        );
+      }
+      .video-card-play i {
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        display: grid;
+        place-items: center;
+        border: 1px solid rgba(255, 255, 255, 0.72);
+        background: rgba(7, 11, 20, 0.5);
+        backdrop-filter: blur(6px);
+        transition:
+          transform 0.35s,
+          background 0.35s;
+      }
+      .video-card-play svg {
+        width: 19px;
+        height: 19px;
+        fill: currentColor;
+      }
+      .drive-video-card:hover .video-card-play i,
+      .drive-video-card:focus-visible .video-card-play i {
+        transform: scale(1.1);
+        background: rgba(169, 199, 232, 0.3);
+      }
+      #videoLightbox {
+        position: fixed;
+        inset: 0;
+        z-index: 900;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: clamp(1rem, 4vw, 3rem);
+        background: rgba(2, 3, 7, 0.97);
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+        transition:
+          opacity 0.35s ease,
+          visibility 0.35s ease;
+      }
+      #videoLightbox.open {
+        opacity: 1;
+        visibility: visible;
+        pointer-events: auto;
+      }
+      .video-fullscreen-stage {
+        width: min(1200px, 100%);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+      }
+      #videoFrame {
+        display: block;
+        width: 100%;
+        max-height: calc(100vh - 7rem);
+        max-height: calc(100dvh - 7rem);
+        background: #000;
+        object-fit: contain;
+        box-shadow: 0 30px 90px rgba(0, 0, 0, 0.65);
+      }
+      .video-fullscreen-name {
+        max-width: min(70ch, 80vw);
+        color: var(--ink-dim);
+        font-family: var(--mono);
+        font-size: 0.58rem;
+        letter-spacing: 0.18em;
+        text-align: center;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      .video-fullscreen-close {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        z-index: 2;
       }
 
       /* ---------- sticky sequences (ch05 & final) ---------- */
@@ -1473,10 +1737,19 @@
         align-items: center;
         justify-content: center;
         opacity: 0;
-        transition: opacity 1.1s ease;
+        visibility: hidden;
+        pointer-events: none;
+        transition:
+          opacity 1.1s ease,
+          visibility 1.1s ease;
+      }
+      #finale.hidden {
+        display: none;
       }
       #finale.open {
         opacity: 1;
+        visibility: visible;
+        pointer-events: auto;
       }
       .fin-stage {
         text-align: center;
@@ -1660,6 +1933,9 @@
         .chapter {
           padding: 15vh 7vw;
         }
+        .story > .reveal {
+          column-count: 1;
+        }
         .timeline::before {
           left: 14px;
         }
@@ -1675,9 +1951,70 @@
           right: auto;
           top: 1.7rem;
         }
+        .tl-future {
+          align-items: flex-start;
+          text-align: left;
+          padding-left: 2.7rem;
+        }
+        .tl-future-dot {
+          position: absolute;
+          left: 9.5px;
+          top: 1.2rem;
+        }
+        .tl-future p {
+          padding-left: 0;
+        }
         .tl-card img {
           width: 70px;
           height: 54px;
+        }
+      }
+
+      @media (max-width: 760px), (pointer: coarse) {
+        /* Keep the film look without continuously repainting large mobile layers. */
+        #grain {
+          inset: 0;
+          opacity: 0.045;
+          animation: none;
+        }
+        .blob {
+          display: none;
+        }
+        .hero-media img {
+          transform: scale(1.08);
+          will-change: auto;
+        }
+        .pol-in,
+        .m-media img {
+          animation: none;
+        }
+        .reveal,
+        .reveal.in,
+        .p-reveal,
+        .p-reveal.in {
+          filter: none;
+        }
+        .reveal {
+          transition:
+            opacity 0.72s ease var(--d, 0s),
+            transform 0.72s cubic-bezier(0.22, 0.61, 0.36, 1) var(--d, 0s);
+        }
+        .p-reveal {
+          transition: opacity 0.72s ease var(--d, 0s);
+        }
+        .scene,
+        .tl-item {
+          content-visibility: auto;
+          contain-intrinsic-size: auto 320px;
+        }
+        .btn-skip,
+        #btnAudio,
+        .video-card-play i,
+        .icon-btn,
+        .ep-back,
+        .m-back {
+          -webkit-backdrop-filter: none;
+          backdrop-filter: none;
         }
       }
       @media (max-width: 640px) {
@@ -1697,6 +2034,13 @@
           right: 14px;
           width: 40px;
           height: 40px;
+        }
+        .video-status-inline,
+        .video-toolbar {
+          flex-wrap: wrap;
+        }
+        .video-btn {
+          padding-inline: 0.75rem;
         }
         .m-body {
           padding: 1.4rem 1.35rem 2rem;
@@ -1896,12 +2240,53 @@
               ><span class="stat-l">MONTHS</span>
             </div>
             <div class="stat reveal" style="--d: 0.45s">
-              <span class="stat-n stat-word">countless</span
+              <span class="stat-n stat-word">ENDLESS</span
               ><span class="stat-l">MEMORIES</span>
             </div>
           </div>
+
+          <div
+            class="drive-video-tools"
+            id="driveVideoGallery"
+            style="--d: 0.2s"
+          >
+            <div class="video-status-inline" id="videoLoading" role="status">
+              <span class="video-spinner" aria-hidden="true"></span>
+              <p>Loading videos into the scrapbook…</p>
+            </div>
+            <div
+              class="video-status-inline"
+              id="videoError"
+              role="alert"
+              hidden
+            >
+              <span class="video-error-title">VIDEO ARCHIVE UNAVAILABLE</span>
+              <p id="videoErrorText">The videos could not be loaded.</p>
+              <button class="video-btn" id="videoRetry" type="button">
+                TRY AGAIN
+              </button>
+            </div>
+            <div class="video-toolbar" id="videoToolbar" hidden>
+              <span
+                class="video-counter"
+                id="videoCounter"
+                aria-live="polite"
+              ></span>
+              <button class="video-btn" id="videoShuffle" type="button">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M16 3h5v5" />
+                  <path d="M4 20 21 3" />
+                  <path d="M21 16v5h-5" />
+                  <path d="m15 15 6 6" />
+                  <path d="M4 4 9 9" />
+                </svg>
+                SHUFFLE VIDEOS
+              </button>
+            </div>
+          </div>
+
           <p class="ch-note reveal" style="text-align: center; margin: 4vh 0 0">
-            TAP A PHOTO TO VIEW IT FULLSCREEN
+            VIDEOS AUTOPLAY MUTED · TAP FOR FULLSCREEN + SOUND
           </p>
           <div class="scrap" id="scrap"></div>
         </div>
@@ -1954,6 +2339,30 @@
       </section>
     </main>
 
+    <!-- Full-page video player — opens only after a scrapbook video is clicked. -->
+    <div id="videoLightbox" aria-hidden="true">
+      <button
+        class="icon-btn video-fullscreen-close"
+        id="videoClose"
+        type="button"
+        aria-label="Close video"
+      >
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.6"
+          stroke-linecap="round"
+        >
+          <path d="M6 6l12 12M18 6 6 18" />
+        </svg>
+      </button>
+      <div class="video-fullscreen-stage">
+        <video id="videoFrame" controls playsinline preload="metadata"></video>
+        <p class="video-fullscreen-name" id="videoFullscreenName"></p>
+      </div>
+    </div>
+
     <!-- ══════════ SENARAI EPISOD (klik HUD) ══════════ -->
     <div id="episodes">
       <div class="ep-back" id="epBack"></div>
@@ -1991,7 +2400,7 @@
             <path d="M6 6l12 12M18 6L6 18" />
           </svg>
         </button>
-        <div class="m-media"><img id="mImg" alt="" /></div>
+        <div class="m-media"><img id="mImg" alt="" decoding="async" /></div>
         <div class="m-body">
           <div class="m-top">
             <span class="m-tag" id="mTag"></span
@@ -2056,7 +2465,7 @@
           <path d="M15 6l-6 6 6 6" />
         </svg>
       </button>
-      <img id="lbxImg" alt="" />
+      <img id="lbxImg" alt="" decoding="async" />
       <p class="lbx-cap" id="lbxCap"></p>
       <button class="icon-btn lbx-next" id="lbxNext" aria-label="Seterusnya">
         <svg
@@ -2106,46 +2515,57 @@
 
     <script>
       /* ════════════════════════════════════════════════════════════════
-   ✏️  TUKAR SEMUA CONTENT ANDA DI SINI — tak perlu sentuh kod lain
-   Gantikan URL gambar picsum dengan gambar anda, cth: "photos/kami.jpg"
-   Untuk tambah memory baharu, cuma copy satu { ... } dan tukar isinya.
-   ════════════════════════════════════════════════════════════════ */
+                         ✏️  TUKAR SEMUA CONTENT ANDA DI SINI — tak perlu sentuh kod lain
+                         Letak gambar dalam "assets/images/" dan video dalam "assets/videos/".
+                         Gantikan URL gambar picsum, cth: "assets/images/kami.jpg"
+                         Untuk tambah memory baharu, cuma copy satu { ... } dan tukar isinya.
+                         ════════════════════════════════════════════════════════════════ */
       const CONFIG = {
-        names: { you: "Arieff", her: "Liyana" }, // ✏️ nama anda & nama dia
+        names: { you: "Awieff", her: "Lilyana" }, // ✏️ nama anda & nama dia
         season: {
           start: "29.09.2025",
-          end: "Endless",
+          end: "FOREVER",
           place: "IOI Putrajaya, Malaysia", // ✏️ tarikh & tempat anda mula bercinta
         },
 
         // ---------- CHAPTER 01: hari pertama berjumpa ----------
         meeting: {
-          date: "22 March 2024",
-          place: "A little café, Kuala Lumpur", // ✏️ tarikh & tempat anda berjumpa
-          hero: "https://picsum.photos/seed/ourstory-cafe/1600/900.jpg",
+          date: "29 September 2025",
+          place: "10GRAM IOI PUTRAJAYA", // ✏️ tarikh & tempat anda berjumpa
+          hero: "assets/images/1st pages.png",
           figCaption: "THE PLACE WHERE IT ALL BEGAN",
           story: [
-            "It was just another ordinary Friday. I remember the rain, the noise of the city, and then — you. We talked about nothing and everything until the café turned the lights down and politely asked us to leave.",
-            "I walked home that night through the rain without caring about the rain at all. Something had quietly shifted, and I couldn't stop smiling about it.",
+            "It was just another ordinary Monday. I remember the feeling of that day. I came early, thinking you weren't coming, but then I messaged you to tell you that I was already there. You told me you were on your way to IOI, and somehow, we both ended up arriving.",
+            "We started chatting, asking each other, 'Is this really happening? Are we really doing this right now?' Then I called you because I wanted to tell you, 'Let's go home.'",
+            "But suddenly, I saw someone so beautiful that she caught my eye. I froze for a moment. It was the first time I had ever seen you in real life, and I was honestly stunned. And instead of saying, 'Let's go home,' I looked at you and said, 'I'm in front of you.'",
+            "And just like that, we spent the day together. We walked around IOI, ate at 10 Gram, played bowling, talked about everything and nothing, and simply enjoyed being around each other.",
+            "As the day went on, I started seeing more of who you really were. Your little habits, your character, the way you talked, the way you laughed. Somewhere along the way, without even realizing it, I started falling in love with you.",
+            "Eventually, we both had to go home. The day felt far too short, but somehow, it became one of those days I know I'll always remember.",
+            "Because that was the day I first started falling in love with you, ayang. <3",
           ],
           quote:
             "At that moment, I didn't know that meeting you would become one of the most important moments of my life.",
           photos: [
             // ✏️ gambar-gambar lama
             {
-              image: "https://picsum.photos/seed/firstday-1/560/640.jpg",
-              caption: "the beginning",
-              date: "22.03.24",
+              image: "assets/images/IMG_3921.jpg",
+              caption: "Our first photo together",
+              date: "29.09.25",
             },
             {
-              image: "https://picsum.photos/seed/firstday-2/560/640.jpg",
-              caption: "that rainy friday",
-              date: "22.03.24",
+              image: "assets/images/IMG_3915.jpg",
+              caption: "Our first food together",
+              date: "29.09.25",
             },
             {
-              image: "https://picsum.photos/seed/firstday-3/560/640.jpg",
-              caption: "us, before 'us'",
-              date: "22.03.24",
+              image: "assets/images/IMG_3991.jpg",
+              caption: "Our first selfie together",
+              date: "29.09.25",
+            },
+            {
+              image: "assets/images/IMG_3960.jpg",
+              caption: "Our first bowling together",
+              date: "29.09.25",
             },
           ],
         },
@@ -2154,60 +2574,67 @@
         // ✏️ tambah / buang scene — setiap { } = satu babak
         memories: [
           {
-            date: "23 MARCH 2024",
+            date: "1 SEPTEMBER 2025",
+
             title: "The First Conversation",
             story:
-              "It started with a message. Then another. Then somehow, three hours had passed and we were still talking — about everything and nothing at all. That night, I fell asleep smiling at my phone.",
-            caption: "Some conversations never really end.",
-            image: "https://picsum.photos/seed/mem-conv/1200/900.jpg",
+              "On this day, you were performing Umrah, and we were still just two complete strangers. I remember always asking people who went for Umrah to make doa for me, but with you, I didn't ask for anything specific. Maybe you thought I was being ego, but all I asked was, Semoga urusan kita dipermudahkan. Little did we know that this random conversation would become something so meaningful. From that moment, we would always make the same doa together, asking Allah to ease everything for us and, one day, our future together. Aamiin.",
+            caption:
+              "We were strangers when we made this doa. We just didn't know it would become our doa. Aamiin.",
+            image: "assets/images/chat.png",
           },
           {
-            date: "05 APRIL 2024",
+            date: "10 NOVEMBER 2025",
             title: "Our First Outing",
             story:
-              "Awkward silences, nervous laughter, and that moment we both reached for the same menu at the same time. Neither of us wanted to say goodbye first.",
-            caption: "Nervous hands, happy hearts.",
-            image: "https://picsum.photos/seed/mem-outing/1200/900.jpg",
+              "For the first time, we went out together to Shah Alam and created our first vlog together. This was also the day I asked you to be my girlfriend. But you said it wasn't sweet at all and asked me to propose to you properly, like with a hot air balloon or something like that.",
+            caption:
+              "Our first vlog, my first attempt at asking you out, and your first rejection of my proposal.",
+            image: "assets/images/First Outing Together.png",
           },
           {
-            date: "20 APRIL 2024",
+            date: "26 DECEMBER 2025",
+
             title: "Our First Date",
+
             story:
-              "I rehearsed what to say in the mirror. Twice. You noticed, and laughed, and somehow that made everything perfect instead of embarrassing.",
-            caption: "The first of many.",
-            image: "https://picsum.photos/seed/mem-date/1200/900.jpg",
+              "Now this was our first official date, and somehow, it finally felt real. The girl who first caught my eye at IOI was now my girlfriend. I even updated Mama that we were officially dating. We went to Sukiya, which was my first time trying it, and of course, I got to experience it with you, sayang. We also went to the cinema and karaoke together, making our first official date even more special.",
+            caption:
+              "Now we're officially dating, and I'm so happy to have you as my girlfriend.",
+            image: "assets/images/first date.png",
           },
           {
-            date: "04 MAY 2024",
+            date: "02 OCTOBER 2025",
             title: "Badminton",
             story:
-              "You swore you were 'pretty good' at badminton. You were not. I let you win one game — and you still don't know that.",
-            caption: "Game, set, ours.",
-            image: "https://picsum.photos/seed/mem-badminton/1200/900.jpg",
+              "You swore you were 'pretty good' at badminton. You were not. Wkwkwkw jk. But honestly, I was surprised the first time we played. Not everyone could take my smashes, but you took them like it was nothing. And somehow, playing together felt different. We weren't just a pair on the court, we were a team. We laughed, challenged each other, and had way too much fun. Maybe we weren't really unbeatable, but with you by my side, I always felt like we could take on anyone.",
+            caption:
+              "Our first game together, and I already knew I wanted to play with you forever.",
+            image: "assets/images/first badminton.png",
           },
           {
-            date: "11 MAY 2024",
-            title: "Sukiya",
+            date: "1 DECEMBER 2025",
+            title: "Dinner By Ayang",
             story:
-              "Our post-game ritual. Same table, same order, same argument about who gets the last of the egg. It became our little tradition without either of us planning it.",
-            caption: "Comfort food tastes better with you.",
-            image: "https://picsum.photos/seed/mem-sukiya/1200/900.jpg",
+              "This was the first time I got to eat something you cooked for me. I was so hungry and couldn't find Kicap Mudim anywhere, but then suddenly, we met at the dobi. You gave me telur mata, telur dadar, nasi, and of course, you didn't forget the Kicap Mudim. I loved it so much, and honestly, I love eating your cooking until today. I hope I get to taste many more of your cooking in the future. Aamiin.",
+            caption: "My favourite meals are the ones you make for me.",
+            image: "assets/images/IMG_1558.jpg",
           },
           {
-            date: "01 JUNE 2024",
-            title: "The Cinema",
+            date: "19 NOVEMBER 2025",
+            title: "Clinic",
             story:
-              "I can't tell you much about the movie. I can tell you exactly how your laugh sounded in the dark, and how I hoped the film would never end.",
-            caption: "I'd watch anything, as long as it's with you.",
-            image: "https://picsum.photos/seed/mem-cinema/1200/900.jpg",
+              "Maybe it wasn't the most romantic place to make a memory, but I was sick, and somehow, you were there with me. You treated me to CHAGEE, stayed with me while I saw the doctor, and even had a dessert with me afterwards. I had a fever that day, but having you there made me feel so much better. Thank you for staying with me at the clinic, ayang. Tiba-tiba muncul pulak tu.",
+            caption: "Even on my sick days, you were there.",
+            image: "assets/images/klinik.png",
           },
           {
-            date: "15 JUNE 2024",
-            title: "Karaoke",
+            date: "4 DECEMBER 2025",
+            title: "Pre-Convo Together",
             story:
-              "You sang every song like the microphone owed you something. I joined in for exactly one chorus and immediately regretted it. Best night of the month.",
-            caption: "Off-key, on love.",
-            image: "https://picsum.photos/seed/mem-karaoke/1200/900.jpg",
+              "On this day was our pre-convo, and I loved it so much because you met Mama for the first time. She was so excited to meet you and loved you so much that she even gave you so many gifts, even though it was her first time meeting you. We also went for a photoshoot together, and this time, I tried to propose to you again. Wkwkwk. But you didn't give me an answer because apparently, I still didn't know how to propose properly. We spent the whole day together, and I'm so sorry because I suddenly had to work that day. You slept beside me while waiting for me to finish my work, and while you were sleeping, I couldn't stop looking at you. You looked so beautiful at that moment, sayang. I couldn't take my eyes off you.",
+            caption: "We graduated together, and started our journey together.",
+            image: "assets/images/Pre-Convo.png",
           },
         ],
 
@@ -2215,161 +2642,377 @@
         // ✏️ tambah adventure baharu dengan copy satu { } di bawah
         adventures: [
           {
-            date: "JULY 2024",
-            title: "Bowling",
-            teaser: "You bowled a strike and celebrated for a full minute.",
+            date: "OCTOBER 2025",
+
+            title: "ShawarmaGO",
+
+            teaser: "Our most iconic place.",
+
             story:
-              "You bowled one strike the entire evening and celebrated like you'd won a tournament. I guttered twice in a row and pretended my wrist hurt. Fair trade.",
-            caption: "Strike once, celebrate forever.",
-            image: "https://picsum.photos/seed/adv-bowling/1600/1000.jpg",
-            thumb: "https://picsum.photos/seed/adv-bowling/400/300.jpg",
+              "You introduced me to ShawarmaGO in Bandar Seri Putra, and it quickly became one of our favourite places. It was the best shawarma I had ever tasted, especially because I got to share it with my lovely Lily. ❤️ From then on, we kept meeting there for shawarma and sometimes matcha too. One day, the matcha shop owner suddenly took a picture of us. I asked her to AirDrop it to me because I thought it was the first photo someone else had taken of us together. I loved that picture so much. Whenever I came home from work, we would meet there to eat, talk, and spend time together. Somehow, ShawarmaGO became more than just somewhere to eat; it became one of our little places.",
+
+            caption: "ShawarmaGO is always better with the one I love.",
+
+            image: "assets/images/shawarma.png",
+
+            thumb:
+              "assets/images/timeline-thumbs/matcha-shawarma-date-1-0f5f6ee6.webp",
           },
           {
-            date: "AUGUST 2024",
-            title: "Darts",
-            teaser: "Neither of us was good. Both of us was loud.",
+            date: "OCTOBER 2025",
+
+            title: "Mamak Date",
+
+            teaser: "From 'Kita Kawan Je' to 'Kita Kawin'.",
+
             story:
-              "Two people, zero talent, one dartboard. You nearly hit the wall. I nearly hit the waiter. We named our team 'The Champions' anyway.",
-            caption: "Aim was optional. Fun was not.",
-            image: "https://picsum.photos/seed/adv-darts/1600/1000.jpg",
-            thumb: "https://picsum.photos/seed/adv-darts/400/300.jpg",
+              "I still remember you saying that if I asked you to hang out at a mamak, you'd say, 'Kita kawan je.' 😂 Then, one day, we actually went to a mamak together. I introduced you to roti kahwin, and because I remembered that you liked Anggur Extra Joss, I ordered it for you too. We shared our food, talked, and simply enjoyed being together. I remember thinking, 'I love this girl so much.' Even when I didn't have much money, we could still share what we had and have a wonderful time together. ❤️ This was our first time lepak mamak together. We rarely do it, but yeahhh... 'Kita kawan je.' Hehehe, just kidding. 😂 From 'kita kawan' to my girlfriend, soon my fiancée, and one day my wife, InshaAllah. Aamiin. ❤️",
+            caption: "From 'kita kawan je' to 'kita kawin'—okay.",
+            image: "assets/images/IMG_6813.jpg",
+
+            thumb: "assets/images/timeline-thumbs/img-6810-3d134de0.webp",
           },
           {
-            date: "SEPTEMBER 2024",
-            title: "Jogging",
-            teaser: "We jogged for nine minutes. Walked for ninety.",
+            date: "OCTOBER 2025",
+            title: "Tasik Ujana",
+            teaser: "We jogged. Mostly, we talked.",
             story:
-              "We promised each other a serious workout. We jogged for nine minutes, then walked and talked for the rest of the evening. Honestly, I preferred it that way.",
-            caption: "We jogged. Mostly we talked.",
-            image: "https://picsum.photos/seed/adv-jogging/1600/1000.jpg",
-            thumb: "https://picsum.photos/seed/adv-jogging/400/300.jpg",
+              "Tasik Ujana was one of the places where we met many times. We jogged together, and yes, I know I lost to you. It wasn't fair—I was up against an olahragawati sekolah. Wkwkwkw. 😂 I remember meeting Sara here for the first time and talking about COD: 'Carry me, right?' Wkwkwk. I also remember seeing Umi here for the first time. We bought air kelapa, and you loved it so much that you ended up with a stomach ache from drinking too much. 😂 This place also became somewhere we went whenever one of us wasn't feeling okay. I remember coming here when I was struggling, and you came to see me. I'm sorry for the times I pushed you away because I wasn't okay. Whenever you're not okay, I want you to know that I'll always come for you too, sayang. No matter what, I'll always be by your side. ❤️",
+            caption: "We jogged. Mostly, we talked.",
+            image: "assets/images/IMG_7629.jpg",
+            thumb: "assets/images/timeline-thumbs/img-6885-33f14b23.webp",
           },
           {
-            date: "OCTOBER 2024",
-            title: "Café Dates",
-            teaser: "One café became our second home.",
+            date: "NOVEMBER 2025",
+            title: "First Lily for You",
+            teaser: "My first lily for my forever Lily.",
             story:
-              "One café slowly became our place. The staff learned our order. We learned which table got the best evening light. Somewhere between those cups, a year quietly passed.",
-            caption: "Our table, our light, our hour.",
-            image: "https://picsum.photos/seed/adv-cafe/1600/1000.jpg",
-            thumb: "https://picsum.photos/seed/adv-cafe/400/300.jpg",
+              "I remember asking you, 'Why should anyone give flowers when everyone knows they can die so easily?' You told me that it wasn't really about the flowers. It was about the gesture, the feeling of being loved, and how receiving flowers could make you happy. At the time, I honestly knew nothing about flowers, so I simply gave you one like that. Wkwkwkw. 😂 I'm sorry, sayang. As time went by, I learned. I learned how to surprise you with flowers, and I began to love seeing your face light up whenever you received them. Seeing your smile and knowing that something so simple could make you happy makes me happy too. ❤️ Just like your name, you'll always be my forever Lily, blooming beautifully in my life. There will be many more flowers from me, so wait for the next surprise. You never know when it's coming. Hehehe. ❤️",
+            caption: "Lilies for my lovely Lily.",
+            image: "assets/images/IMG_8091.jpg",
+            thumb: "assets/images/timeline-thumbs/img-8093-05997e36.webp",
           },
           {
-            date: "NOVEMBER 2024",
-            title: "Jalan-jalan",
-            teaser: "No plans, no destination, just us.",
+            date: "NOVEMBER 2025",
+            title: "Moknab: Our Favourite Nasi Kerabu",
+            teaser: "From 'Hate Kelantan' to extra budu.",
             story:
-              "The best days had no plan at all. We walked until our feet complained, talked until the streetlights came on, and got lost on purpose more than once.",
-            caption: "Everywhere is somewhere with you.",
-            image: "https://picsum.photos/seed/adv-walk/1600/1000.jpg",
-            thumb: "https://picsum.photos/seed/adv-walk/400/300.jpg",
+              "My mistake was not telling you the truth about being from Kelantan. Wkwkwkw. 😂 Somehow, you found out and realised that not every Kelantanese is a red flag... I think. Wkwkwk. 😂 Now, Nasi Kerabu Moknab has become one of our favourite spots. Even when the queue is incredibly long, we still wait just to eat there. You love the extra budu and kelapa parut, and whenever we're around Bandar Baru Bangi, it's one of the places we always end up visiting. I still remember coming here after badminton, after pre-convo, and on so many other days. I love that the person I love enjoys the same food I do, and somehow, we always end up coming back for more. ❤️",
+            caption: "From 'Hate Kelantan' to enjoying extra budu together.",
+            image: "assets/images/IMG_8390.jpg",
+            thumb: "assets/images/timeline-thumbs/moknab-f6179144.webp",
           },
           {
-            date: "DECEMBER 2024",
+            date: "MAY 2026",
             title: "Your Birthday",
-            teaser: "Cake, candles, and one wish I already knew.",
+            teaser: "The Birthday I Wanted to Make Unforgettable.",
             story:
-              "I tried to make it perfect and mostly succeeded. You closed your eyes to make a wish, and I closed mine — because mine had already come true.",
-            caption: "Happiest of birthdays, my love.",
-            image: "https://picsum.photos/seed/adv-birthday/1600/1000.jpg",
-            thumb: "https://picsum.photos/seed/adv-birthday/400/300.jpg",
+              "Your birthday is one of the memories I love the most. I'm so grateful that everything went so well because I really wanted to make this birthday special for you. ❤️ At first, I asked Umi and Ayah if we could celebrate your birthday together, but somehow, Ira suddenly asked me if I wanted to plan your birthday. Wkwkwkwk. 😂 So I started planning everything, and eventually Umi and Ayah agreed to let me celebrate your birthday with you. Honestly, I had never planned or celebrated someone else's birthday like this before, so I really wanted to make yours special. We went to Game On togeth er, and I still remember Umi and Ayah sending you there. That was such a rare and special moment for me. ❤️ After that, we went to Bidadari Turun Malam, where your friends were already waiting and everything had been prepared. That whole day was full of surprises for you, one after another. And I still remember you crying because of one of my surprises. Seeing how happy and emotional you were honestly made me so happy too. I just wanted to give you the happiest birthday you've ever had, sayang. ❤️ I hope this is only the beginning of many more birthdays that we get to celebrate together. InshaAllah, we'll be there for each other's birthdays for many, many years to come. Aamiin. ❤️ And of course, I can never forget... there will always be a Lily for my beautiful Lily. 🌸❤️",
+            caption: "Happiest of birthdays to my lovely Lily. 🌸❤️",
+            image: "assets/images/birthday header.png",
+            thumb:
+              "assets/images/timeline-thumbs/tumbnail-birthday-5b65c5e8.webp",
           },
           {
-            date: "JANUARY 2025",
-            title: "Graduation",
-            teaser: "The robe, the scroll, the proudest smile.",
+            date: "NOVEMBER 2025",
+            title: "Dobi Date",
+            teaser: "The place where we kept finding each other.",
             story:
-              "Watching you walk across that stage, I think I clapped louder than your entire family combined. I was so proud of you I nearly forgot to take the photo.",
-            caption: "You did it. I was there. I always will be.",
-            image: "https://picsum.photos/seed/adv-graduation/1600/1000.jpg",
-            thumb: "https://picsum.photos/seed/adv-graduation/400/300.jpg",
+              "Whenever you went to the dobi to do your laundry, I'd find a way to meet you there, especially after visiting the masjid. It was such a simple place, yet somehow so many of our memories happened there. We talked, ate, waited for your laundry, and simply enjoyed being together. ❤️ So many little memories began at that dobi: the food you cooked for me, your first flower, Shukri Tomyam, and many more. Even when we were in Bandar Puteri, we'd meet there and sometimes go to The Grid while waiting for the laundry to finish. I didn't really care where we went. I just wanted to teman you and spend whatever time I had with you. Every chance I had to see you, I wanted to hold on to that moment. ❤️",
+            caption:
+              "It was just a dobi, but with you, it became one of our places. ❤️",
+            image: "assets/images/IMG_9169.jpg",
+            thumb: "assets/images/timeline-thumbs/img-9171-ec55f713.webp",
           },
           {
-            date: "FEBRUARY 2025",
-            title: "Family Moments",
-            teaser: "Two families, slowly becoming one.",
+            date: "NOVEMBER 2025",
+            title: "Bukit Bintang",
+            teaser: "I just wanted to meet you, sayang.",
             story:
-              "Somewhere between your mother's cooking and my grandmother's questions, our two worlds started stitching themselves together.",
-            caption: "You became part of the picture.",
-            image: "https://picsum.photos/seed/adv-family/1600/1000.jpg",
-            thumb: "https://picsum.photos/seed/adv-family/400/300.jpg",
+              "I remember that you were working at a hotel around Bukit Bintang at the time. I knew you were a strong woman, but part of me still wanted to understand what your days were like and be there for you, even if you didn't ask me to. So I followed your location and waited for you there. 😂 When you asked why I had come, I simply said, 'Nothing, jalan-jalan Bukit Bintang.' Then you asked where I was going, and I said, 'Lot 10.' And yes... I was literally waiting for you on the ground floor. Wkwkwkwk. 😂 After that, we went to Tutti Frutti together. I also can't forget the transparent umbrella. Walking around with you beneath it honestly felt like we were in a K-drama scene. Wkwkwk. ❤️ I didn't really come to Bukit Bintang just to jalan-jalan. I came because I wanted to see you, sayang.",
+            caption:
+              "Jalan-jalan Lot 10... or jalan-jalan nak jumpa ayang? 😂❤️",
+            image: "assets/images/bukit bintang.png",
+            thumb: "assets/images/timeline-thumbs/img-9347-155fc52e.webp",
           },
           {
-            date: "EVERYDAY",
-            title: "Random Moments",
-            teaser: "The ones no camera caught.",
+            date: "DECEMBER 2025",
+            title: "Ayang's Graduation",
+            teaser: "The first lily I ever gave you.",
             story:
-              "Falling asleep on the phone. Sharing one umbrella. The joke only we understand. The five-minute goodbyes that last an hour. These were my favourite scenes of all.",
-            caption: "My favourite scenes had no photos.",
-            image: "https://picsum.photos/seed/adv-random/1600/1000.jpg",
-            thumb: "https://picsum.photos/seed/adv-random/400/300.jpg",
+              "Ayang, do you remember this day? I came for Izwan's convo, but secretly, I also came to give you the first lily I had ever bought for you. 🌸 I had a bouquet custom-made just for you, and I was so excited to finally give it to you. You were having your pre-convo with your roommates, so I gave it to you in front of them. You were so shy when you took it from me. 😂❤️ You told me that you had never smelled a lily before. The funny thing was that the lily I gave you hadn't even bloomed yet. I chose it that way so that it would bloom when you graduated. That first lily will always be special to me because it was the first bouquet I gave my lovely Lily. Your friend took a picture of us that day, and we also took a picture together at UIA. Looking back, I'm so grateful that we met at the right time because I got to be there and celebrate this beautiful moment with you. I may not have been there throughout your entire study journey, but InshaAllah, I'll be there for everything that comes after it. From the first lily I gave you to every flower that follows—until forever. Aamiin. ❤️",
+            caption: "The first lily for my lovely Lily. 🌸❤️",
+            image: "assets/images/Ayang Graduation.png",
+            thumb:
+              "assets/images/timeline-thumbs/ayang-graduate2-fa63f5f3.webp",
+          },
+          {
+            date: "DECEMBER 2025",
+            title: "57 Café",
+            teaser: "Our Café Date.",
+            story:
+              "I remember that we rarely met at cafés, but 57 Café holds so many memories for me. We ate together, had your favourite food, popis and chicken tenders, and even played UNO together. And yes, I won the first game even though I followed your rules. Wkwkwkw. 😂 But then you won the next game. Hehehe. ❤️ I really love the moments when we just hang out, chill, eat, talk, and enjoy each other's company at a café. Maybe after this, we should have more café dates together. Hehehe. ❤️",
+            caption: "Good food, good games, and my favourite person. ❤️",
+            image: "assets/images/IMG_3305.jpg",
+            thumb: "assets/images/timeline-thumbs/img-3339-0425129a.webp",
+          },
+          {
+            date: "DECEMBER 2025",
+            title: "Ayang's Interview",
+            teaser: "Ayang Being Beautiful at KLCC",
+            story:
+              "I remember this was the time you had your interview for OUJI. Alhamdulillah, now you're almost one year into working there. ❤️ Do you remember how you left your file at home and went there with almost nothing except your iPad and a few things to study before the interview? Wkwkwk. 😂 But Alhamdulillah, you managed to do it, sayang, and now you're working at OUJI. I'm so proud of you. ❤️ After your interview, we celebrated together at Mamak Alam Sari, eating naan cheese and tandoori. You were so happy because the interview went well, and I was happy seeing you happy too. ❤️ And I definitely can't forget you running around KLCC trying to find a place to print your documents while video calling me. Wkwkwkwk. 😂 Somehow, even while you're busy and stressed, you were still so beautiful to me. Hehehe. Sayang, even KLCC couldn't handle how beautiful you looked that day. ❤️",
+            caption:
+              "Even on your busiest days, you were still my beautiful girl. ❤️",
+            image: "assets/images/IMG_8905.jpg",
+            thumb: "assets/images/timeline-thumbs/img-8905-7b856f20.webp",
+          },
+          {
+            date: "JANUARY 2026",
+            title: "Puncak Alam",
+            teaser: "Ayang's Rehearsal for Emcee",
+            story:
+              "I remember when we went to Puncak Alam for your emcee rehearsal. This was the first time I followed you until late at night, and honestly, I will always support whatever you do, sayang. ❤️ Unfortunately, I still haven't had the chance to see you become an emcee at a real event. I only got to see it through videos for now. But InshaAllah, one day I hope I can be there and watch you do it for real. Aamiin. ❤️ While waiting for the rehearsal that night, we hung around Eco Ardence together. This was also the first time I met all your friends, and I got to see how you handled your rehearsal. I saw how you prepared the flow, practiced your text, and made sure everything was ready. I loved seeing how serious and dedicated you were about it. I may not have been able to see you emcee in person yet, but I want you to know that I'll always support you, sayang. Whatever you want to achieve, I'll be there cheering for you. And one day, when I finally get to see you on stage, I'll be your biggest supporter in the crowd. ❤️",
+            caption: "Your biggest supporter, always. ❤️",
+            image: "assets/images/puncak alam2.png",
+            thumb: "assets/images/timeline-thumbs/puncak-alam-fa903ad8.webp",
+          },
+          {
+            date: "JANUARY 2026",
+            title: "Nilai",
+            teaser: "Sushi Date at AEON Nilai and Chill at Dataran Nilai",
+            story:
+              "I remember this time you wanted to eat sushi, so we went to AEON Nilai together. It was my first time going there and also my first time eating sushi. Wkwkwkwk. 😂 And of course, I won the game and got a free drink. Hehehe. ❤️ We walked around AEON together, ate, played, and just enjoyed our time together. After that, we went to Dataran Nilai to hang out and chill together. But honestly, one of my favourite things about this memory is your shirt. 😂❤️ This was my favourite shirt that you wore because every time we called, I would always see your DP with you wearing that shirt. Somehow, I loved seeing you in it so much, ayang. If we get the chance, let's go and hang out at AEON Nilai again. Now there's Sukiya there, so we already know where we're going. Wkwkwkwk. 😂 So many memories there with you, ayang, and I hope we get to make many more. ❤️",
+            caption: "One place, so many memories with you. ❤️",
+            image: "assets/images/aeon nilai.png",
+            thumb: "assets/images/timeline-thumbs/dataran-nilai-01e51e02.webp",
+          },
+          {
+            date: "JANUARY 2026",
+            title: "Ride Together",
+            teaser: "Our First Ride Together.",
+            story:
+              "This was the first time you ever rode with me. I picked you up at MRT Kajang and sent you to KTM Bangi. Wkwkwkwk. 😂 I remember you were so scared riding with me and kept asking me to slow down, while I kept telling you to grip tight. But your hands were always moving around. Wkwkwkwk. 😂Honestly, I really enjoyed riding together with you. I could see how happy you were during the ride, and sometimes I still wonder... were you actually happy because you were riding with me, or because you were riding Nini? Wkwkwkwk. 😂❤️InshaAllah, ayang, one day we can ride together every day. Or maybe you can get your own bike and we can ride together everywhere. Hehehe. I just want more moments like this with you. ❤️",
+            caption: "I don't know what made you happier, me or Nini. 😂❤️",
+            image: "assets/images/IMG_6112.jpg",
+            thumb: "assets/images/timeline-thumbs/ride-01fac7da.webp",
+          },
+          {
+            date: "JANUARY 2026",
+            title: "Wedding",
+            teaser: "Our First Wedding Together.",
+            story:
+              "This was our first wedding that we attended together as each other's plus one. Hehehe. ❤️ I rarely go to wedding events, but this time, I got to go with you, ayang. I'm sorry for being a little awkward that day. 😂 I also remember this was the first time I met Aiman and Ali, and one of the funniest moments was when I compared myself to Aiman because my bag had a strap so I could put it on my shoulder. Wkwkwkwk. 😂But more than anything, I remember that you weren't really in the mood that day. Ayang, I just want you to know that I will always be by your side. Even when you're sad, even when you cry, and even when things don't feel okay, I will still be there with you.I don't want to see my Lily sad. I don't want to see the person I love crying. I want to be the person who makes you smile again and makes you feel safe and loved. InshaAllah, I will always try my best to make you the happiest person in the world, ayang. Forever. Aamiin. ❤️",
+            caption:
+              "When you're sad, I'll stay until I see my Lily smile again. ❤️",
+            image: "assets/images/wedding.png",
+            thumb: "assets/images/timeline-thumbs/img-6479-8d3851d8.webp",
+          },
+          {
+            date: "JANUARY 2026",
+            title: "Gym Date",
+            teaser: "Your Personal Trainer. Wkwkwk.",
+            story:
+              "You always wanted to go to the gym but never really had the chance, so this became our first gym date. And yes, I became your personal trainer for the day. Wkwkwkwk. 😂 We did boxing together, lifted weights, used the treadmill, and tried so many things at the gym.We definitely need to repeat our gym date after this. Maybe Anytime Fitness next time? Let's gooo. Wkwkwk. 😂 We need to get healthy together, ayang. ❤️But after burning all those calories, we went to Little Bangi Pizza and gained them all back. Wkwkwkwk. 😂 It's okay, right? We burn calories together and gain them back together. Hehehe. ❤️",
+            caption: "Burn calories together, gain them back together. 😂❤️",
+            image: "assets/images/gymdate.png",
+            thumb: "assets/images/timeline-thumbs/gymdate2-bd56a7cf.webp",
+          },
+          {
+            date: "FEBRUARY 2026",
+            title: "I-City",
+            teaser: "Our Little Theme Park Before the Real One.",
+            story:
+              "Remember when you said you wanted to go on a theme park date? At that time, we still hadn't had our proper theme park date yet, so we went to i-City together. ❤️ You picked me up from LRT Glenmarie, and I remember how excited you were when you saw the robot dog doing a backflip right in front of us. Wkwkwkwk. 😂We went on the Ferris wheel together, and honestly, being up there with you felt so romantic. You even asked me if I was scared of heights. Wrong question, ayang. 😂 I wasn't scared of heights at all. The only thing I'm scared of is you. Wkwkwkwk. Just kidding. ❤️There were so many games and things we wanted to try, but we didn't get to do everything that day. One day, we should definitely go back and try all of them together. InshaAllah. ❤️",
+            caption:
+              "I wasn't scared of the height, I was only scared of you. 😂❤️",
+            image: "assets/images/Icity.png",
+            thumb: "assets/images/timeline-thumbs/icity2-31ae4cc0.webp",
+          },
+          {
+            date: "FEBRUARY 2026",
+            title: "TRX Together",
+            teaser: "Our Second Home.",
+            story:
+              "TRX is probably one of our most iconic places. Every time you came home from work, we'd somehow end up dating here. Wkwkwk. 😂 It started feeling like our second home because we made so many memories here, and I think we've almost visited every stall there together.So many little dates, meals, walks, and random moments happened here. And InshaAllah, ayang, one day I pray that I'll be rich enough for you to walk into whatever store you want and buy whatever you want. Hehehe. ❤️",
+            caption: "Our second home, one memory at a time. ❤️",
+            image: "assets/images/trx 1.png",
+            thumb: "assets/images/timeline-thumbs/trx2-95053eeb.webp",
+          },
+          {
+            date: "FEBRUARY 2026",
+            title: "Iftar Together",
+            teaser: "Breaking our fast together.",
+            story:
+              "Our first little iftar memories together. ❤️ There was something special about waiting for Maghrib, sitting together, choosing what to eat, and finally breaking our fast side by side. Ramadan made even our simple meals feel different. It wasn't just about the food. It was about having you there, sharing the moment, talking, laughing, and making another little memory together. On this day, I challenged us to spend only RM20 to buy our iftar. Somehow, we managed to buy so many things with just RM20. Wkwkwkwk. 😂 And we had our iftar at Dataran Nilai together. Even though my drink ended up spilling on my pants. Wkwkwkwk. 😂❤️ But honestly, I loved it so much. Having iftar together with you made that day really special. Alhamdulillah for moments like this with you, ayang. ❤️",
+            caption:
+              "Breaking our fast together, one memory I'll always treasure. ❤️",
+            image: "assets/images/iftar 1.png",
+            thumb: "assets/images/timeline-thumbs/iftar-2-a5bc73a5.webp",
+          },
+          {
+            date: "MARCH 2026",
+            title: "K Fry Iftar",
+            teaser: "Iftar, K Fry, and my favourite person.",
+            story:
+              "Another Ramadan memory with you, but this time with K Fry. ❤️ We got to break our fast together, eat good food, and enjoy another little date during Ramadan. I love how our memories aren't always about doing something huge. Sometimes it's just sitting together over a meal, talking, laughing, and enjoying the food. But I also remember how busy I was at that time. Even while we were having iftar, I kept checking my phone and working. After iftar, I even went back to the office to continue working. I'm really sorry, sayang, for being so busy that day. ❤️ Thank you so much, sayang, for treating me to K Fry that day. I really, really loved it. Hehehe. ❤️ Next time, we should repeat our K Fry date again, but hopefully this time I won't be so busy. Wkwkwkwk. 😂❤️",
+            caption:
+              "Good food tastes even better when I share it with you. ❤️",
+            image: "assets/images/Kfry1.png",
+            thumb: "assets/images/timeline-thumbs/kfry2-b1dd8010.webp",
+          },
+          {
+            date: "MARCH 2026",
+            title: "Open House",
+            teaser: "The day I got to know your home and family.",
+            story:
+              "This Raya, you invited me and my siblings to your open house. It was my first time coming to your home for an open house, and honestly, I want to say I'm really sorry for how I treated you that day, sayang. ❤️ I had not attended an open house for a long time, and I felt so awkward and didn't really know how to act. But I know that doesn't excuse the way I treated you. I didn't mean to make you feel like I was treating you like a stranger, and I'm really sorry, ayang. You invited me into your home, and I should have appreciated that moment more. I'm really grateful that you invited me because I got to taste Umi's cooking, meet your family, and experience a little part of your world. ❤️ I'm sorry for how I was that day, sayang. InshaAllah, next time I won't treat you like that anymore. And one day, ayang, I hope both our families won't feel like two separate families anymore. They'll just be one big family, ours. Aamiin. ❤️",
+            caption:
+              "One day, your family and my family will become ours. Aamiin. ❤️",
+            image: "assets/images/IMG_9221.jpg",
+            thumb: "assets/images/timeline-thumbs/img-2548-ec421f91.webp",
+          },
+          {
+            date: "APRIL 2026",
+            title: "Movie Night",
+            teaser: "Just you, me, and a movie.",
+            story:
+              "Every weekend, we always have movie night together, usually with a bowl of ramen. Wkwkwkwk. 😂 I love it so much. Honestly, I think I love watching you more than I love watching the movie. Wkwkwkwk. ❤️ Sometimes I don't even remember the full story of the movie, but I remember how much I loved spending my weekends with you. Just having some leisure time together, watching movies, eating ramen, and relaxing. We even have our game nights together too, and I love every moment of it. It's these simple weekends with you that I really treasure. We don't have to go anywhere or do anything special. As long as I'm spending my weekend with you, I'm already happy. ❤️",
+            caption:
+              "I might forget the movie, but I'll never forget watching it with you. ❤️",
+            image: "assets/images/IMG_3741.jpg",
+            thumb: "assets/images/timeline-thumbs/img-3743-5a723730.webp",
+          },
+          {
+            date: "APRIL 2026",
+            title: "Raya 2026",
+            teaser: "Our Raya together.",
+            story:
+              "Raya 2026 became another beautiful chapter in our story. ❤️ This was our first Raya together, and honestly, I don't know why, but I just loved being with you during Raya. This time, we went to Ali's open house together. We spent time together, took pictures, ate, and just enjoyed the Raya atmosphere. But one thing I really loved was looking at our pictures and seeing how similar our faces look. Wkwkwkwk. 😂❤️ Maybe we really are meant to be. Hehehe. ❤️ This was our first Raya together, ayang, and InshaAllah, there will be many, many more Raya celebrations for us to share together. Aamiin. ❤️",
+            caption:
+              "Raya feels a little more beautiful with you beside me. ❤️",
+            image: "assets/images/IMG_7080.jpg",
+            thumb: "assets/images/timeline-thumbs/img-3797-93b0ab54.webp",
+          },
+          {
+            date: "APRIL 2026",
+            title: "Badminton Doubles",
+            teaser: "Us Against Everyone.",
+            story:
+              "This was when we played mixed doubles with Ali and Ira, and somehow, we kept winning. Wkwkwkwk. 😂 Even though you kept getting mad at me because I wouldn't stop bullying them. Hehehe. Sorry, ayang. 😂❤️ But honestly, I loved playing with you so much. We're actually such a good pair on the court. I keep smashing to score the points, and you cover and defend everything in front. Somehow, when we're together, it feels like no one can beat us. Wkwkwkwk. ❤️ I really love being your partner on the court. We need to repeat this many more times and keep challenging everyone. Next target: Irfan and Ayah. Hehehe. Let's see if they can beat the best pair. 😂❤️",
+            caption: "My favourite doubles partner, on and off the court. ❤️",
+            image: "assets/images/d91c45e7-bdb9-430b-bc34-72abadbbe43f.jpg",
+            thumb: "assets/images/timeline-thumbs/img-4351-8a6e86d7.webp",
+          },
+          {
+            date: "APRIL 2026",
+            title: "KLCC",
+            teaser: "Another day in KL with you.",
+            story:
+              "Another KL day with my favourite person. ❤️ We spent time around KLCC, walking around, eating, talking, and making another little memory together. We've been to so many places by now, but every place becomes different when I'm with you. KLCC isn't just KLCC anymore. It's another place that reminds me of us and another little chapter in our story. ❤️",
+            caption: "Another place that became ours. ❤️",
+            image: "assets/images/klcc.png",
+            thumb: "assets/images/timeline-thumbs/img-8375-259b1bd6.webp",
+          },
+          {
+            date: "MAY 2026",
+            title: "Genting",
+            teaser: "A Little Escape With You.",
+            story:
+              "Remember our little escape to Genting? Hehehe. ❤️ Honestly, it's one of those rare moments where somehow, wherever you go, I'll appear too. Wkwkwkwk. 😂 I went there with Izwan and got to join your friends as well. We played separately, but it's okay because at least we were both there and got to enjoy Genting together. But one day, I really want us to repeat this Genting escape, just the two of us. Hehehe. ❤️ I want us to go together, explore everything together, and make even more memories there. And ayang, I'm really sorry for how I treated you that day. I wasn't used to things at that time, and I know I was rude to you. Huhuhuhu. I'm really sorry, sayang. I promise I'll learn from it and I won't repeat the same thing again. ❤️ So one day, let's go to Genting again, just you and me. InshaAllah. ❤️",
+            caption: "Anywhere you go, I'll be there, sayang. ❤️",
+            image: "assets/images/Genting.png",
+            thumb: "assets/images/timeline-thumbs/img-8951-cd5db3f2.webp",
+          },
+          {
+            date: "JUNE 2026",
+            title: "Tasik Impiana",
+            teaser: "Another little place for us.",
+            story:
+              "Another quiet little memory with you at Tasik Impiana. ❤️ Sometimes we don't need a big plan. We can just meet, walk around, talk, and enjoy having each other there. I love the peaceful moments we have together because they remind me that being with you doesn't always need something exciting. Sometimes, just being together is already enough. ❤️",
+            caption: "No big plans, just us. ❤️",
+            image: "assets/images/Tasik impiana.png",
+            thumb: "assets/images/timeline-thumbs/img-9488-c558d34e.webp",
+          },
+          {
+            date: "JULY 2026",
+            title: "My Birthday",
+            teaser: "My First Birthday With You.",
+            story:
+              "My birthday became even more special because I got to spend it with you. ❤️ Birthdays come every year, but having you beside me to celebrate my birthday for the first time is something I'll always remember. You gave me so many presents that day, sayang. I got new shoes, and I love them so much. Hehehe. ❤️ But then you gave me your handmade book, and honestly, I was speechless. You made it from scratch with your own hands, and I don't even know if I could make something like that for you. Knowing how much effort and love you put into making it for me made it even more special. I really, really love it, sayang. ❤️ You also gave me a keychain with our picture on it, and I love having a little piece of us with me wherever I go. Thank you so much for all the gifts, sayang. ❤️ And you even treated me to Jibril. I really enjoyed that day so much. I'm also sorry that I ruined part of my own birthday. Huhuhuhu. But even with that, you still made my birthday feel so special, and I'm really grateful for everything you did for me. We didn't get many pictures because the SD card got corrupted, but that's okay. Even without all the pictures, I'll always have this day in my memories. This was my first birthday with you, sayang, and I hope it will be the first of many birthdays we get to celebrate together. Thank you for giving me one of the most special birthdays I've ever had. ❤️",
+            caption:
+              "My first birthday with you, and a memory I'll carry forever. ❤️",
+            image: "assets/images/mybirthday.png",
+            thumb: "assets/images/timeline-thumbs/mybirthday-1-034429f6.webp",
+          },
+          {
+            date: "JULY 2026",
+            title: "Volunteering Together",
+            teaser: "Doing something good together.",
+            story:
+              "This was the first time we joined a volunteering event together, and honestly, I had never joined one before. Wkwkwk. 😂 But because I was with you, I wanted to try it, ayang. ❤️ You were so good at handling almost everything. You really know how to take care of things, and I loved seeing how much you enjoyed being around the kids. You were so comfortable with them, and it was really nice seeing that side of you. And of course, I became the photographer for the volunteering event. I think it was a little biased because there were sooo many pictures of you. Wkwkwkwk. 😂 But yeahhh, you're my girlfriend, of course you're going to be the main subject of my camera. Hehehe. ❤️ I'm really happy that we got to join the volunteering together and spend the day at the Rumah Anak Yatim. InshaAllah, ayang, there will be many more volunteering activities that we'll join together one day. Aamiin. ❤️",
+            caption: "Doing good together, one memory at a time. ❤️",
+            image: "assets/images/Voluntering.png",
+            thumb: "assets/images/timeline-thumbs/img-3734-afc3c5d1.webp",
+          },
+          {
+            date: "AUGUST 2026",
+            title: "MRT Kajang",
+            teaser: "Another little goodbye that never feels little.",
+            story:
+              "MRT Kajang became another place connected to our memories. ❤️ Sometimes it was just a pickup, a drop-off, or a short moment together before we had to go our separate ways. But even the smallest moments with you mean something to me. I always wish our time together could last a little longer, but at least every goodbye gives us another reason to look forward to the next time we meet. ❤️",
+            caption:
+              "Every goodbye just makes me look forward to seeing you again. ❤️",
+            image: "assets/images/IMG_4315.jpg",
+            thumb: "assets/images/timeline-thumbs/img-4318-c1a1405a.webp",
+          },
+          {
+            date: "AUGUST 2026",
+            title: "Matching Phone Case",
+            teaser: "A little piece of us, everywhere we go.",
+            story:
+              "Matching phone cases. 😂❤️ It's such a small thing, but I love little things like this because they remind me of us every time I look at my phone. We might not always be together, but now there's a little reminder of you with me wherever I go. And I love knowing that you have one too. Hehehe. ❤️",
+            caption: "Matching cases, matching hearts. ❤️",
+            image: "assets/images/matching phone case.png",
+            thumb:
+              "assets/images/timeline-thumbs/matching-phone-case-2-4762d5c1.webp",
+          },
+          {
+            date: "AUGUST 2026",
+            title: "Thrift Date",
+            teaser: "Finding treasures together.",
+            story:
+              "Our thrift date was another one of those simple dates that I really enjoyed. ❤️ Walking around together, looking through things, finding random stuff, and sharing our opinions made the whole experience fun. I love dates like this because we don't need anything fancy. Just give me a place to walk around with you, and I'll happily spend hours there. Hehehe. ❤️",
+            caption:
+              "We came to thrift, but somehow I found another favourite memory. ❤️",
+            image: "assets/images/thrift.png",
+            thumb: "assets/images/timeline-thumbs/thrift-2-8cf3473c.webp",
+          },
+          {
+            date: "SEPTEMBER 2026",
+            title: "Golf Date",
+            teaser: "Our first golf date.",
+            story:
+              "And here we are, trying something new together again. ❤️ Our golf date was another experience I got to share with you, and honestly, I loved seeing you try, learn, and enjoy yourself. I love that we keep trying new things together. From badminton to bowling, gym, and now golf, who knows what we'll try next? Hehehe. As long as you're beside me, I'm always ready for another adventure with you. ❤️",
+            caption: "Another new thing, another memory with you. ❤️",
+            image: "assets/images/Golf2.png",
+            thumb: "assets/images/timeline-thumbs/golf1-44dec9e6.webp",
           },
         ],
 
-        // ---------- CHAPTER 04: galeri scrapbook (polaroid) ----------
-        // ✏️ tambah gambar dengan copy satu { } — caption gaya tulisan tangan
-        gallery: [
-          {
-            image: "https://picsum.photos/seed/gal-01/620/760.jpg",
-            caption: "golden hour",
-            date: "APR '24",
-          },
-          {
-            image: "https://picsum.photos/seed/gal-02/620/760.jpg",
-            caption: "mid-laugh",
-            date: "MAY '24",
-          },
-          {
-            image: "https://picsum.photos/seed/gal-03/620/760.jpg",
-            caption: "your favourite seat",
-            date: "JUN '24",
-          },
-          {
-            image: "https://picsum.photos/seed/gal-04/620/760.jpg",
-            caption: "random tuesday",
-            date: "JUL '24",
-          },
-          {
-            image: "https://picsum.photos/seed/gal-05/620/760.jpg",
-            caption: "us, being us",
-            date: "AUG '24",
-          },
-          {
-            image: "https://picsum.photos/seed/gal-06/620/760.jpg",
-            caption: "the little things",
-            date: "SEP '24",
-          },
-          {
-            image: "https://picsum.photos/seed/gal-07/620/760.jpg",
-            caption: "after the rain",
-            date: "OCT '24",
-          },
-          {
-            image: "https://picsum.photos/seed/gal-08/620/760.jpg",
-            caption: "date night",
-            date: "NOV '24",
-          },
-          {
-            image: "https://picsum.photos/seed/gal-09/620/760.jpg",
-            caption: "secret joke",
-            date: "DEC '24",
-          },
-          {
-            image: "https://picsum.photos/seed/gal-10/620/760.jpg",
-            caption: "weekend light",
-            date: "JAN '25",
-          },
-          {
-            image: "https://picsum.photos/seed/gal-11/620/760.jpg",
-            caption: "your smile",
-            date: "FEB '25",
-          },
-          {
-            image: "https://picsum.photos/seed/gal-12/620/760.jpg",
-            caption: "always",
-            date: "MAR '25",
-          },
-        ],
+        // ---------- CHAPTER 04: video Google Drive ----------
+        // ✏️ Masukkan Folder ID dan Browser API Key anda di bawah.
+        // Folder dan semua video mesti dikongsi sebagai "Anyone with the link".
+        // Hadkan API key kepada domain website ini + Google Drive API.
+        driveVideos: {
+          visibleCount: 6, // jumlah video rawak yang dipaparkan pada satu masa
+          folderId: "1rnAhKZREaqcYklp2jxxH4nGkX8J7XZCe", // cth: ID selepas /folders/ dalam URL Google Drive
+          apiKey: "AIzaSyAADDt0Twxfy9By5-8wfxP5Eb8S06wHNKg", // Google Cloud Browser API key (HTTP referrer restricted)
+        },
+
+        // ---------- CHAPTER 04: scrapbook ----------
+        // Template gambar dibuang — ruang ini memaparkan video Drive sahaja.
+        gallery: [],
 
         // ---------- CHAPTER 05: sebab-sebab saya sayangkan dia ----------
         // ✏️ tambah sebab anda sendiri di sini, sebanyak mana pun
@@ -2378,25 +3021,33 @@
           "The way you care about me, even on the days you're tired.",
           "The little things you do that you think nobody notices. I notice.",
           "The way you make ordinary days feel special.",
-          "How you hold my hand a little tighter when we cross the road.",
-          "Your playlists. Somehow, they always know my mood.",
+          "The way you get cute angry when I tease you.",
+          "How you hold my hand a little tighter when we meet.",
+          "How you always know what to say to make me feel better.",
+          "How you laugh at my jokes, even the bad ones.",
+          "How you connect with my family, and how they love you for it.",
+          "How you are always being patient with me, even when I'm not the easiest person to understand.",
+          "How you being you is enough for me, and how I don't need you to be anyone else.",
+          "Lastly, how you love me for who I am, and not for who you want me to be.",
+          "There is endless reasons why I love you, and I will spend the rest of my life showing you just how much.",
+          "Being You — the most beautiful, kind, and loving person I have ever met — is the best thing that has ever happened to me.",
         ],
 
         // ---------- CHAPTER 06: keluarga ----------
         family: {
           hers: {
             title: "Meeting Your Family",
-            caption: "DINNER WITH YOUR FAMILY · DEC 2024",
+            caption: "DINNER WITH YOUR FAMILY · DEC 2025",
             story:
-              "I was nervous for a week. Your mum asked me a hundred questions; your dad asked twice as many with his eyes alone. By dessert, I had stopped feeling like a guest — and started feeling like family.",
-            image: "https://picsum.photos/seed/fam-hers/1200/900.jpg",
+              "I was nervous to meet your family. But somehow, I found the courage to sit down and have drinks with your Ayah and Umi even without you there. Your family asked me a hundred questions, and your dad asked twice as many with just his eyes. Somewhere along the way, I stopped feeling like a guest and started feeling like family.",
+            image: "assets/images/jumpa ayah.png",
           },
           mine: {
             title: "Bringing You Home To Mine",
-            caption: "RAYA AT MY GRANDMA'S · FEB 2025",
+            caption: "Meeting My Family · DEC 2025",
             story:
-              "You fit into my family so easily it almost annoyed me — my grandmother now calls you before she calls me. You brought dessert. You stayed to help wash up. They never stood a chance.",
-            image: "https://picsum.photos/seed/fam-mine/1200/900.jpg",
+              "You fit into my family so easily that it almost annoyed me. My mother now calls you before she calls me, is nicer to you than she is to me, and even gossips with you about me. Somehow, you became so comfortable in my world, and I love that you did.",
+            image: "assets/images/Lily Mama.png",
           },
         },
 
@@ -2404,14 +3055,48 @@
         // ✏️ tulis surat sebenar anda di sini. Setiap " " = satu perenggan.
         letter: {
           paragraphs: [
-            "My dearest Mira,",
-            "365 days. 8,760 hours. Half a million minutes — and somehow, not one of them felt like enough.",
-            "I still think about the version of me before I met you. He was fine, I suppose. He got through his days. But he didn't know what it felt like to have someone save him the last bite, save him the worst of her jokes, and save him the best of her heart.",
-            "Thank you for every ordinary Tuesday you turned into something worth remembering. For every quiet car ride. For every time you chose us.",
-            "Whatever Season 02 brings, I want to face it with you. And Season 3. And every season after that.",
+            "My dearest Lily,",
+
+            "365 days. 8,760 hours. More than half a million minutes. And somehow, I still feel like one year with you wasn't enough.",
+
+            "Sometimes I think about the person I was before you came into my life. I was doing okay, living my own life, following my own routine. Then somehow, you became part of my everyday life. And now, when something happens, you're one of the first people I want to tell.",
+
+            "You became my favourite person. My favourite place to go. My favourite person to annoy, to laugh with, to eat with, to go on dates with, and the person I want beside me when life gets difficult.",
+
+            "I love all the little things about us. The random conversations that somehow turn into hours. The jokes only we understand. Our dates. Our drives. Our badminton. Our walks. The food we share. The silly moments. Even the ordinary days that somehow become memories just because I'm spending them with you.",
+
+            "Thank you for every moment you've given me this past year. Thank you for choosing me, for being patient with me, for understanding me, and for staying even when I'm not the easiest person to understand.",
+
+            "I know I'm not perfect, Lily. I've made mistakes. I've overthought things. I've been jealous. I've said things I shouldn't have said, and sometimes I've hurt you when the last thing I ever wanted was to hurt you.",
+
+            "For every time I've made you feel hurt, disappointed, tired, or unsure of us, I'm truly sorry. I'm still learning how to love you better. I'm learning to listen more, to understand before I react, to be calmer, and to become someone who makes you feel safe and loved.",
+
+            "I don't want to just promise that I'll change. I want you to see it in the way I treat you, in the way I communicate with you, and in the way I choose you every day.",
+
+            "Because Lily, I'm serious about you. I'm serious about us. You're not just someone I want to spend another year with. You're someone I want to build my future with.",
+
+            "I want more anniversaries with you. More birthdays. More random dates. More late-night conversations. More road trips. More photographs. More stupid jokes. More moments where we look back and realise how far we've come.",
+
+            "I want to build a home with you one day. I want to wake up beside you, come home to you, create our own little routines, and make a life that belongs to both of us.",
+
+            "I know our future won't always be easy. There will be arguments, stressful days, responsibilities, and moments where we don't understand each other. But even when things get difficult, I don't want to run away from us. I want to learn, grow, and work through those moments with you.",
+
+            "Season 01 was only the beginning. There will be Season 02, Season 03, Season 04, and hopefully so many more that we eventually stop counting.",
+
+            "And if I could choose one person to spend all of those seasons with, I would still choose you.",
+
+            "Thank you for becoming my favourite person. Thank you for being my lovely Lily. Thank you for giving me a kind of happiness I didn't even know I was looking for.",
+
+            "I don't know exactly where life will take us, but I know what I want. I want to keep choosing you. I want to keep growing with you. I want to keep loving you.",
+
+            "And many years from now, when we look back at this first year, I hope we smile and say, 'That was only the beginning.'",
+
             "Happy first anniversary, my love.",
+
+            "I love you more than I know how to put into words. And I can't wait to see where our story takes us next.",
           ],
-          sign: "— yours, always. Adam",
+
+          sign: "— yours, always. Awieff",
         },
 
         // ---------- warna (ubah ikut citarasa anda) ----------
@@ -2521,13 +3206,95 @@
       /* ---------- render semua content dari CONFIG ---------- */
       function polaroid(g, clickable, extra) {
         return `<${clickable ? "button" : "div"} class="polaroid ${clickable ? "clickable p-reveal" : ""}" ${extra || ""}>
-    <span class="pol-in" style="--fd:${(Math.random() * -7).toFixed(1)}s">
-      <span class="ph"><img src="${g.image}" alt="" loading="lazy"></span>
-      <span class="pcap">${g.caption}</span>
-      <span class="pdate">${g.date}</span>
-      <i class="tape"></i>
-    </span>
-  </${clickable ? "button" : "div"}>`;
+                          <span class="pol-in" style="--fd:${(Math.random() * -7).toFixed(1)}s">
+                            <span class="ph"><img src="${g.image}" alt="" loading="lazy" decoding="async"></span>
+                            <span class="pcap">${g.caption}</span>
+                            <span class="pdate">${g.date}</span>
+                            <i class="tape"></i>
+                          </span>
+                        </${clickable ? "button" : "div"}>`;
+      }
+
+      const STORY_MONTHS = [
+        "JANUARY",
+        "FEBRUARY",
+        "MARCH",
+        "APRIL",
+        "MAY",
+        "JUNE",
+        "JULY",
+        "AUGUST",
+        "SEPTEMBER",
+        "OCTOBER",
+        "NOVEMBER",
+        "DECEMBER",
+      ];
+
+      function parseStoryDate(value) {
+        const normalized = String(value || "")
+          .trim()
+          .replace(/\s+/g, " ");
+        const fullDate = normalized.match(/^(\d{1,2})\s+([a-z]+)\s+(\d{4})$/i);
+        const monthDate = normalized.match(/^([a-z]+)\s+(\d{4})$/i);
+        if (!fullDate && !monthDate) return null;
+
+        const hasDay = Boolean(fullDate);
+        const monthName = (hasDay ? fullDate[2] : monthDate[1]).toUpperCase();
+        const month = STORY_MONTHS.indexOf(monthName);
+        if (month < 0) return null;
+
+        const day = hasDay ? Number(fullDate[1]) : 1;
+        const year = Number(hasDay ? fullDate[3] : monthDate[2]);
+        const timestamp = Date.UTC(year, month, day);
+        const date = new Date(timestamp);
+        if (
+          date.getUTCFullYear() !== year ||
+          date.getUTCMonth() !== month ||
+          date.getUTCDate() !== day
+        ) {
+          return null;
+        }
+
+        return { timestamp, day, month, year, hasDay };
+      }
+
+      function formatStoryDate(value) {
+        const parsed = parseStoryDate(value);
+        if (!parsed)
+          return String(value || "")
+            .trim()
+            .toUpperCase();
+        const monthAndYear = `${STORY_MONTHS[parsed.month]} ${parsed.year}`;
+        return parsed.hasDay
+          ? `${String(parsed.day).padStart(2, "0")} ${monthAndYear}`
+          : monthAndYear;
+      }
+
+      function sortDatedEntries(entries) {
+        return entries
+          .map((entry, originalIndex) => ({
+            entry,
+            originalIndex,
+            timestamp: parseStoryDate(entry.date)?.timestamp ?? null,
+          }))
+          .sort((a, b) => {
+            if (a.timestamp === null && b.timestamp === null)
+              return a.originalIndex - b.originalIndex;
+            if (a.timestamp === null) return 1;
+            if (b.timestamp === null) return -1;
+            return (
+              a.timestamp - b.timestamp || a.originalIndex - b.originalIndex
+            );
+          })
+          .map(({ entry }) => entry);
+      }
+
+      function getMemoriesChronologically() {
+        return sortDatedEntries(CONFIG.memories);
+      }
+
+      function getAdventuresChronologically() {
+        return sortDatedEntries(CONFIG.adventures);
       }
 
       function renderAll() {
@@ -2541,60 +3308,65 @@
         CHAPTERS.forEach((c) => {
           $(`#${c.id} .ch-head`).innerHTML =
             `<span class="ch-label reveal">${c.label}</span>
-       <h2 class="ch-title reveal" style="--d:.12s">${c.title}</h2>`;
+                             <h2 class="ch-title reveal" style="--d:.12s">${c.title}</h2>`;
         });
 
         // CH1
         const m = CONFIG.meeting;
         $("#ch1body").innerHTML = `
-    <div class="ch-meta reveal"><span>${m.date}</span><i></i><span>${m.place}</span></div>
-    <figure class="hero reveal" style="--d:.15s">
-      <div class="hero-media"><img src="${m.hero}" alt=""></div>
-      <figcaption>FIG. 01 — ${m.figCaption}</figcaption>
-    </figure>
-    <div class="story">
-      <div class="reveal" style="--d:.1s">${m.story.map((p) => `<p>${p}</p>`).join("")}</div>
-    </div>
-    <blockquote class="bigquote reveal">"${m.quote}"</blockquote>
-    <div class="pol-row">${m.photos.map((p) => polaroid(p, false)).join("")}</div>`;
+                          <div class="ch-meta reveal"><span>${m.date}</span><i></i><span>${m.place}</span></div>
+                          <figure class="hero reveal" style="--d:.15s">
+                            <div class="hero-media"><img src="${m.hero}" alt="" decoding="async" fetchpriority="high"></div>
+                            <figcaption>FIG. 01 — ${m.figCaption}</figcaption>
+                          </figure>
+                          <div class="story">
+                            <div class="reveal" style="--d:.1s">${m.story.map((p) => `<p>${p}</p>`).join("")}</div>
+                          </div>
+                          <blockquote class="bigquote reveal">"${m.quote}"</blockquote>
+                          <div class="pol-row">${m.photos.map((p) => polaroid(p, false)).join("")}</div>`;
 
-        // CH2 — montage
-        $("#memList").innerHTML = CONFIG.memories
+        // CH2 — montage (oldest memory first)
+        $("#memList").innerHTML = getMemoriesChronologically()
           .map(
             (mm, i) => `
-    <article class="scene reveal">
-      <div class="scene-media">
-        <span class="scene-tag">SCENE 02.${i + 1}</span>
-        <figure><img src="${mm.image}" alt="" loading="lazy"></figure>
-      </div>
-      <div class="scene-body">
-        <span class="scene-date">${mm.date}</span>
-        <h3>${mm.title}</h3>
-        <p>${mm.story}</p>
-        <p class="scene-cap">"${mm.caption}"</p>
-      </div>
-    </article>`,
+                          <article class="scene reveal">
+                            <div class="scene-media">
+                              <span class="scene-tag">SCENE 02.${i + 1}</span>
+                              <figure><img src="${mm.image}" alt="" loading="lazy" decoding="async"></figure>
+                            </div>
+                            <div class="scene-body">
+                              <span class="scene-date">${formatStoryDate(mm.date)}</span>
+                              <h3>${mm.title}</h3>
+                              <p>${mm.story}</p>
+                              <p class="scene-cap">"${mm.caption}"</p>
+                            </div>
+                          </article>`,
           )
           .join("");
 
-        // CH3 — timeline
-        $("#tlList").innerHTML = CONFIG.adventures
-          .map(
-            (a, i) => `
-    <div class="tl-item reveal" data-i="${i}" tabindex="0" role="button" aria-label="${a.title}">
-      <span class="tl-dot"></span>
-      <div class="tl-card">
-        <img src="${a.thumb || a.image}" alt="" loading="lazy">
-        <div class="tl-txt">
-          <span class="scene-date">${a.date}</span>
-          <h3>${a.title}</h3>
-          <p>${a.teaser || a.story}</p>
-        </div>
-        <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
-      </div>
-    </div>`,
-          )
-          .join("");
+        // CH3 — timeline (oldest month first)
+        $("#tlList").innerHTML =
+          getAdventuresChronologically()
+            .map(
+              (a, i) => `
+                          <div class="tl-item reveal" data-i="${i}" tabindex="0" role="button" aria-label="${a.title}">
+                            <span class="tl-dot"></span>
+                            <div class="tl-card">
+                              <img src="${a.thumb || a.image}" alt="" loading="lazy" decoding="async" fetchpriority="low" width="352" height="256">
+                              <div class="tl-txt">
+                                <span class="scene-date">${formatStoryDate(a.date)}</span>
+                                <h3>${a.title}</h3>
+                                <p>${a.teaser || a.story}</p>
+                              </div>
+                              <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
+                            </div>
+                          </div>`,
+            )
+            .join("") +
+          `<div class="tl-future reveal" aria-label="And many more to go">
+                   <span class="tl-future-dot" aria-hidden="true"></span>
+                   <p>And many more to go…</p>
+                 </div>`;
 
         // CH4 — scrapbook
         $("#scrap").innerHTML = CONFIG.gallery
@@ -2619,18 +3391,18 @@
         // CH6 — keluarga
         const f = CONFIG.family;
         $("#famBody").innerHTML = `
-    <p class="bigquote reveal">Somewhere along the way, you became more than someone I love.</p>
-    <p class="bigquote reveal" style="--d:.25s">You became <em>part of my life.</em></p>
-    <div class="fam-row">
-      <div class="fam-block reveal">
-        <figure><img src="${f.hers.image}" alt="" loading="lazy"><figcaption>${f.hers.caption}</figcaption></figure>
-        <h3>${f.hers.title}</h3><p>${f.hers.story}</p>
-      </div>
-      <div class="fam-block offset reveal" style="--d:.2s">
-        <figure><img src="${f.mine.image}" alt="" loading="lazy"><figcaption>${f.mine.caption}</figcaption></figure>
-        <h3>${f.mine.title}</h3><p>${f.mine.story}</p>
-      </div>
-    </div>`;
+                          <p class="bigquote reveal">Somewhere along the way, you became more than someone I love.</p>
+                          <p class="bigquote reveal" style="--d:.25s">You became <em>part of my life.</em></p>
+                          <div class="fam-row">
+                            <div class="fam-block reveal">
+                              <figure><img src="${f.hers.image}" alt="" loading="lazy" decoding="async"><figcaption>${f.hers.caption}</figcaption></figure>
+                              <h3>${f.hers.title}</h3><p>${f.hers.story}</p>
+                            </div>
+                            <div class="fam-block offset reveal" style="--d:.2s">
+                              <figure><img src="${f.mine.image}" alt="" loading="lazy" decoding="async"><figcaption>${f.mine.caption}</figcaption></figure>
+                              <h3>${f.mine.title}</h3><p>${f.mine.story}</p>
+                            </div>
+                          </div>`;
 
         // FINAL — sticky sequence
         const finSteps = [
@@ -2648,10 +3420,10 @@
             )
             .join("") +
           `<div class="seq-item seq-fin" data-weight="2.2">
-         <button class="btn-heart" id="btnNext">${I.heart}<span>OPEN THE NEXT CHAPTER</span></button>
-         <span class="fin-hint">TAP TO CONTINUE</span>
-       </div>
-       <span class="seq-tag">FINAL CHAPTER</span>`;
+                               <button class="btn-heart" id="btnNext">${I.heart}<span>OPEN THE NEXT CHAPTER</span></button>
+                               <span class="fin-hint">TAP TO CONTINUE</span>
+                             </div>
+                             <span class="seq-tag">FINAL CHAPTER</span>`;
 
         // episod
         const eps = CHAPTERS.map((c) => ({
@@ -2662,29 +3434,33 @@
         $("#epList").innerHTML = eps
           .map(
             (e) => `
-    <button class="ep-row ${e.final ? "final" : ""}" data-target="${e.target}">
-      <span class="ep-num">${e.num}</span><span class="ep-name">${e.name}</span>
-    </button>`,
+                          <button class="ep-row ${e.final ? "final" : ""}" data-target="${e.target}">
+                            <span class="ep-num">${e.num}</span><span class="ep-name">${e.name}</span>
+                          </button>`,
           )
           .join("");
 
         // end credits
         $("#creditsRoll").innerHTML = `
-    <div class="cr-title">OUR STORY</div>
-    <div class="cr-sub">SEASON ONE</div>
-    <div class="cr"><span>DIRECTED BY</span><b>${CONFIG.names.you}</b></div>
-    <div class="cr"><span>STARRING</span><b>${CONFIG.names.her} &amp; ${CONFIG.names.you}</b></div>
-    <div class="cr"><span>STORY BY</span><b>The two of us</b></div>
-    <div class="cr"><span>CINEMATOGRAPHY</span><b>Every stranger we asked to take our photo</b></div>
-    <div class="cr"><span>MUSIC</span><b>${CONFIG.music.title}</b></div>
-    <div class="cr"><span>ON LOCATION IN</span><b>${CONFIG.season.place} &amp; everywhere we went</b></div>
-    <div class="cr"><span>RUNNING TIME</span><b>365 days</b></div>
-    <div class="cr"><span>SPECIAL THANKS</span><b>Both our families</b></div>
-    <div class="cr"><span>BASED ON</span><b>A true story</b></div>
-    <div class="cr end"><span>TO BE CONTINUED</span><b>Season 02 — with you.</b></div>`;
+                          <div class="cr-title">OUR STORY</div>
+                          <div class="cr-sub">SEASON ONE</div>
+                          <div class="cr"><span>DIRECTED BY</span><b>${CONFIG.names.you}</b></div>
+                          <div class="cr"><span>STARRING</span><b>${CONFIG.names.her} &amp; ${CONFIG.names.you}</b></div>
+                          <div class="cr"><span>STORY BY</span><b>The two of us</b></div>
+                          <div class="cr"><span>CINEMATOGRAPHY</span><b>Every stranger we asked to take our photo</b></div>
+                          <div class="cr"><span>MUSIC</span><b>${CONFIG.music.title}</b></div>
+                          <div class="cr"><span>ON LOCATION IN</span><b>${CONFIG.season.place} &amp; everywhere we went</b></div>
+                          <div class="cr"><span>RUNNING TIME</span><b>365 days</b></div>
+                          <div class="cr"><span>SPECIAL THANKS</span><b>Both our families</b></div>
+                          <div class="cr"><span>BASED ON</span><b>A true story</b></div>
+                          <div class="cr end"><span>TO BE CONTINUED</span><b>Season 02 — with you.</b></div>`;
       }
 
       /* ---------- engine untuk scroll-sequence (ch5 & final) ---------- */
+      const lowPowerMotion = matchMedia(
+        "(max-width: 760px), (pointer: coarse)",
+      );
+
       function makeSeq(sel, opts = {}) {
         const wrap = $(sel);
         const items = [...wrap.querySelectorAll(".seq-item")];
@@ -2720,8 +3496,11 @@
             el.style.visibility = o > 0.01 ? "visible" : "hidden";
             if (!(opts.persistLast && i === items.length - 1))
               el.style.transform = `translateY(${((0.5 - cl) * -42).toFixed(1)}px)`;
-            el.style.filter =
-              o < 0.55 ? `blur(${((1 - o) * 7).toFixed(1)}px)` : "none";
+            el.style.filter = lowPowerMotion.matches
+              ? "none"
+              : o < 0.55
+                ? `blur(${((1 - o) * 7).toFixed(1)}px)`
+                : "none";
             if (o > bestO) {
               bestO = o;
               best = i;
@@ -2733,6 +3512,9 @@
 
       let seqLove, seqFinal;
       function updateParallax() {
+        // Fixed-image parallax causes extra layout and compositing work on most
+        // phones. The static crop is visually equivalent at that screen size.
+        if (lowPowerMotion.matches) return;
         const vh = innerHeight;
         $$(".hero-media").forEach((el) => {
           const r = el.getBoundingClientRect();
@@ -2740,7 +3522,9 @@
           const pr = (vh - r.top) / (vh + r.height);
           el.style.setProperty("--py", ((pr - 0.5) * 9).toFixed(2) + "%");
         });
-        $$("#scrap .polaroid").forEach((el) => {
+        // Drive folders can contain hundreds of videos. Keep those cards out of
+        // the per-frame parallax loop so controls remain responsive.
+        $$("#scrap .polaroid:not(.drive-video-card)").forEach((el) => {
           if (!el.classList.contains("in")) return;
           const r = el.getBoundingClientRect();
           if (r.bottom < -100 || r.top > vh + 100) return;
@@ -2922,15 +3706,21 @@
           $("#btnSkip").classList.add("show");
       }, 2400);
 
+      let filmStarted = false;
       function startFilm() {
+        if (filmStarted) return;
+        filmStarted = true;
         opTimers.forEach(clearTimeout);
         try {
           if (CONFIG.music.autoplay) Music.start();
         } catch (err) {}
-        $("#opening").classList.add("exit");
+        const opening = $("#opening");
+        opening.classList.add("exit");
+        opening.setAttribute("aria-hidden", "true");
+        opening.inert = true;
         document.body.classList.remove("film-open"); // letterbox retract
         setTimeout(() => {
-          $("#opening").classList.add("hidden");
+          opening.classList.add("hidden");
           document.body.classList.remove("locked");
           window.scrollTo(0, 0);
         }, 1400);
@@ -2983,7 +3773,8 @@
               id = url.searchParams.get("v");
               if (!id) {
                 const parts = url.pathname.split("/").filter(Boolean);
-                if (["embed", "shorts", "live"].includes(parts[0])) id = parts[1];
+                if (["embed", "shorts", "live"].includes(parts[0]))
+                  id = parts[1];
               }
             }
 
@@ -3008,6 +3799,23 @@
           b.setAttribute("aria-label", label);
         }
 
+        function playYoutube() {
+          if (!youtubeReady || !youtubePlayer || youtubeFailed) return;
+          // YouTube commonly allows autoplay only in a muted state. Calling
+          // unMute() during the visitor's click/tap makes the song audible.
+          youtubePlayer.unMute();
+          youtubePlayer.setVolume(75);
+          youtubePlayer.playVideo();
+        }
+
+        function silenceYoutube() {
+          if (!youtubeReady || !youtubePlayer) return;
+          // Mute as well as pause so a delayed YouTube PLAYING event cannot
+          // make sound after the visitor has pressed the mute button.
+          youtubePlayer.mute();
+          youtubePlayer.pauseVideo();
+        }
+
         function createYoutubePlayer() {
           if (youtubePlayer || !(window.YT && window.YT.Player)) return;
 
@@ -3029,11 +3837,13 @@
               onReady(event) {
                 youtubeReady = true;
                 event.target.setVolume(75);
-                if (wantsToPlay) event.target.playVideo();
+                if (wantsToPlay) playYoutube();
               },
               onStateChange(event) {
                 if (event.data === window.YT.PlayerState.PLAYING) {
-                  playing = true;
+                  // Autoplay can report PLAYING while YouTube is still muted.
+                  // Keep the button tied to audible playback, not video state.
+                  playing = wantsToPlay && !event.target.isMuted();
                   updateBtn();
                 } else if (event.data === window.YT.PlayerState.PAUSED) {
                   playing = false;
@@ -3050,7 +3860,10 @@
                 youtubeFailed = true;
                 playing = false;
                 wantsToPlay = false;
-                console.warn("YouTube music could not be played. Error:", event.data);
+                console.warn(
+                  "YouTube music could not be played. Error:",
+                  event.data,
+                );
                 updateBtn("YouTube music is unavailable");
               },
             },
@@ -3070,7 +3883,11 @@
             createYoutubePlayer();
           };
 
-          if (!document.querySelector('script[src="https://www.youtube.com/iframe_api"]')) {
+          if (
+            !document.querySelector(
+              'script[src="https://www.youtube.com/iframe_api"]',
+            )
+          ) {
             const script = document.createElement("script");
             script.src = "https://www.youtube.com/iframe_api";
             script.async = true;
@@ -3126,7 +3943,7 @@
               wantsToPlay = true;
               playing = true;
               prepareYoutube();
-              if (youtubeReady) youtubePlayer.playVideo();
+              if (youtubeReady) playYoutube();
               updateBtn();
             }
             return;
@@ -3138,7 +3955,7 @@
           if (youtubeId) {
             wantsToPlay = true;
             prepareYoutube();
-            if (youtubeReady) youtubePlayer.playVideo();
+            if (youtubeReady) playYoutube();
           } else if (CONFIG.music.url) {
             audioEl = new Audio(CONFIG.music.url);
             audioEl.loop = true;
@@ -3158,6 +3975,24 @@
           updateBtn();
         }
 
+        function pause() {
+          if (!started || !playing) return false;
+          playing = false;
+          wantsToPlay = false;
+          if (youtubeId) {
+            silenceYoutube();
+          } else if (audioEl) {
+            audioEl.pause();
+          } else if (ctx) {
+            const t = ctx.currentTime;
+            master.gain.cancelScheduledValues(t);
+            master.gain.setValueAtTime(master.gain.value, t);
+            master.gain.linearRampToValueAtTime(0.0001, t + 0.35);
+          }
+          updateBtn();
+          return true;
+        }
+
         function toggle() {
           if (!started) {
             start();
@@ -3168,7 +4003,7 @@
           if (youtubeId) {
             wantsToPlay = playing;
             if (youtubeReady && !youtubeFailed) {
-              playing ? youtubePlayer.playVideo() : youtubePlayer.pauseVideo();
+              playing ? playYoutube() : silenceYoutube();
             } else if (playing) {
               prepareYoutube();
             }
@@ -3213,7 +4048,459 @@
           }
         }
         $("#btnAudio").addEventListener("click", toggle);
-        return { start, toggle };
+        return { start, toggle, pause };
+      })();
+
+      /* ---------- Google Drive videos inside the Chapter 04 scrapbook ---------- */
+      const DriveVideos = (() => {
+        let allVideos = [];
+        let videosLoaded = false;
+        let loading = false;
+        let initialized = false;
+        let lastVideoCard = null;
+        let previewObserver = null;
+
+        const config = CONFIG.driveVideos || {};
+
+        function setState(state, message = "") {
+          $("#videoLoading").hidden = state !== "loading";
+          $("#videoError").hidden = state !== "error";
+          $("#videoToolbar").hidden = state !== "ready";
+          if (message) $("#videoErrorText").textContent = message;
+        }
+
+        function getConfigError() {
+          if (!config.folderId || !config.apiKey) {
+            return "Add your Google Drive folderId and apiKey in CONFIG.driveVideos.";
+          }
+          if (!/^[a-zA-Z0-9_-]+$/.test(config.folderId)) {
+            return "The Google Drive folder ID is not valid.";
+          }
+          return "";
+        }
+
+        function shuffleArr(items) {
+          const result = [...items];
+          for (let i = result.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [result[i], result[j]] = [result[j], result[i]];
+          }
+          return result;
+        }
+
+        function listUrl(pageToken = "") {
+          const params = new URLSearchParams({
+            q: `'${config.folderId}' in parents and trashed = false and mimeType contains 'video/'`,
+            fields:
+              "nextPageToken,files(id,mimeType,thumbnailLink,createdTime)",
+            pageSize: "1000",
+            key: config.apiKey,
+          });
+          if (pageToken) params.set("pageToken", pageToken);
+          return `https://www.googleapis.com/drive/v3/files?${params.toString()}`;
+        }
+
+        function mediaUrl(fileId) {
+          const params = new URLSearchParams({
+            alt: "media",
+            key: config.apiKey,
+          });
+          return `https://www.googleapis.com/drive/v3/files/${encodeURIComponent(fileId)}?${params.toString()}`;
+        }
+
+        function assignMemoryNumbers(videos) {
+          return [...videos]
+            .sort((a, b) => {
+              const byCreatedTime = (a.createdTime || "").localeCompare(
+                b.createdTime || "",
+              );
+              return byCreatedTime || a.id.localeCompare(b.id);
+            })
+            .map((video, index) => ({ ...video, memoryNumber: index + 1 }));
+        }
+
+        function getMemoryLabel(video) {
+          const digits = Math.max(3, String(allVideos.length).length);
+          return `Memory ${String(video.memoryNumber).padStart(digits, "0")}`;
+        }
+
+        function isPreviewVisible(preview) {
+          const rect = preview.getBoundingClientRect();
+          return rect.bottom > 0 && rect.top < innerHeight;
+        }
+
+        function playPreview(preview) {
+          if (
+            document.hidden ||
+            $("#videoLightbox").classList.contains("open")
+          ) {
+            preview.pause();
+            return;
+          }
+          if (!preview.hasAttribute("src") && preview.dataset.src) {
+            preview.src = preview.dataset.src;
+            preview.load();
+          }
+          preview.muted = true;
+          const playRequest = preview.play();
+          if (playRequest?.catch) playRequest.catch(() => {});
+        }
+
+        function ensurePreviewObserver() {
+          if (previewObserver || !("IntersectionObserver" in window)) return;
+          previewObserver = new IntersectionObserver(
+            (entries) => {
+              entries.forEach((entry) => {
+                const preview = entry.target;
+                preview.dataset.inView = entry.isIntersecting
+                  ? "true"
+                  : "false";
+                if (entry.isIntersecting) playPreview(preview);
+                else preview.pause();
+              });
+            },
+            { rootMargin: "40px 0px", threshold: 0.08 },
+          );
+        }
+
+        function observePreviewVideos(cards) {
+          ensurePreviewObserver();
+          cards.forEach((card) => {
+            const preview = card.querySelector(".drive-video-preview");
+            if (!preview) return;
+            if (previewObserver) previewObserver.observe(preview);
+            else {
+              preview.dataset.inView = "true";
+              playPreview(preview);
+            }
+          });
+        }
+
+        function createVideoCard(video, index) {
+          const captionText = getMemoryLabel(video);
+          const card = document.createElement("button");
+          card.type = "button";
+          card.className = "polaroid clickable p-reveal in drive-video-card";
+          card.dataset.videoIndex = index;
+          card.dataset.memoryNumber = video.memoryNumber;
+          card.dataset.dep = (Math.random() * 0.8 + 0.4).toFixed(2);
+          card.style.setProperty(
+            "--r",
+            `${(Math.random() * 6 - 3).toFixed(1)}deg`,
+          );
+          card.setAttribute(
+            "aria-label",
+            `Open “${captionText}” fullscreen with sound`,
+          );
+
+          const inner = document.createElement("span");
+          inner.className = "pol-in";
+          inner.style.setProperty(
+            "--fd",
+            `${(Math.random() * -7).toFixed(1)}s`,
+          );
+
+          const photo = document.createElement("span");
+          photo.className = "ph";
+
+          // Muting is required by browser autoplay policies. Clicking the card
+          // opens the same memory fullscreen with sound and native controls.
+          const preview = document.createElement("video");
+          preview.className = "drive-video-preview";
+          preview.dataset.src = mediaUrl(video.id);
+          if (video.thumbnailLink) preview.poster = video.thumbnailLink;
+          preview.autoplay = true;
+          preview.defaultMuted = true;
+          preview.muted = true;
+          preview.loop = true;
+          preview.playsInline = true;
+          preview.preload = "none";
+          preview.setAttribute("muted", "");
+          preview.setAttribute("playsinline", "");
+          preview.setAttribute("aria-hidden", "true");
+          preview.tabIndex = -1;
+          photo.appendChild(preview);
+
+          const play = document.createElement("span");
+          play.className = "video-card-play";
+          play.setAttribute("aria-hidden", "true");
+          play.innerHTML =
+            '<i><svg viewBox="0 0 24 24"><path d="M8 3H3v5M16 3h5v5M3 16v5h5M21 16v5h-5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></i>';
+          photo.appendChild(play);
+
+          const caption = document.createElement("span");
+          caption.className = "pcap";
+          caption.textContent = captionText;
+
+          const date = document.createElement("span");
+          date.className = "pdate";
+          date.textContent = "MUTED PREVIEW · TAP FOR SOUND";
+
+          const tape = document.createElement("i");
+          tape.className = "tape";
+          inner.append(photo, caption, date, tape);
+          card.appendChild(inner);
+          // Bind directly to every generated card so playback does not depend
+          // on event bubbling through the scrapbook layout.
+          card.addEventListener("click", (event) => {
+            event.preventDefault();
+            event.stopPropagation();
+            lastVideoCard = card;
+            openVideo(index, captionText);
+          });
+          return card;
+        }
+
+        function getVisibleCount() {
+          const requested = Math.floor(Number(config.visibleCount) || 6);
+          return Math.min(allVideos.length, Math.max(1, requested));
+        }
+
+        function playPreviewVideos() {
+          $$("#scrap .drive-video-preview").forEach((preview) => {
+            if (
+              preview.dataset.inView === "true" ||
+              isPreviewVisible(preview)
+            ) {
+              playPreview(preview);
+            } else {
+              preview.pause();
+            }
+          });
+        }
+
+        function pausePreviewVideos() {
+          $$("#scrap .drive-video-preview").forEach((preview) =>
+            preview.pause(),
+          );
+        }
+
+        function removeVideoCards() {
+          $$("#scrap .drive-video-card").forEach((card) => {
+            const preview = card.querySelector(".drive-video-preview");
+            if (preview) {
+              if (previewObserver) previewObserver.unobserve(preview);
+              preview.pause();
+              preview.removeAttribute("src");
+              preview.load();
+            }
+            card.remove();
+          });
+        }
+
+        function renderVideoBatch() {
+          const scrapbook = $("#scrap");
+          removeVideoCards();
+
+          const indexes = shuffleArr(allVideos.map((_, index) => index)).slice(
+            0,
+            getVisibleCount(),
+          );
+          const cards = indexes.map((index) =>
+            createVideoCard(allVideos[index], index),
+          );
+          const fragment = document.createDocumentFragment();
+          cards.forEach((card) => fragment.appendChild(card));
+          scrapbook.appendChild(fragment);
+          observePreviewVideos(cards);
+          playPreviewVideos();
+
+          $("#videoCounter").textContent =
+            `SHOWING ${cards.length} OF ${allVideos.length} VIDEOS`;
+        }
+
+        function shuffleVideos() {
+          renderVideoBatch();
+        }
+
+        async function loadVideos(force = false) {
+          if (loading || (videosLoaded && !force)) return;
+          const configError = getConfigError();
+          if (configError) {
+            setState("error", configError);
+            return;
+          }
+
+          loading = true;
+          setState("loading");
+          try {
+            let videos = [];
+            let pageToken = "";
+            do {
+              const response = await fetch(listUrl(pageToken));
+              const data = await response.json();
+              if (!response.ok || data.error) {
+                throw new Error(
+                  data.error?.message ||
+                    `Google Drive returned ${response.status}`,
+                );
+              }
+              videos = videos.concat(data.files || []);
+              pageToken = data.nextPageToken || "";
+            } while (pageToken);
+
+            if (!videos.length) {
+              throw new Error(
+                "No public video files were found in this folder.",
+              );
+            }
+
+            // Assign each Drive video its own archive-wide number before any
+            // random display shuffle. Newer uploads naturally receive later
+            // numbers, so a video keeps its label between Shuffle presses.
+            allVideos = shuffleArr(assignMemoryNumbers(videos));
+            videosLoaded = true;
+            renderVideoBatch();
+            setState("ready");
+          } catch (error) {
+            console.error("Google Drive video load error:", error);
+            setState(
+              "error",
+              `${error.message} Check the folder sharing and API key restrictions.`,
+            );
+          } finally {
+            loading = false;
+          }
+        }
+
+        function enterFullscreen(overlay, videoEl) {
+          try {
+            if (document.fullscreenElement) return;
+            let request = null;
+            if (overlay.requestFullscreen) {
+              request = overlay.requestFullscreen({ navigationUI: "hide" });
+            } else if (overlay.webkitRequestFullscreen) {
+              request = overlay.webkitRequestFullscreen();
+            } else if (videoEl.requestFullscreen) {
+              request = videoEl.requestFullscreen();
+            } else if (videoEl.webkitEnterFullscreen) {
+              videoEl.webkitEnterFullscreen();
+            }
+            if (request?.catch) request.catch(() => {});
+          } catch (error) {
+            // The full-page overlay remains the fallback when native fullscreen
+            // is unavailable or the browser declines the request.
+          }
+        }
+
+        async function openVideo(index, captionText = "Memory") {
+          const video = allVideos[index];
+          if (!video) return;
+
+          const overlay = $("#videoLightbox");
+          const videoEl = $("#videoFrame");
+          pausePreviewVideos();
+          videoEl.pause();
+          videoEl.removeAttribute("src");
+          videoEl.removeAttribute("poster");
+          videoEl.load();
+          videoEl.muted = false;
+          videoEl.src = mediaUrl(video.id);
+          if (video.thumbnailLink) videoEl.poster = video.thumbnailLink;
+          videoEl.setAttribute("aria-label", `Video memory: ${captionText}`);
+          $("#videoFullscreenName").textContent = captionText;
+
+          // Show the overlay immediately so every click has visible feedback,
+          // even while a large Google Drive video is still buffering.
+          overlay.classList.add("open");
+          overlay.setAttribute("aria-hidden", "false");
+          lockScroll(true);
+          Music.pause();
+          videoEl.load();
+          enterFullscreen(overlay, videoEl);
+
+          try {
+            await videoEl.play();
+          } catch (error) {
+            // Native controls remain available when autoplay takes longer or is
+            // blocked; the visitor can press play again inside the open player.
+            console.warn("Video is waiting for manual playback:", error);
+          }
+        }
+
+        function closeVideo() {
+          const overlay = $("#videoLightbox");
+          const videoEl = $("#videoFrame");
+          overlay.classList.remove("open");
+          overlay.setAttribute("aria-hidden", "true");
+          videoEl.pause();
+          videoEl.muted = true;
+          videoEl.removeAttribute("src");
+          videoEl.load();
+          if (
+            document.fullscreenElement &&
+            overlay.contains(document.fullscreenElement) &&
+            document.exitFullscreen
+          ) {
+            const exitRequest = document.exitFullscreen();
+            if (exitRequest?.catch) exitRequest.catch(() => {});
+          } else if (
+            document.webkitFullscreenElement &&
+            document.webkitExitFullscreen
+          ) {
+            document.webkitExitFullscreen();
+          } else if (
+            videoEl.webkitDisplayingFullscreen &&
+            videoEl.webkitExitFullscreen
+          ) {
+            videoEl.webkitExitFullscreen();
+          }
+          lockScroll(false);
+          playPreviewVideos();
+          if (lastVideoCard?.isConnected) lastVideoCard.focus();
+        }
+
+        function init() {
+          if (initialized) return;
+          initialized = true;
+
+          $("#videoShuffle").addEventListener("click", (event) => {
+            event.preventDefault();
+            event.stopPropagation();
+            shuffleVideos();
+          });
+          $("#videoRetry").addEventListener("click", () => loadVideos(true));
+          $("#videoClose").addEventListener("click", closeVideo);
+          $("#videoLightbox").addEventListener("click", (event) => {
+            if (event.target === event.currentTarget) closeVideo();
+          });
+          $("#videoFrame").addEventListener("play", () => Music.pause());
+          $("#videoFrame").addEventListener("error", () => {
+            if (!$("#videoFrame").currentSrc) return;
+            $("#videoFullscreenName").textContent =
+              "This video could not be streamed. Try another memory.";
+          });
+          document.addEventListener("visibilitychange", () => {
+            if (document.hidden) pausePreviewVideos();
+            else playPreviewVideos();
+          });
+          document.addEventListener("keydown", (event) => {
+            if (
+              event.key === "Escape" &&
+              $("#videoLightbox").classList.contains("open")
+            ) {
+              closeVideo();
+            }
+          });
+
+          const target = $("#driveVideoGallery");
+          if (!("IntersectionObserver" in window)) {
+            loadVideos();
+            return;
+          }
+          const observer = new IntersectionObserver(
+            (entries) => {
+              if (entries.some((entry) => entry.isIntersecting)) {
+                observer.disconnect();
+                loadVideos();
+              }
+            },
+            { rootMargin: "500px 0px", threshold: 0.01 },
+          );
+          observer.observe(target);
+        }
+
+        return { init, loadVideos, openVideo, shuffleVideos };
       })();
 
       /* ---------- episodes overlay ---------- */
@@ -3247,10 +4534,12 @@
         $("#hud").style.opacity = on ? 0 : "";
       }
       function renderModal() {
-        const a = CONFIG.adventures[mIdx];
+        const adventures = getAdventuresChronologically();
+        const a = adventures[mIdx];
         $("#mImg").src = a.image;
-        $("#mTag").textContent = `SCENE 03.${mIdx + 1} · ${a.date}`;
-        $("#mCount").textContent = `${mIdx + 1} / ${CONFIG.adventures.length}`;
+        $("#mTag").textContent =
+          `SCENE 03.${mIdx + 1} · ${formatStoryDate(a.date)}`;
+        $("#mCount").textContent = `${mIdx + 1} / ${adventures.length}`;
         $("#mTitle").textContent = a.title;
         $("#mStory").textContent = a.story;
         $("#mCap").textContent = a.caption ? `"${a.caption}"` : "";
@@ -3266,7 +4555,8 @@
         lockScroll(false);
       }
       function modalStep(d) {
-        mIdx = (mIdx + d + CONFIG.adventures.length) % CONFIG.adventures.length;
+        const total = getAdventuresChronologically().length;
+        mIdx = (mIdx + d + total) % total;
         renderModal();
       }
       $("#tlList").addEventListener("click", (e) => {
@@ -3310,8 +4600,13 @@
         renderLbx();
       }
       $("#scrap").addEventListener("click", (e) => {
-        const p = e.target.closest(".polaroid");
-        if (p) openLbx(+p.dataset.i);
+        const videoCard = e.target.closest(".drive-video-card");
+        if (videoCard) {
+          DriveVideos.openVideo(+videoCard.dataset.videoIndex);
+          return;
+        }
+        const photo = e.target.closest(".polaroid[data-i]");
+        if (photo) openLbx(+photo.dataset.i);
       });
       $("#lbxClose").addEventListener("click", closeLbx);
       $("#lbxPrev").addEventListener("click", () => lbxStep(-1));
@@ -3415,6 +4710,7 @@
       /* ---------- boot ---------- */
       document.addEventListener("DOMContentLoaded", () => {
         renderAll();
+        DriveVideos.init();
         seqLove = makeSeq("#loveSeq", {
           unit: 85,
           onActive: (i) => {
